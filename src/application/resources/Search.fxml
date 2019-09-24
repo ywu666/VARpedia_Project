@@ -18,6 +18,6 @@
          </font>
       </Text>
       <Button fx:id="submitText" layoutX="478.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleSubmitText" text="Submit Text" />
-      <TextArea fx:id="results" layoutX="27.0" layoutY="93.0" prefHeight="244.0" prefWidth="544.0" />
+      <TextArea fx:id="results" layoutX="27.0" layoutY="93.0" prefHeight="244.0" prefWidth="544.0" wrapText="true" />
    </children>
 </Pane>

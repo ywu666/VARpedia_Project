@@ -54,13 +54,23 @@ public class SearchController {
 				
 			} else {
 				results.setText(searchResult.trim());
-				results.setWrapText(true);
 			}
 		}
 	}
 	
 	@FXML
 	private void handleSubmitText() {
+		String userText = results.getText();
 		
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));
+			Parent root = loader.load();
+			SpeechController controller = loader.getController();
+			controller.initialiseController(userText);
+			Main.setStage(root);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 }

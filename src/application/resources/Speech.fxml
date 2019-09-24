@@ -10,8 +10,8 @@
    <children>
       <Button fx:id="menu" layoutX="28.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu" />
       <Button fx:id="select" layoutX="28.0" layoutY="204.0" mnemonicParsing="false" onAction="#handleSelect" text="Select" />
-      <TextArea fx:id="creationText" editable="false" layoutX="28.0" layoutY="63.0" prefHeight="132.0" prefWidth="544.0" />
-      <TextArea fx:id="selectionText" editable="false" layoutX="28.0" layoutY="241.0" prefHeight="101.0" prefWidth="381.0" />
+      <TextArea fx:id="creationText" editable="false" layoutX="28.0" layoutY="63.0" prefHeight="132.0" prefWidth="544.0" wrapText="true" />
+      <TextArea fx:id="selectionText" editable="false" layoutX="28.0" layoutY="241.0" prefHeight="101.0" prefWidth="381.0" wrapText="true" />
       <Text layoutX="106.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit speech settings of highlighted text" />
       <Button fx:id="preview" layoutX="504.0" layoutY="300.0" mnemonicParsing="false" onAction="#handlePreview" text="Preview" />
       <Button fx:id="save" layoutX="421.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="27.0" prefWidth="66.0" text="Save" />
