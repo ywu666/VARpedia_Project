@@ -1,0 +1,65 @@
+package application;
+
+import java.io.IOException;
+
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
+import javafx.scene.layout.Region;
+
+public class CreateController {
+	
+	@FXML TextField creationName;
+	@FXML Slider slider;
+	@FXML ProgressBar progressBar;
+	
+	private Creation creation;
+	
+	@FXML
+	private void handleMenu() {
+		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+    	rmNewTermDir.run();
+    	
+		try {
+			Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
+			Main.setStage(root);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	@FXML
+	private void handleCreate() {
+		
+		String name = creationName.getText().trim();
+		
+		if (name == null || name.equals("") || name.length() == 0 || name.contains(" ")) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a valid creation name. (Note: no spaces)", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
+		} else {
+			creation.setNumImages(slider.getValue());
+			creation.setCreationName(name);
+			CreateCreationTask task = new CreateCreationTask(creation);
+			Thread thread = new Thread(task);
+			thread.start();
+			
+			progressBar.progressProperty().bind(task.progressProperty());
+
+			task.setOnSucceeded((event) -> {
+				progressBar.progressProperty().unbind();
+				progressBar.setProgress(1);
+			});
+		}
+	}
+	
+	public void initialiseCreateController(Creation creation) {
+		this.creation = creation;
+	}
+}

@@ -1,7 +1,6 @@
 package application;
 
 import java.io.IOException;
-import java.util.List;
 
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
@@ -21,6 +20,9 @@ public class AudioListController {
 	
 	@FXML
 	private void handleMenu() {
+		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+    	rmNewTermDir.run();
+    	
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
 			Main.setStage(root);
@@ -32,7 +34,16 @@ public class AudioListController {
 	
 	@FXML
 	private void handleContinue() {
-		
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Create.fxml"));
+			Parent root = loader.load();
+			CreateController controller = loader.getController();
+			controller.initialiseCreateController(creation);
+			Main.setStage(root);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public void initialiseList(Creation creation) {

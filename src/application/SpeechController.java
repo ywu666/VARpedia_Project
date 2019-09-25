@@ -1,24 +1,17 @@
 package application;
 
-import java.awt.Label;
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Separator;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
@@ -36,9 +29,11 @@ public class SpeechController {
 	private Integer audioFileNum = 0;
 	private Creation creation;
 	
-	
 	@FXML
 	private void handleMenu() {
+		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+    	rmNewTermDir.run();
+		
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
 			Main.setStage(root);
@@ -90,8 +85,6 @@ public class SpeechController {
 				alertEmpty.showAndWait();
 				
 		} else {
-			// handle selection and preview
-			
 			if ("Happy".equals(selection)) {
  				String command = "festival -b src/application/resources/Happy.scm " + sayText;
 				BashCommand preview = new BashCommand(command);
@@ -114,26 +107,26 @@ public class SpeechController {
 	private void handleSave() {
 		audioFileNum += 1;
 		String selection = selectSound.getValue();
-		BashCommand mkDir = new BashCommand("mkdir .newTerm");
+		BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
 		mkDir.run();
 		BashCommand saveTxt = new BashCommand("echo \"" + selectionText.getText() + "\" > .newTerm/selection.txt");
 		saveTxt.run();
 		
 		if ("Happy".equals(selection)) {
-			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Happy.scm");
-			text2wave.run();
-			creation.addAudioFile(audioFileNum, "Happy");
+			saveAudio("Happy");
 			
 		} else if ("Neutral".equals(selection)) {
-			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Neutral.scm");
-			text2wave.run();
-			creation.addAudioFile(audioFileNum, "Neutral");
+			saveAudio("Neutral");
 			
 		} else if ("Sad".equals(selection)) {
-			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Sad.scm");
-			text2wave.run();
-			creation.addAudioFile(audioFileNum, "Sad");
+			saveAudio("Sad");
 		}
+	}
+	
+	private void saveAudio(String mood) {
+		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval src/application/resources/" + mood + ".scm");
+		text2wave.run();
+		creation.addAudioFile(audioFileNum, mood);
 		
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
 		rmTxtFile.run();
@@ -143,12 +136,17 @@ public class SpeechController {
 	private void handleContinue() {
 		BashCommand checkAudio = new BashCommand("test -d .newTerm; echo $?", true);
 		checkAudio.run();
+		
 		if ("1".equals(checkAudio.getStdOutString())) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Save an audio file(s) before continuing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
 		} else {
+			MergeAudioTask task = new MergeAudioTask();
+			Thread thread = new Thread(task);
+			thread.run();
+			
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/AudioChosen.fxml"));
 				Parent root = loader.load();
@@ -172,5 +170,22 @@ public class SpeechController {
 		selectSound.setItems(FXCollections.observableArrayList(voiceList));
 		
 		this.creation = creation;
+	}
+	
+	private class MergeAudioTask extends Task<Void> {
+
+		@Override
+		protected Void call() throws Exception {
+			
+			String audio = "";
+			for (int i = 1; i <= audioFileNum; i++) {
+				audio += ".newTerm/audio/" + i + ".wav ";
+			}
+			String command = "sox " + audio + ".newTerm/audio.wav";
+			BashCommand mergeAudio = new BashCommand(command);
+			mergeAudio.run();
+			
+			return null;
+		}
 	}
 }

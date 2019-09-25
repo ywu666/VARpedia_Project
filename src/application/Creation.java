@@ -6,6 +6,7 @@ import java.util.List;
 public class Creation {
 	
 	private String term;
+	private String name;
 	private String text;
 	private Integer numImages;
 	private List<Audio> audioFiles = new ArrayList<Audio>();
@@ -37,5 +38,13 @@ public class Creation {
 	
 	public List<Audio> getAudioList() {
 		return audioFiles;
+	}
+	
+	public void setCreationName(String name) {
+		this.name = name;
+	}
+	
+	public String getCreationName() {
+		return name;
 	}
 }
