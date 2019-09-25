@@ -1,7 +1,5 @@
 package application;
 
-import java.io.IOException;
-
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,12 +12,17 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	STAGE = primaryStage;
+    	
     	BashCommand mkCreationDir = new BashCommand("mkdir -p creations");
     	mkCreationDir.run();
     	
-    	STAGE = primaryStage;
-        Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
-        setStage(root);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+		Parent root = loader.load();
+		MenuController controller = loader.getController();
+		controller.setUpMenu();
+		setStage(root);
+		
         STAGE.show();
     }
     

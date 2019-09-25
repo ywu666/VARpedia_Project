@@ -24,7 +24,10 @@ public class AudioListController {
     	rmNewTermDir.run();
     	
 		try {
-			Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+			Parent root = loader.load();
+			MenuController controller = loader.getController();
+			controller.setUpMenu();
 			Main.setStage(root);
 			
 		} catch (IOException e) {
