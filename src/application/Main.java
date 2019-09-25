@@ -15,6 +15,9 @@ public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+    	BashCommand mkCreationDir = new BashCommand("mkdir -p creations");
+    	mkCreationDir.run();
+    	
     	STAGE = primaryStage;
         Parent root = FXMLLoader.load(getClass().getResource("resources/Menu.fxml"));
         setStage(root);

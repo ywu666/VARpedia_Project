@@ -20,6 +20,8 @@ public class SearchController {
 	@FXML private TextField field;
 	@FXML private TextArea results;
 	
+	private String searchTerm;
+	
 	@FXML
 	private void handleMenu() {
 		try {
@@ -34,7 +36,7 @@ public class SearchController {
 	@FXML
 	private void handleSearch() {
 		
-		String searchTerm = field.getText().trim().toLowerCase();
+		searchTerm = field.getText().trim().toLowerCase();
 		
 		if (searchTerm == null || "".equals(searchTerm) || searchTerm.length() == 0) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a valid term", ButtonType.OK);
@@ -60,13 +62,13 @@ public class SearchController {
 	
 	@FXML
 	private void handleSubmitText() {
-		String userText = results.getText();
+		Creation creation = new Creation(searchTerm, results.getText());
 		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));
 			Parent root = loader.load();
 			SpeechController controller = loader.getController();
-			controller.initialiseController(userText);
+			controller.initialiseController(creation);
 			Main.setStage(root);
 			
 		} catch (IOException e) {

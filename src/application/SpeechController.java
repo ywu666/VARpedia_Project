@@ -33,7 +33,8 @@ public class SpeechController {
 	@FXML private TextArea selectionText;
 	@FXML private ComboBox<String> selectSound;
 	
-	Integer audioFileNum = 0;
+	private Integer audioFileNum = 0;
+	private Creation creation;
 	
 	
 	@FXML
@@ -121,14 +122,17 @@ public class SpeechController {
 		if ("Happy".equals(selection)) {
 			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Happy.scm");
 			text2wave.run();
+			creation.addAudioFile(audioFileNum, "Happy");
 			
 		} else if ("Neutral".equals(selection)) {
 			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Neutral.scm");
 			text2wave.run();
+			creation.addAudioFile(audioFileNum, "Neutral");
 			
 		} else if ("Sad".equals(selection)) {
 			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio" + audioFileNum + ".wav selection.txt -eval src/application/resources/Sad.scm");
 			text2wave.run();
+			creation.addAudioFile(audioFileNum, "Sad");
 		}
 		
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
@@ -137,15 +141,36 @@ public class SpeechController {
 	
 	@FXML
 	private void handleContinue() {
+		BashCommand checkAudio = new BashCommand("test -d .newTerm; echo $?", true);
+		checkAudio.run();
+		if ("1".equals(checkAudio.getStdOutString())) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Save an audio file(s) before continuing.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
+		} else {
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/AudioChosen.fxml"));
+				Parent root = loader.load();
+				AudioListController controller = loader.getController();
+				controller.initialiseList(creation);
+				Main.setStage(root);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
-	public void initialiseController(String text) {
-		creationText.setText(text);
+	public void initialiseController(Creation creation) {
+		creationText.setText(creation.getText());
 		
 		ArrayList<String> voiceList = new ArrayList<String>();
 		voiceList.add("Happy");
 		voiceList.add("Neutral");
 		voiceList.add("Sad");
 		selectSound.setItems(FXCollections.observableArrayList(voiceList));
+		
+		this.creation = creation;
 	}
 }
