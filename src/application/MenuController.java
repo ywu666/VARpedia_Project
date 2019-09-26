@@ -44,7 +44,18 @@ public class MenuController {
 	
 	@FXML
 	private void handleDelete() {
+		String selection = listCreations.getSelectionModel().getSelectedItem();
 		
+		if (selection == null) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to delete.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+		} else {
+			BashCommand delCreation = new BashCommand("rm creations/" + selection + ".mp4");
+			delCreation.run();
+			
+			setUpMenu();
+		}
 	}
 	
 	@FXML
@@ -73,6 +84,7 @@ public class MenuController {
 		getCreations.run();
 		List<String> creations = getCreations.getStdOutList();
 		
+		listCreations.getItems().clear();
 		listCreations.getItems().addAll(creations);
 	}
 }
