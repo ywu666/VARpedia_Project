@@ -129,7 +129,7 @@ public class SpeechController {
 	private void saveAudio(String mood) {
 		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval src/application/resources/" + mood + ".scm");
 		text2wave.run();
-		creation.addAudioFile(audioFileNum, mood);
+		creation.addAudioFile(audioFileNum, mood, selectionText.getText());
 		
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
 		rmTxtFile.run();

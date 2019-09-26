@@ -6,11 +6,12 @@ public class Audio {
 	
 	private SimpleStringProperty fileName;
 	private SimpleStringProperty mood;
-	private String text;
+	private SimpleStringProperty text;
 	
-	public Audio(Integer fileNum, String mood) {
+	public Audio(Integer fileNum, String mood, String text) {
 		this.setFileName(new SimpleStringProperty("audio" + fileNum));
 		this.setMood(new SimpleStringProperty(mood));
+		this.setText(new SimpleStringProperty(text));
 	}
 
 	public String getFileName() {
@@ -27,5 +28,13 @@ public class Audio {
 
 	public void setMood(SimpleStringProperty mood) {
 		this.mood = mood;
+	}
+
+	public String getText() {
+		return text.get();
+	}
+
+	public void setText(SimpleStringProperty text) {
+		this.text = text;
 	}
 }

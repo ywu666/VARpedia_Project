@@ -51,7 +51,7 @@ public class AudioListController {
 	
 	public void initialiseList(Creation creation) {
 		this.creation = creation;
-		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("fileName"));
+		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
 		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
 		table.getItems().addAll(FXCollections.observableList(creation.getAudioList()));
 	}
