@@ -106,7 +106,7 @@ public class CreateCreationTask extends Task<Void> {
 		String lengthString = getAudioLength.getStdOutString();
 		Float length = Float.parseFloat(lengthString);
 		Float freq = length / numImages;
-		String merge = "ffmpeg -r 1/" + freq + " -i .newTerm/images/%01d.jpg -i .newTerm/audio.wav -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -pix_fmt yuv420p .newTerm/slideshow.mp4";
+		String merge = "ffmpeg -framerate " + freq + " -i .newTerm/images/%01d.jpg -i .newTerm/audio.wav -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -pix_fmt yuv420p -r 25 .newTerm/slideshow.mp4";
 		BashCommand bash = new BashCommand(merge);
 		bash.run();
 	}
