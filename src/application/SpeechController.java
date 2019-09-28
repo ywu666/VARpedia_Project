@@ -239,7 +239,6 @@ public class SpeechController {
 				audio += ".newTerm/audio/" + i + ".wav ";
 			}
 			String command = "sox " + audio + ".newTerm/audio.wav";
-			System.out.println("command: " + command);
 			BashCommand mergeAudio = new BashCommand(command);
 			mergeAudio.run();
 			

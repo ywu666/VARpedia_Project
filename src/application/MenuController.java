@@ -31,6 +31,11 @@ public class MenuController {
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
+		} else if (selection.contains(" - not ready")) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
 		} else {
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/MediaPlay.fxml"));
@@ -51,6 +56,11 @@ public class MenuController {
 		
 		if (selection == null) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to delete.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
+		} else if (selection.contains(" - not ready")) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
