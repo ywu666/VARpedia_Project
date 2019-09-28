@@ -45,9 +45,6 @@ public class CreateController {
 				}
 			}
 		} else {
-			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-	    	rmNewTermDir.run();
-			
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
@@ -79,12 +76,27 @@ public class CreateController {
 			Thread thread = new Thread(task);
 			thread.start();
 			
+			created = true;
+			
 			progressBar.progressProperty().bind(task.progressProperty());
 
 			task.setOnSucceeded((event) -> {
 				progressBar.progressProperty().unbind();
 				progressBar.setProgress(1);
-				created = true;
+				
+				BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+		    	rmNewTermDir.run();
+		    	
+				try {
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+					Parent root = loader.load();
+					MenuController controller = loader.getController();
+					controller.setUpMenu();
+					Main.setStage(root);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			});
 		}
 	}
