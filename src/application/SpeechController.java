@@ -123,6 +123,7 @@ public class SpeechController {
 		String mood = selectMood.getValue();
 		String voice = selectVoice.getValue();
 		String text = selectionText.getText();
+		
 		if (text.equals("")) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -139,7 +140,6 @@ public class SpeechController {
 			alertEmpty.showAndWait();
 				
 		} else {
-			System.out.println("Saved: voice-> " + voice + " mood-> " + mood + " text-> " + text);
 			saveAudio(voice, mood, text);
 		}
 	}
@@ -157,7 +157,7 @@ public class SpeechController {
 		File file = new File(".newTerm/audio/" + audioFileNum + ".wav");
 		if (file.exists()) {
 			creation.addAudioFile(audioFileNum, voice, mood, text);
-			savedLabel.setText("Audio successfully saved: " + voice + ", " + mood + " :)");
+			savedLabel.setText("Audio successfully saved: " + voice + ", " + mood);
 		}
 	}
 	

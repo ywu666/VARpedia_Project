@@ -17,7 +17,7 @@ public class Creation {
 	}
 	
 	public void addAudioFile(Integer fileNum, String voice, String mood, String text) {
-		audioFiles.add(new Audio(fileNum, voice, mood, text));
+		audioFiles.add(new Audio(voice, mood, text));
 	}
 	
 	public String getText() {

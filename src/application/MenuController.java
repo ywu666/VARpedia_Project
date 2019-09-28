@@ -12,10 +12,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressIndicator;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
-import javafx.scene.text.Text;
 
 public class MenuController {
 	
@@ -33,6 +30,7 @@ public class MenuController {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to play.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
+			
 		} else {
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/MediaPlay.fxml"));
@@ -40,6 +38,7 @@ public class MenuController {
 				MediaPlayController controller = loader.getController();
 				controller.playCreation(selection);
 				Main.setStage(root);
+				
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -54,6 +53,7 @@ public class MenuController {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to delete.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
+			
 		} else {
 			BashCommand delCreation = new BashCommand("rm creations/" + selection + ".mp4");
 			delCreation.run();
@@ -85,8 +85,8 @@ public class MenuController {
 		String command = "ls creations | sort | sed 's/\\.mp4$//'";
 		BashCommand getCreations = new BashCommand(command, true);
 		getCreations.run();
-		List<String> creations = getCreations.getStdOutList();
 		
+		List<String> creations = getCreations.getStdOutList();
 		listCreations.getItems().clear();
 		listCreations.getItems().addAll(creations);
 		listCreations.setPlaceholder(new Label("You have no creations. Please press create button to start."));

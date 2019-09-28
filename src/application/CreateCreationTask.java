@@ -32,9 +32,6 @@ public class CreateCreationTask extends Task<Void> {
 
 	@Override
 	protected Void call() throws Exception {
-		
-		
-		
 		BashCommand imagesDir = new BashCommand("mkdir .newTerm/images");
 		imagesDir.run();
 		
@@ -49,10 +46,8 @@ public class CreateCreationTask extends Task<Void> {
 		try {
 			String apiKey = getAPIKey("apiKey");
 			String sharedSecret = getAPIKey("sharedSecret");
-
 			Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
 			
-
 			Integer resultsPerPage = numberOfImages;
 			int page = 0;
 			
@@ -82,7 +77,6 @@ public class CreateCreationTask extends Task<Void> {
 	}
 	
 	private String getAPIKey(String key) throws Exception {
-
 		String config = "src/application/resources/flickr-api-keys.txt";
 		
 		File file = new File(config); 
@@ -106,7 +100,6 @@ public class CreateCreationTask extends Task<Void> {
 		
 		if (numImages == 1) {
 			String slideshow = "ffmpeg -loop 1 -i .newTerm/images/0.jpg -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -t " + length + " -pix_fmt yuv420p .newTerm/image_slide.mp4";
-			System.out.println("merge1: " + slideshow);
 			BashCommand bash = new BashCommand(slideshow);
 			bash.run();
 			
@@ -117,7 +110,6 @@ public class CreateCreationTask extends Task<Void> {
 		} else {
 			Float freq = length / numImages;
 			String merge = "ffmpeg -framerate 1/" + freq + " -i .newTerm/images/%01d.jpg -i .newTerm/audio.wav -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -pix_fmt yuv420p -r 25 .newTerm/slideshow.mp4";
-			System.out.println("merge: " + merge);
 			BashCommand bash = new BashCommand(merge);
 			bash.run();
 			

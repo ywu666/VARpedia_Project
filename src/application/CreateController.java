@@ -21,7 +21,6 @@ public class CreateController {
 	
 	private Boolean create = false;
 	private Creation creation;
-	private String creationBeingMade;
 	
 	@FXML
 	private void handleMenu() {
@@ -62,23 +61,27 @@ public class CreateController {
 	
 	@FXML
 	private void handleCreate() {
-		
 		String name = creationName.getText().trim();
 		
-		if (name == null || name.equals("") || name.length() == 0 || name.contains(" ")) {
+		if (!name.matches("^[a-zA-Z0-9_-]+$")) {
+			  Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a name for your creation using only " +
+			        "alphabetical letters, digits, hyphens and underscores.", ButtonType.OK);
+			  alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			  alert.showAndWait();
+			 
+		} else if (name == null || name.equals("") || name.length() == 0 || name.contains(" ")) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a valid creation name. (Note: no spaces)", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
 		} else if (newTermExists(name)) {
 			
-			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You alread have a creation with this name.\n" +
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You already have a creation with this name.\n" +
 					"Would you like to overwrite?", ButtonType.YES, ButtonType.CANCEL);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			
 			alert.showAndWait().ifPresent(response -> {
 				if (response == ButtonType.YES) {
-					
 					String command = "rm -f creations/" + name + ".mp4";
 					BashCommand removeCreation = new BashCommand(command);
 					removeCreation.run();
@@ -89,14 +92,12 @@ public class CreateController {
 			});
 			
 		} else {
-			System.out.println("Slider val: " + slider.getValue());
 			creation.setNumImages(slider.getValue());
 			creation.setCreationName(name);
+			
 			CreateCreationTask task = new CreateCreationTask(creation);
 			Thread thread = new Thread(task);
 			thread.start();
-			
-			creationBeingMade = creation.getCreationName();
 			
 			create = true;
 			
