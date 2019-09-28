@@ -3,10 +3,13 @@ package application;
 import java.io.File;
 import java.io.IOException;
 
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.ProgressBar;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -20,6 +23,7 @@ public class MediaPlayController {
 	@FXML private Button backward;
 	@FXML private Button play;
 	@FXML private Button menue;
+	@FXML private ProgressBar videoProgress;
 	
 	private MediaPlayer videoPlayer;
 	private Media video;
@@ -45,12 +49,10 @@ public class MediaPlayController {
 	@FXML 
 	public void handlePlay() {
 		if (videoPlayer.getStatus() == Status.PLAYING) {
-			System.out.println(videoPlayer.getStatus());
 			videoPlayer.pause();
 			play.setText("Play");
 			
 		} else {
-			System.out.println(videoPlayer.getStatus());
 			videoPlayer.play();
 			play.setText("Pause");
 		}
@@ -74,6 +76,14 @@ public class MediaPlayController {
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);
 		mediaView.setMediaPlayer(videoPlayer);
+		
+		videoPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+			@Override
+			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
+					Duration newValue) {
+				videoProgress.setProgress((Double)newValue.toSeconds() / (Double)video.getDuration().toSeconds());
+			}
+		});
 		
 	}
 	
