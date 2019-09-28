@@ -13,6 +13,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Region;
 
 public class SearchController {
@@ -95,6 +97,13 @@ public class SearchController {
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	@FXML
+	private void handleEnterKey(KeyEvent event) {
+		if (event.getCode() == KeyCode.ENTER) {
+			handleSearch();
 		}
 	}
 	

@@ -10,7 +10,7 @@
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SearchController">
    <children>
       <Button fx:id="menu" layoutX="27.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu" />
-      <TextField fx:id="field" layoutX="95.0" layoutY="53.0" prefHeight="27.0" prefWidth="396.0" />
+      <TextField fx:id="field" layoutX="95.0" layoutY="53.0" onKeyPressed="#handleEnterKey" prefHeight="27.0" prefWidth="396.0" />
       <Button fx:id="search" layoutX="508.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
       <Text layoutX="95.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a word or phrase to search">
          <font>
