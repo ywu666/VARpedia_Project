@@ -3,6 +3,9 @@ package application;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Holds the important information about the creation currently being made.
+ */
 public class Creation {
 	
 	private String term;

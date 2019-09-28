@@ -59,6 +59,10 @@ public class AudioListController {
 		}
 	}
 	
+	/**
+	 * Sets up the table view based on the list of audio files stated in the creation.
+	 * @param creation containing the list of audio files.
+	 */
 	public void initialiseList(Creation creation) {
 		this.creation = creation;
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));

@@ -26,12 +26,12 @@ public class MenuController {
 	private void handlePlay() {
 		String selection = listCreations.getSelectionModel().getSelectedItem();
 		
-		if (selection == null) {
+		if (selection == null) { // Checks has selected an item
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to play.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (selection.contains(" - not ready")) {
+		} else if (selection.contains(" - not ready")) { // Checks whether the item is ready to play
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
@@ -54,12 +54,12 @@ public class MenuController {
 	private void handleDelete() {
 		String selection = listCreations.getSelectionModel().getSelectedItem();
 		
-		if (selection == null) {
+		if (selection == null) { // Checks has selected an item
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to delete.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (selection.contains(" - not ready")) {
+		} else if (selection.contains(" - not ready")) { // Checks the item is ready
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
@@ -73,8 +73,6 @@ public class MenuController {
 	
 	@FXML
 	private void handleCreate() {
-		
-		
 		try {
 	        Parent root = FXMLLoader.load(getClass().getResource("resources/Search.fxml"));
 			Main.setStage(root);
@@ -90,7 +88,6 @@ public class MenuController {
 		System.exit(0);
 	}
 	
-	@FXML
 	public void setUpMenu() {
 		String command = "ls creations | sort | sed 's/\\.mp4$//'";
 		BashCommand getCreations = new BashCommand(command, true);

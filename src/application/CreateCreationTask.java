@@ -42,6 +42,12 @@ public class CreateCreationTask extends Task<Void> {
 		return null;
 	}
 	
+	/**
+	 * Downloads the specified number of images from Flickr with the term specified when they searched.
+	 * Saves the images in a hidden folder with the rest of the information for the creation.
+	 * @param term
+	 * @param numberOfImages
+	 */
 	private void downloadImages(String term, Integer numberOfImages) {
 		try {
 			String apiKey = getAPIKey("apiKey");
@@ -93,6 +99,9 @@ public class CreateCreationTask extends Task<Void> {
 		throw new RuntimeException("Couldn't find " + key + " in config file "+file.getName());
 	}
 	
+	/**
+	 * Makes a video with audio and the downloaded images.
+	 */
 	private void getSlideshow() {
 		BashCommand getAudioLength = new BashCommand("echo `soxi -D .newTerm/audio.wav`", true);
 		getAudioLength.run();
@@ -116,6 +125,9 @@ public class CreateCreationTask extends Task<Void> {
 		}
 	}
 	
+	/**
+	 * Makes the creation by merging the slideshow with the audio and adding text of what the term searched was
+	 */
 	private void makeCreation() {
 		String textCommand = "ffmpeg -i .newTerm/slideshow.mp4 -max_muxing_queue_size 1024 -vf drawtext=\"fontfile=myfont.ttf: text='" + term + "': fontcolor=white: fontsize=40: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy creations/" + creationName + ".mp4";
 		BashCommand addtext = new BashCommand(textCommand);

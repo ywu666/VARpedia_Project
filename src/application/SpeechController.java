@@ -37,6 +37,7 @@ public class SpeechController {
 	
 	@FXML
 	private void handleMenu() {
+		// Check user wishes to abandon creation before exiting to menu
 		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
 		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 		alert.showAndWait();
@@ -64,16 +65,14 @@ public class SpeechController {
 		selectionText.setEditable(false);
 		
 		String selection = creationText.getSelectedText();
-		
-		if (selection.equals("")) {
+		if (selection.equals("")) { // Check user has selected something
 			Alert alert = new Alert(Alert.AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.", ButtonType.OK);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.showAndWait();
 			
 		} else {
 			String[] words = selection.split(" ");
-			
-			if (words.length > 30) {
+			if (words.length >= 30) { // Check there are at most 30 words selected
 				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Selection must be at most 30 words.", ButtonType.OK);
 				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 				alertEmpty.showAndWait();
@@ -90,22 +89,22 @@ public class SpeechController {
 		String voice = selectVoice.getValue();
 		String text = selectionText.getText();
 		String sayText = "\"(SayText \\\"" + text + "\\\")\"";
-		if (text.equals("")) {
+		if (text.equals("")) { // Check the user has selected some text to preview
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (voice == null) {
+		} else if (voice == null) { // Check the user has selected a voice option
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (mood == null) {
+		} else if (mood == null) { // Check the user has selected a mood option
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 				
-		} else {
+		} else { // Preview text to speech with selected options
 			PreviewSpeechTask task = new PreviewSpeechTask(voice, mood, sayText);
 	        ExecutorService executorService = Executors.newSingleThreadExecutor();
 			executorService.execute(task);
@@ -124,22 +123,22 @@ public class SpeechController {
 		String voice = selectVoice.getValue();
 		String text = selectionText.getText();
 		
-		if (text.equals("")) {
+		if (text.equals("")) { // Check the user has selected some text to preview
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (voice == null) {
+		} else if (voice == null) { // Check the user has selected a voice option
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (mood == null) {
+		} else if (mood == null) { // Check the user has selected a mood option
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 				
-		} else {
+		} else { // Save audio with selected options
 			saveAudio(voice, mood, text);
 		}
 	}
@@ -166,12 +165,12 @@ public class SpeechController {
 		BashCommand checkAudio = new BashCommand("test -d .newTerm; echo $?", true);
 		checkAudio.run();
 		
-		if ("1".equals(checkAudio.getStdOutString())) {
+		if ("1".equals(checkAudio.getStdOutString())) { // checks there is an audio file saved before moving on
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Save an audio file(s) before continuing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else {
+		} else { // Merge audio and move on to next screen showing the audio files saved
 			MergeAudioTask task = new MergeAudioTask();
 			Thread thread = new Thread(task);
 			thread.run();
@@ -189,6 +188,10 @@ public class SpeechController {
 		}
 	}
 	
+	/**
+	 * Sets up the table listing the audio files saved and their corresponding settings
+	 * @param creation
+	 */
 	public void initialiseController(Creation creation) {
 		creationText.setText(creation.getText());
 		
@@ -206,6 +209,9 @@ public class SpeechController {
 		this.creation = creation;
 	}
 	
+	/**
+	 * Handles the previewing speech. Allows user to preview speech while the screen does not freeze.
+	 */
 	private class PreviewSpeechTask extends Task<Void> {
 		
 		String voice;
@@ -229,6 +235,9 @@ public class SpeechController {
 		}
 	}
 	
+	/**
+	 * Handles merging the audio files that have been saved.
+	 */
 	private class MergeAudioTask extends Task<Void> {
 
 		@Override

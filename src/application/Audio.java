@@ -2,6 +2,9 @@ package application;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Represents an audio file made from a selected piece of text.
+ */
 public class Audio {
 	
 	private SimpleStringProperty mood;

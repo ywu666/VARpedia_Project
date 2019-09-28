@@ -70,6 +70,10 @@ public class MediaPlayController {
 
 	}
 	
+	/**
+	 * Begins playing the creation. Also handles updating the progress bar for the video.
+	 * @param name of creation being played
+	 */
 	public void playCreation(String name) {
 		File fileUrl = new File("creations/"+ name +".mp4");
 		video = new Media(fileUrl.toURI().toString());

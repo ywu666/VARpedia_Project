@@ -45,9 +45,9 @@ public class SearchController {
 	
 	@FXML
 	private void handleSearch() {
-		
 		searchTerm = field.getText().trim().toLowerCase();
 		
+		// Checks the user has entered a search term
 		if (searchTerm == null || "".equals(searchTerm) || searchTerm.length() == 0) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a valid term", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -56,6 +56,7 @@ public class SearchController {
 		} else {
 			SearchWikiTask task = new SearchWikiTask(searchTerm);
 			
+			// Shows a term is being searched through a progress indicator
 			searchIndicator.setOpacity(1);
 			searchIndicator.progressProperty().bind(task.progressProperty());
 
@@ -65,7 +66,7 @@ public class SearchController {
 				
 				BashCommand bashCommand = task.getBashCommand();
 				String searchResult = bashCommand.getStdOutString();
-				if (searchResult.equals(searchTerm + " not found :^(")) {
+				if (searchResult.equals(searchTerm + " not found :^(")) { // Alert user if term cannot be found
 					Alert alertInvalid = new Alert(Alert.AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.", ButtonType.OK);
 					alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 					alertInvalid.showAndWait();
@@ -73,7 +74,6 @@ public class SearchController {
 				} else {
 					results.setText(searchResult.trim());
 				}
-			
 			});
 
 			ExecutorService executorService = Executors.newSingleThreadExecutor();
@@ -84,9 +84,9 @@ public class SearchController {
 	
 	@FXML
 	private void handleSubmitText() {
-		
 		String text = results.getText();
 		
+		// Checks user has searched a term and that there is text in the editable text field
 		if (text.equals("") || searchTerm == null) {
 			Alert alertInvalid = new Alert(Alert.AlertType.WARNING, "Please search a term before continuing.", ButtonType.OK);
 			alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
@@ -108,6 +108,10 @@ public class SearchController {
 		}
 	}
 	
+	/**
+	 * Searches term in the search field when presses enter key
+	 * @param event
+	 */
 	@FXML
 	private void handleEnterKey(KeyEvent event) {
 		if (event.getCode() == KeyCode.ENTER) {
@@ -115,28 +119,30 @@ public class SearchController {
 		}
 	}
 	
-	
-	 class SearchWikiTask extends Task<Void> {
+	/**
+	 * Task to search term user specified
+	 */
+	class SearchWikiTask extends Task<Void> {
 			
-			String searchTerm;
-			BashCommand bashCommand;
-			
-			SearchWikiTask(String serchTerm) {
-				this.searchTerm = serchTerm;
-			}
+		String searchTerm;
+		BashCommand bashCommand;
+		
+		SearchWikiTask(String serchTerm) {
+			this.searchTerm = serchTerm;
+		}
 
-			@Override
-			protected Void call() throws Exception {
-				
-				String command = "wikit " + searchTerm;
-				bashCommand = new BashCommand(command, true);
-				bashCommand.run();
-				
-				return null;
-			}
+		@Override
+		protected Void call() throws Exception {
 			
-			public BashCommand getBashCommand() {
-				return bashCommand;
-			}
+			String command = "wikit " + searchTerm;
+			bashCommand = new BashCommand(command, true);
+			bashCommand.run();
+				
+			return null;
+		}
+		
+		public BashCommand getBashCommand() {
+			return bashCommand;
+		}
 	 }
 }
