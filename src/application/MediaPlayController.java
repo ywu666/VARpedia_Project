@@ -47,9 +47,12 @@ public class MediaPlayController {
 		if (videoPlayer.getStatus() == Status.PLAYING) {
 			System.out.println(videoPlayer.getStatus());
 			videoPlayer.pause();
+			play.setText("Play");
+			
 		} else {
 			System.out.println(videoPlayer.getStatus());
 			videoPlayer.play();
+			play.setText("Pause");
 		}
 	}
 	

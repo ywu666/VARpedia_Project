@@ -9,7 +9,7 @@
       <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="400.0" BorderPane.alignment="CENTER" />
    </center>
    <bottom>
-      <Button fx:id="play" mnemonicParsing="false" onAction="#handlePlay" prefWidth="600.0" text="play" BorderPane.alignment="CENTER" />
+      <Button fx:id="play" mnemonicParsing="false" onAction="#handlePlay" prefWidth="600.0" text="Pause" BorderPane.alignment="CENTER" />
    </bottom>
    <left>
       <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="400.0" text="&lt;&lt;" BorderPane.alignment="CENTER" />
