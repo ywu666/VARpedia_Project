@@ -24,7 +24,8 @@ public class SpeechController {
 	@FXML private Button continueButton;
 	@FXML private TextArea creationText;
 	@FXML private TextArea selectionText;
-	@FXML private ComboBox<String> selectSound;
+	@FXML private ComboBox<String> selectMood;
+	@FXML private ComboBox<String> selectVoice;
 	
 	private Integer audioFileNum = 0;
 	private Creation creation;
@@ -74,7 +75,8 @@ public class SpeechController {
 	
 	@FXML
 	private void handlePreview() {
-		String selection = selectSound.getValue();
+		String mood = selectMood.getValue();
+		String voice = selectVoice.getValue();
 		String text = selectionText.getText();
 		String sayText = "\"(SayText \\\"" + text + "\\\")\"";
 		if (text.equals("")) {
@@ -82,57 +84,64 @@ public class SpeechController {
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
-		} else if (selection == null) {
-				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a sound setting for your selection.", ButtonType.OK);
-				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-				alertEmpty.showAndWait();
+		} else if (voice == null) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
+		} else if (mood == null) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
 				
 		} else {
-			if ("Happy".equals(selection)) {
- 				String command = "festival -b src/application/resources/Happy.scm " + sayText;
-				BashCommand preview = new BashCommand(command);
-				preview.run();
-				
-			} else if ("Neutral".equals(selection)) {
-				String command = "festival -b src/application/resources/Neutral.scm " + sayText;
-				BashCommand preview = new BashCommand(command);
-				preview.run();
-				
-			} else if ("Sad".equals(selection)) {
-				String command = "festival -b src/application/resources/Sad.scm " + sayText;
-				BashCommand preview = new BashCommand(command);
-				preview.run();
-			}
+			String command = "festival -b \"(voice_" + voice + ")\" src/application/resources/" + mood + ".scm " + sayText;
+			BashCommand preview = new BashCommand(command);
+			preview.run();
 		}
 	}
 	
 	@FXML
 	private void handleSave() {
 		audioFileNum += 1;
-		String selection = selectSound.getValue();
 		BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
 		mkDir.run();
-		BashCommand saveTxt = new BashCommand("echo \"" + selectionText.getText() + "\" > .newTerm/selection.txt");
-		saveTxt.run();
 		
-		if ("Happy".equals(selection)) {
-			saveAudio("Happy");
+		String mood = selectMood.getValue();
+		String voice = selectVoice.getValue();
+		String text = selectionText.getText();
+		if (text.equals("")) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
 			
-		} else if ("Neutral".equals(selection)) {
-			saveAudio("Neutral");
+		} else if (voice == null) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
 			
-		} else if ("Sad".equals(selection)) {
-			saveAudio("Sad");
+		} else if (mood == null) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+				
+		} else {
+			System.out.println("Saved: voice-> " + voice + " mood-> " + mood + " text-> " + text);
+			saveAudio(voice, mood, text);
 		}
 	}
 	
-	private void saveAudio(String mood) {
-		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval src/application/resources/" + mood + ".scm");
+	private void saveAudio(String voice, String mood, String text) {
+		BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
+		saveTxt.run();
+		
+		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" -eval src/application/resources/" + mood + ".scm");
 		text2wave.run();
-		creation.addAudioFile(audioFileNum, mood, selectionText.getText());
 		
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
 		rmTxtFile.run();
+		
+		creation.addAudioFile(audioFileNum, voice, mood, text);
 	}
 	
 	@FXML
@@ -166,11 +175,18 @@ public class SpeechController {
 	public void initialiseController(Creation creation) {
 		creationText.setText(creation.getText());
 		
+		ArrayList<String> moodList = new ArrayList<String>();
+		moodList.add("Happy");
+		moodList.add("Neutral");
+		moodList.add("Sad");
+		selectMood.setItems(FXCollections.observableArrayList(moodList));
+		
 		ArrayList<String> voiceList = new ArrayList<String>();
-		voiceList.add("Happy");
-		voiceList.add("Neutral");
-		voiceList.add("Sad");
-		selectSound.setItems(FXCollections.observableArrayList(voiceList));
+		voiceList.add("akl_nz_jdt_diphone");
+		voiceList.add("kal_diphone");
+		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
+		
+		
 		
 		this.creation = creation;
 	}
@@ -185,6 +201,7 @@ public class SpeechController {
 				audio += ".newTerm/audio/" + i + ".wav ";
 			}
 			String command = "sox " + audio + ".newTerm/audio.wav";
+			System.out.println("command: " + command);
 			BashCommand mergeAudio = new BashCommand(command);
 			mergeAudio.run();
 			

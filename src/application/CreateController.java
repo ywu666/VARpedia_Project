@@ -48,6 +48,7 @@ public class CreateController {
 			alertEmpty.showAndWait();
 			
 		} else {
+			System.out.println("Slider val: " + slider.getValue());
 			creation.setNumImages(slider.getValue());
 			creation.setCreationName(name);
 			CreateCreationTask task = new CreateCreationTask(creation);

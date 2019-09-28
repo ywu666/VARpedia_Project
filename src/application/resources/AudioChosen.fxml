@@ -18,8 +18,9 @@
       <Button layoutX="490.0" layoutY="347.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
       <TableView fx:id="table" layoutX="31.0" layoutY="63.0" prefHeight="274.0" prefWidth="536.0">
         <columns>
-          <TableColumn fx:id="fileNameColumn" prefWidth="401.0" text="Text" />
-          <TableColumn fx:id="moodColumn" minWidth="0.0" prefWidth="134.0" text="Mood" />
+          <TableColumn fx:id="fileNameColumn" prefWidth="281.0" text="Text" />
+          <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="155.0" text="Voice" />
+            <TableColumn fx:id="moodColumn" prefWidth="99.0" text="Mood" />
         </columns>
       </TableView>
    </children>

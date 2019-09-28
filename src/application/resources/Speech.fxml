@@ -13,11 +13,12 @@
       <TextArea fx:id="creationText" editable="false" layoutX="28.0" layoutY="63.0" prefHeight="132.0" prefWidth="544.0" wrapText="true" />
       <TextArea fx:id="selectionText" editable="false" layoutX="28.0" layoutY="241.0" prefHeight="101.0" prefWidth="381.0" wrapText="true" />
       <Text layoutX="106.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit speech settings of highlighted text" />
-      <Button fx:id="preview" layoutX="504.0" layoutY="300.0" mnemonicParsing="false" onAction="#handlePreview" text="Preview" />
-      <Button fx:id="save" layoutX="421.0" layoutY="300.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="27.0" prefWidth="66.0" text="Save" />
+      <Button fx:id="preview" layoutX="505.0" layoutY="315.0" mnemonicParsing="false" onAction="#handlePreview" text="Preview" />
+      <Button fx:id="save" layoutX="422.0" layoutY="315.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="27.0" prefWidth="66.0" text="Save" />
       <Text layoutX="106.0" layoutY="213.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select text to edit speech settings (max 30 words selected)" />
       <Text layoutX="106.0" layoutY="232.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please save settings before editing another chunk of text" />
       <Button fx:id="continueButton" layoutX="497.0" layoutY="359.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue" />
-      <ComboBox fx:id="selectSound" layoutX="422.0" layoutY="256.0" prefWidth="150.0" promptText="Sound Settings" />
+      <ComboBox fx:id="selectMood" layoutX="422.0" layoutY="279.0" prefWidth="150.0" promptText="Mood" />
+      <ComboBox fx:id="selectVoice" layoutX="422.0" layoutY="241.0" prefWidth="150.0" promptText="Voice" />
    </children>
 </Pane>

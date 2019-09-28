@@ -17,7 +17,6 @@ import com.flickr4java.flickr.photos.SearchParameters;
 import com.flickr4java.flickr.photos.Size;
 
 import javafx.concurrent.Task;
-import javafx.scene.control.ProgressBar;
 
 public class CreateCreationTask extends Task<Void> {
 
@@ -103,12 +102,27 @@ public class CreateCreationTask extends Task<Void> {
 	private void getSlideshow() {
 		BashCommand getAudioLength = new BashCommand("echo `soxi -D .newTerm/audio.wav`", true);
 		getAudioLength.run();
-		String lengthString = getAudioLength.getStdOutString();
-		Float length = Float.parseFloat(lengthString);
-		Float freq = length / numImages;
-		String merge = "ffmpeg -framerate " + freq + " -i .newTerm/images/%01d.jpg -i .newTerm/audio.wav -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -pix_fmt yuv420p -r 25 .newTerm/slideshow.mp4";
-		BashCommand bash = new BashCommand(merge);
-		bash.run();
+		Float length = Float.parseFloat(getAudioLength.getStdOutString());
+		
+		if (numImages == 1) {
+			//do something
+			String slideshow = "ffmpeg -loop 1 -i .newTerm/images/0.jpg -c:v libx264 -t " + length + " -pix_fmt yuv420p -r 25 .newTerm/image_slide.mp4";
+			System.out.println("merge1: " + slideshow);
+			BashCommand bash = new BashCommand(slideshow);
+			bash.run();
+			
+			String merge = "ffmpeg -i .newTerm/image_slide.mp4 -i .newTerm/audio.wav -c:v copy -c:a aac -strict experimental -r 25 .newTerm/slideshow.mp4";
+			BashCommand mergeCommand = new BashCommand(merge);
+			mergeCommand.run();
+			
+		} else {
+			Float freq = length / numImages;
+			String merge = "ffmpeg -framerate 1/" + freq + " -i .newTerm/images/%01d.jpg -i .newTerm/audio.wav -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -pix_fmt yuv420p -r 25 .newTerm/slideshow.mp4";
+			System.out.println("merge: " + merge);
+			BashCommand bash = new BashCommand(merge);
+			bash.run();
+			
+		}
 	}
 	
 	private void makeCreation() {

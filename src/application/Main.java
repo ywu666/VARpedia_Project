@@ -17,6 +17,9 @@ public class Main extends Application {
     	BashCommand mkCreationDir = new BashCommand("mkdir -p creations");
     	mkCreationDir.run();
     	
+    	BashCommand rmNewTermDir = new BashCommand("if [ -d \".newTerm\" ]; then rm -r .newTerm; fi;");
+    	rmNewTermDir.run();
+    	
         FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 		Parent root = loader.load();
 		MenuController controller = loader.getController();

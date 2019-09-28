@@ -14,6 +14,7 @@ public class AudioListController {
 	
 	@FXML TableView<Audio> table;
 	@FXML TableColumn<Audio, String> fileNameColumn;
+	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
 	
 	private Creation creation;
@@ -52,6 +53,7 @@ public class AudioListController {
 	public void initialiseList(Creation creation) {
 		this.creation = creation;
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
+		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));
 		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
 		table.getItems().addAll(FXCollections.observableList(creation.getAudioList()));
 	}
