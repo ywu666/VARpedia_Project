@@ -14,14 +14,16 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class MediaPlayController {
-
+	
 	@FXML private MediaView mediaView;
 	@FXML private Button forward;
 	@FXML private Button backward;
+	@FXML private Button play;
+	@FXML private Button menue;
 	
 	private MediaPlayer videoPlayer;
 	private Media video;
-
+	
 	@FXML 
 	public void handleMenu() {
 		
@@ -38,7 +40,8 @@ public class MediaPlayController {
 			e.printStackTrace();
 		}
 	}
-    
+
+	
 	@FXML 
 	public void handlePlay() {
 		if (videoPlayer.getStatus() == Status.PLAYING) {
@@ -68,12 +71,7 @@ public class MediaPlayController {
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);
 		mediaView.setMediaPlayer(videoPlayer);
+		
 	}
 	
-	
-	
-
-
-
-
 }
