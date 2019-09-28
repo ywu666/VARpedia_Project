@@ -65,17 +65,27 @@ public class SearchController {
 	
 	@FXML
 	private void handleSubmitText() {
-		Creation creation = new Creation(searchTerm, results.getText());
 		
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));
-			Parent root = loader.load();
-			SpeechController controller = loader.getController();
-			controller.initialiseController(creation);
-			Main.setStage(root);
+		String text = results.getText();
+		
+		if (text.equals("") || searchTerm == null) {
+			Alert alertInvalid = new Alert(Alert.AlertType.WARNING, "Please search a term before continuing.", ButtonType.OK);
+			alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertInvalid.showAndWait();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
+		} else {
+			Creation creation = new Creation(searchTerm, results.getText());
+		
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));
+				Parent root = loader.load();
+				SpeechController controller = loader.getController();
+				controller.initialiseController(creation);
+				Main.setStage(root);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }
