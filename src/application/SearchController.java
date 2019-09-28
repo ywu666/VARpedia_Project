@@ -11,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
@@ -24,6 +25,7 @@ public class SearchController {
 	@FXML private Button search;
 	@FXML private TextField field;
 	@FXML private TextArea results;
+	@FXML private ProgressIndicator searchIndicator;
 	
 	private String searchTerm;
 	
@@ -53,8 +55,14 @@ public class SearchController {
 			
 		} else {
 			SearchWikiTask task = new SearchWikiTask(searchTerm);
+			
+			searchIndicator.setOpacity(1);
+			searchIndicator.progressProperty().bind(task.progressProperty());
 
 			task.setOnSucceeded((succeededEvent) -> {
+				searchIndicator.progressProperty().unbind();
+				searchIndicator.setOpacity(0);
+				
 				BashCommand bashCommand = task.getBashCommand();
 				String searchResult = bashCommand.getStdOutString();
 				if (searchResult.equals(searchTerm + " not found :^(")) {

@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -14,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.layout.Region;
 
@@ -28,6 +30,7 @@ public class SpeechController {
 	@FXML private TextArea selectionText;
 	@FXML private ComboBox<String> selectMood;
 	@FXML private ComboBox<String> selectVoice;
+	@FXML private Label savedLabel;
 	
 	private Integer audioFileNum = 0;
 	private Creation creation;
@@ -151,7 +154,11 @@ public class SpeechController {
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
 		rmTxtFile.run();
 		
-		creation.addAudioFile(audioFileNum, voice, mood, text);
+		File file = new File(".newTerm/audio/" + audioFileNum + ".wav");
+		if (file.exists()) {
+			creation.addAudioFile(audioFileNum, voice, mood, text);
+			savedLabel.setText("Audio successfully saved: " + voice + ", " + mood + " :)");
+		}
 	}
 	
 	@FXML

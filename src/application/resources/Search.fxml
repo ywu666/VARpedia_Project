@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ProgressIndicator?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
@@ -19,5 +20,6 @@
       </Text>
       <Button fx:id="submitText" layoutX="478.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleSubmitText" text="Submit Text" />
       <TextArea fx:id="results" layoutX="27.0" layoutY="93.0" prefHeight="244.0" prefWidth="544.0" wrapText="true" />
+      <ProgressIndicator fx:id="searchIndicator" layoutX="469.0" layoutY="54.0" opacity="0.0" prefHeight="26.0" prefWidth="18.0" />
    </children>
 </Pane>
