@@ -106,10 +106,10 @@ public class SpeechController {
 			alertEmpty.showAndWait();
 				
 		} else {
-			 PreviewSpeechTask task = new PreviewSpeechTask(voice, mood, sayText);
-	         ExecutorService _executorService = Executors.newSingleThreadExecutor();
-			_executorService.execute(task);
-			_executorService.shutdown();
+			PreviewSpeechTask task = new PreviewSpeechTask(voice, mood, sayText);
+	        ExecutorService executorService = Executors.newSingleThreadExecutor();
+			executorService.execute(task);
+			executorService.shutdown();
 			
 		}
 	}

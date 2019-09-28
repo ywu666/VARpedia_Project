@@ -19,13 +19,14 @@ public class CreateController {
 	@FXML Slider slider;
 	@FXML ProgressBar progressBar;
 	
-	private Boolean created = false;
+	private Boolean create = false;
 	private Creation creation;
+	private String creationBeingMade;
 	
 	@FXML
 	private void handleMenu() {
 		
-		if (created == false) {
+		if (create == false) {
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.showAndWait();
@@ -50,7 +51,7 @@ public class CreateController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpMenu();
+				controller.setUpMenu(creation.getCreationName());
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -95,7 +96,9 @@ public class CreateController {
 			Thread thread = new Thread(task);
 			thread.start();
 			
-			created = true;
+			creationBeingMade = creation.getCreationName();
+			
+			create = true;
 			
 			progressBar.progressProperty().bind(task.progressProperty());
 

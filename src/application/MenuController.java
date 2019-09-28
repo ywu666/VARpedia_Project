@@ -12,7 +12,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.ProgressIndicator;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
+import javafx.scene.text.Text;
 
 public class MenuController {
 	
@@ -54,7 +57,6 @@ public class MenuController {
 		} else {
 			BashCommand delCreation = new BashCommand("rm creations/" + selection + ".mp4");
 			delCreation.run();
-			
 			setUpMenu();
 		}
 	}
@@ -88,5 +90,10 @@ public class MenuController {
 		listCreations.getItems().clear();
 		listCreations.getItems().addAll(creations);
 		listCreations.setPlaceholder(new Label("You have no creations. Please press create button to start."));
+	}
+	
+	public void setUpMenu(String creationBeingMade) {
+		setUpMenu();
+		listCreations.getItems().add(creationBeingMade + " - not ready");
 	}
 }
