@@ -1,7 +1,10 @@
 package application;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -47,19 +50,25 @@ public class SearchController {
 			alertEmpty.showAndWait();
 			
 		} else {
-			String command = "wikit " + searchTerm;
-			BashCommand bashCommand = new BashCommand(command, true);
-			bashCommand.run();
-			String searchResult = bashCommand.getStdOutString();
+			SearchWikiTask task = new SearchWikiTask(searchTerm);
+
+			task.setOnSucceeded((succeededEvent) -> {
+				BashCommand bashCommand = task.getBashCommand();
+				String searchResult = bashCommand.getStdOutString();
+				if (searchResult.equals(searchTerm + " not found :^(")) {
+					Alert alertInvalid = new Alert(Alert.AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.", ButtonType.OK);
+					alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+					alertInvalid.showAndWait();
+					
+				} else {
+					results.setText(searchResult.trim());
+				}
 			
-			if (searchResult.equals(searchTerm + " not found :^(")) {
-				Alert alertInvalid = new Alert(Alert.AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.", ButtonType.OK);
-				alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-				alertInvalid.showAndWait();
-				
-			} else {
-				results.setText(searchResult.trim());
-			}
+			});
+
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			executorService.execute(task);
+			executorService.shutdown();
 		}
 	}
 	
@@ -88,4 +97,29 @@ public class SearchController {
 			}
 		}
 	}
+	
+	
+	 class SearchWikiTask extends Task<Void> {
+			
+			String searchTerm;
+			BashCommand bashCommand;
+			
+			SearchWikiTask(String serchTerm) {
+				this.searchTerm = serchTerm;
+			}
+
+			@Override
+			protected Void call() throws Exception {
+				
+				String command = "wikit " + searchTerm;
+				bashCommand = new BashCommand(command, true);
+				bashCommand.run();
+				
+				return null;
+			}
+			
+			public BashCommand getBashCommand() {
+				return bashCommand;
+			}
+	 }
 }
