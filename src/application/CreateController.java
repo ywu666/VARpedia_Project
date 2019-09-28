@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -68,6 +69,24 @@ public class CreateController {
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
+		} else if (newTermExists(name)) {
+			
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You alread have a creation with this name.\n" +
+					"Would you like to overwrite?", ButtonType.YES, ButtonType.CANCEL);
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			
+			alert.showAndWait().ifPresent(response -> {
+				if (response == ButtonType.YES) {
+					
+					String command = "rm -f creations/" + name + ".mp4";
+					BashCommand removeCreation = new BashCommand(command);
+					removeCreation.run();
+					
+					creation.setCreationName(name);
+					handleCreate();
+				}
+			});
+			
 		} else {
 			System.out.println("Slider val: " + slider.getValue());
 			creation.setNumImages(slider.getValue());
@@ -99,6 +118,12 @@ public class CreateController {
 				}
 			});
 		}
+	}
+	
+	private Boolean newTermExists(String name) {
+		File file = new File("creations/" + name + ".mp4");
+		
+		return file.exists();
 	}
 	
 	public void initialiseCreateController(Creation creation) {
