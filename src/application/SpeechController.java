@@ -2,6 +2,8 @@ package application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -101,9 +103,11 @@ public class SpeechController {
 			alertEmpty.showAndWait();
 				
 		} else {
-			String command = "festival -b \"(voice_" + voice + ")\" src/application/resources/" + mood + ".scm " + sayText;
-			BashCommand preview = new BashCommand(command);
-			preview.run();
+			 PreviewSpeechTask task = new PreviewSpeechTask(voice, mood, sayText);
+	         ExecutorService _executorService = Executors.newSingleThreadExecutor();
+			_executorService.execute(task);
+			_executorService.shutdown();
+			
 		}
 	}
 	
@@ -192,9 +196,30 @@ public class SpeechController {
 		voiceList.add("kal_diphone");
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 		
-		
-		
 		this.creation = creation;
+	}
+	
+	private class PreviewSpeechTask extends Task<Void> {
+		
+		String voice;
+		String mood;
+		String sayText;
+		
+		PreviewSpeechTask(String voice, String mood, String sayText) {
+			this.voice = voice;
+			this.mood = mood;
+			this.sayText = sayText;
+		}
+
+		@Override
+		protected Void call() throws Exception {
+			
+			String command = "festival -b \"(voice_" + voice + ")\" src/application/resources/" + mood + ".scm " + sayText;
+			BashCommand preview = new BashCommand(command);
+			preview.run();
+			
+			return null;
+		}
 	}
 	
 	private class MergeAudioTask extends Task<Void> {
