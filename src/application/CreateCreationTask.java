@@ -105,8 +105,7 @@ public class CreateCreationTask extends Task<Void> {
 		Float length = Float.parseFloat(getAudioLength.getStdOutString());
 		
 		if (numImages == 1) {
-			//do something
-			String slideshow = "ffmpeg -loop 1 -i .newTerm/images/0.jpg -c:v libx264 -t " + length + " -pix_fmt yuv420p -r 25 .newTerm/image_slide.mp4";
+			String slideshow = "ffmpeg -loop 1 -i .newTerm/images/0.jpg -c:v libx264 -vf \"pad=ceil(iw/2)*2:ceil(ih/2)*2\" -t " + length + " -pix_fmt yuv420p .newTerm/image_slide.mp4";
 			System.out.println("merge1: " + slideshow);
 			BashCommand bash = new BashCommand(slideshow);
 			bash.run();

@@ -32,18 +32,24 @@ public class SpeechController {
 	
 	@FXML
 	private void handleMenu() {
-		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-    	rmNewTermDir.run();
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		alert.showAndWait();
 		
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
-			Parent root = loader.load();
-			MenuController controller = loader.getController();
-			controller.setUpMenu();
-			Main.setStage(root);
+		if (alert.getResult() == ButtonType.OK) {
+			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+	    	rmNewTermDir.run();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+				Parent root = loader.load();
+				MenuController controller = loader.getController();
+				controller.setUpMenu();
+				Main.setStage(root);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -55,9 +61,9 @@ public class SpeechController {
 		String selection = creationText.getSelectedText();
 		
 		if (selection.equals("")) {
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			Alert alert = new Alert(Alert.AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.", ButtonType.OK);
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alert.showAndWait();
 			
 		} else {
 			String[] words = selection.split(" ");

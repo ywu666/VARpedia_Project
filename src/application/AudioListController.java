@@ -6,9 +6,12 @@ import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 
 public class AudioListController {
 	
@@ -21,18 +24,24 @@ public class AudioListController {
 	
 	@FXML
 	private void handleMenu() {
-		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-    	rmNewTermDir.run();
-    	
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
-			Parent root = loader.load();
-			MenuController controller = loader.getController();
-			controller.setUpMenu();
-			Main.setStage(root);
+		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
+		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+		alert.showAndWait();
+		
+		if (alert.getResult() == ButtonType.OK) {
+			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+	    	rmNewTermDir.run();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+				Parent root = loader.load();
+				MenuController controller = loader.getController();
+				controller.setUpMenu();
+				Main.setStage(root);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	

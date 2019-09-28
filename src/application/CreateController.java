@@ -18,22 +18,46 @@ public class CreateController {
 	@FXML Slider slider;
 	@FXML ProgressBar progressBar;
 	
+	private Boolean created = false;
 	private Creation creation;
 	
 	@FXML
 	private void handleMenu() {
-		BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-    	rmNewTermDir.run();
-    	
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
-			Parent root = loader.load();
-			MenuController controller = loader.getController();
-			controller.setUpMenu();
-			Main.setStage(root);
+		
+		if (created == false) {
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alert.showAndWait();
 			
-		} catch (IOException e) {
-			e.printStackTrace();
+			if (alert.getResult() == ButtonType.OK) {
+				BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+		    	rmNewTermDir.run();
+				
+				try {
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+					Parent root = loader.load();
+					MenuController controller = loader.getController();
+					controller.setUpMenu();
+					Main.setStage(root);
+					
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+		} else {
+			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+	    	rmNewTermDir.run();
+			
+			try {
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+				Parent root = loader.load();
+				MenuController controller = loader.getController();
+				controller.setUpMenu();
+				Main.setStage(root);
+				
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 	
@@ -60,6 +84,7 @@ public class CreateController {
 			task.setOnSucceeded((event) -> {
 				progressBar.progressProperty().unbind();
 				progressBar.setProgress(1);
+				created = true;
 			});
 		}
 	}
