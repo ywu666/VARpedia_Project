@@ -115,13 +115,10 @@ public class SpeechController {
 	
 	@FXML
 	private void handleSave() {
-		audioFileNum += 1;
-		BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
-		mkDir.run();
 		
 		String mood = selectMood.getValue();
 		String voice = selectVoice.getValue();
-		String text = selectionText.getText();
+		String text = selectionText.getText().trim();
 		
 		if (text.equals("")) { // Check the user has selected some text to preview
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
@@ -139,6 +136,9 @@ public class SpeechController {
 			alertEmpty.showAndWait();
 				
 		} else { // Save audio with selected options
+			audioFileNum += 1;
+			BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
+			mkDir.run();
 			saveAudio(voice, mood, text);
 		}
 	}
@@ -162,7 +162,7 @@ public class SpeechController {
 	
 	@FXML
 	private void handleContinue() {
-		BashCommand checkAudio = new BashCommand("test -d .newTerm; echo $?", true);
+		BashCommand checkAudio = new BashCommand("test -d .newTerm/audio; echo $?", true);
 		checkAudio.run();
 		
 		if ("1".equals(checkAudio.getStdOutString())) { // checks there is an audio file saved before moving on
