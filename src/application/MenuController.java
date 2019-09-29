@@ -65,9 +65,15 @@ public class MenuController {
 			alertEmpty.showAndWait();
 			
 		} else {
-			BashCommand delCreation = new BashCommand("rm creations/" + selection + ".mp4");
-			delCreation.run();
-			setUpMenu();
+			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete '" + selection + "'.", ButtonType.OK, ButtonType.CANCEL);
+			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alert.showAndWait();
+			
+			if (alert.getResult() == ButtonType.OK) {
+				BashCommand delCreation = new BashCommand("rm creations/" + selection + ".mp4");
+				delCreation.run();
+				setUpMenu();
+			}
 		}
 	}
 	
