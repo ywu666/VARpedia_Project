@@ -72,7 +72,7 @@ public class SpeechController {
 			
 		} else {
 			String[] words = selection.split(" ");
-			if (words.length >= 30) { // Check there are at most 30 words selected
+			if (words.length > 30) { // Check there are at most 30 words selected
 				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Selection must be at most 30 words.", ButtonType.OK);
 				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 				alertEmpty.showAndWait();

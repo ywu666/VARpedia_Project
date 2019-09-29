@@ -134,7 +134,7 @@ public class SearchController {
 		@Override
 		protected Void call() throws Exception {
 			
-			String command = "wikit " + searchTerm;
+			String command = "wikit \"" + searchTerm + "\"";
 			bashCommand = new BashCommand(command, true);
 			bashCommand.run();
 				
