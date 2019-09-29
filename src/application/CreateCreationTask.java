@@ -1,9 +1,7 @@
 package application;
 
 import java.awt.image.BufferedImage;
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 
 import javax.imageio.ImageIO;
 
@@ -50,8 +48,8 @@ public class CreateCreationTask extends Task<Void> {
 	 */
 	private void downloadImages(String term, Integer numberOfImages) {
 		try {
-			String apiKey = getAPIKey("apiKey");
-			String sharedSecret = getAPIKey("sharedSecret");
+			String apiKey = "5f87be2672e915465e33b57efa5ae005";
+			String sharedSecret = "501c995d21d9fd77";
 			Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
 			
 			Integer resultsPerPage = numberOfImages;
@@ -80,23 +78,6 @@ public class CreateCreationTask extends Task<Void> {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
-	
-	private String getAPIKey(String key) throws Exception {
-		String config = "src/application/resources/flickr-api-keys.txt";
-		
-		File file = new File(config); 
-		BufferedReader br = new BufferedReader(new FileReader(file)); 
-		
-		String line;
-		while ( (line = br.readLine()) != null ) {
-			if (line.trim().startsWith(key)) {
-				br.close();
-				return line.substring(line.indexOf("=")+1).trim();
-			}
-		}
-		br.close();
-		throw new RuntimeException("Couldn't find " + key + " in config file "+file.getName());
 	}
 	
 	/**

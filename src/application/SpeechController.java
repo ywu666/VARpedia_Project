@@ -147,7 +147,7 @@ public class SpeechController {
 		BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
 		saveTxt.run();
 		
-		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" -eval src/application/resources/" + mood + ".scm");
+		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" " + getMoodSettingsEval(mood));
 		text2wave.run();
 		
 		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
@@ -158,6 +158,28 @@ public class SpeechController {
 			creation.addAudioFile(audioFileNum, voice, mood, text);
 			savedLabel.setText("Audio successfully saved: " + voice + ", " + mood);
 		}
+	}
+	
+	private String getMoodSettings(String mood) {
+		if ("Happy".equals(mood)) {
+			return "\"(set! duffint_params '((start 130) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 0.8)\" ";
+		} else if ("Neutral".equals(mood)) {
+			return "\"(set! duffint_params '((start 120) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 1)\" ";
+		} else if ("Sad".equals(mood)) {
+			return "\"(set! duffint_params '((start 110) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 2.2)\" ";
+		}
+		return null;
+	}
+	
+	private String getMoodSettingsEval(String mood) {
+		if ("Happy".equals(mood)) {
+			return "-eval \"(set! duffint_params '((start 130) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 0.8)\" ";
+		} else if ("Neutral".equals(mood)) {
+			return "-eval \"(set! duffint_params '((start 120) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 1)\" ";
+		} else if ("Sad".equals(mood)) {
+			return "-eval \"(set! duffint_params '((start 110) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 2.2)\" ";
+		}
+		return null;
 	}
 	
 	@FXML
@@ -227,7 +249,7 @@ public class SpeechController {
 		@Override
 		protected Void call() throws Exception {
 			
-			String command = "festival -b \"(voice_" + voice + ")\" src/application/resources/" + mood + ".scm " + sayText;
+			String command = "festival -b \"(voice_" + voice + ")\" " + getMoodSettings(mood) + sayText;
 			BashCommand preview = new BashCommand(command);
 			preview.run();
 			
