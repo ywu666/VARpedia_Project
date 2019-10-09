@@ -29,7 +29,7 @@ public class TableCreation {
 		
 		String last = "-";
 		if (creation.getLastViewed() != null) {
-			last = Period.between(LocalDate.now(), creation.getLastViewed()).getDays() + " days";
+			last = Period.between(creation.getLastViewed(), LocalDate.now()).getDays() + " days";
 		}
 		
 		this.setLastViewed(new SimpleStringProperty(last));
