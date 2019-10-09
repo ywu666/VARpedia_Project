@@ -9,7 +9,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
@@ -24,9 +26,12 @@ public class MediaPlayController {
 	@FXML private Button play;
 	@FXML private Button menue;
 	@FXML private ProgressBar videoProgress;
+	@FXML private Slider rating;
+	@FXML private Label currentRating;
 	
 	private MediaPlayer videoPlayer;
 	private Media video;
+	private Creation creation;
 	
 	@FXML 
 	public void handleMenu() {
@@ -63,6 +68,13 @@ public class MediaPlayController {
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(3)));
 
 	}
+	
+	@FXML
+	public void handleRate() {
+		creation.setRating((int)rating.getValue());
+		Creation.creationRated(creation);
+		currentRating.setText(creation.getRating().toString());
+	}
 
 	@FXML 
 	public void handleBackward() {
@@ -75,14 +87,22 @@ public class MediaPlayController {
 	 * @param name of creation being played
 	 */
 	public void playCreation(Creation c) {
+		creation = c;
 		
-		Creation.creationPlayed(c);
+		Creation.creationPlayed(creation);
 		
 		File fileUrl = new File(c.getFile());
 		video = new Media(fileUrl.toURI().toString());
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);
 		mediaView.setMediaPlayer(videoPlayer);
+		
+		
+		if (creation.getRating() == null) {
+			currentRating.setText("-");
+		} else {
+			currentRating.setText(creation.getRating().toString());
+		}
 		
 		videoPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override

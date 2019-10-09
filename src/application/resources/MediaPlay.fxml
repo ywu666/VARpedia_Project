@@ -1,34 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" onDragDetected="#handlePlay" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MediaPlayController">
-   <center>
-      <MediaView fx:id="mediaView" fitHeight="200.0" fitWidth="400.0" BorderPane.alignment="CENTER" />
-   </center>
-   <left>
-      <Button fx:id="backward" mnemonicParsing="false" onAction="#handleBackward" prefHeight="400.0" text="&lt;&lt;" BorderPane.alignment="CENTER" />
-   </left>
-   <right>
-      <Button fx:id="forward" mnemonicParsing="false" onAction="#handleForward" prefHeight="400.0" text="&gt;&gt;" BorderPane.alignment="CENTER" />
-   </right>
-   <top>
-      <Button fx:id="menue" mnemonicParsing="false" onAction="#handleMenu" prefHeight="26.0" prefWidth="81.0" text="Menu" BorderPane.alignment="TOP_LEFT">
-         <BorderPane.margin>
-            <Insets left="30.0" top="30.0" />
-         </BorderPane.margin></Button>
-   </top>
-   <bottom>
-      <HBox prefHeight="26.0" prefWidth="600.0" BorderPane.alignment="CENTER">
-         <children>
-            <Button fx:id="play" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="73.0" text="Pause" />
-            <ProgressBar fx:id="videoProgress" prefHeight="44.0" prefWidth="527.0" progress="0.0" />
-         </children>
-      </HBox>
-   </bottom>
-</BorderPane>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MediaPlayController">
+   <children>
+      <Button fx:id="menue" layoutX="33.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleMenu" prefHeight="26.0" prefWidth="81.0" text="Menu">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="backward" layoutX="992.0" layoutY="751.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="28.0" prefWidth="74.0" text="&lt;&lt;">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Button fx:id="play" layoutX="37.0" layoutY="750.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="26.0" prefWidth="73.0" text="Pause">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <ProgressBar fx:id="videoProgress" layoutX="123.0" layoutY="752.0" prefHeight="28.0" prefWidth="853.0" progress="0.0" />
+      <Button fx:id="forward" layoutX="1084.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="28.0" prefWidth="81.0" text="&gt;&gt;" />
+      <MediaView fx:id="mediaView" fitHeight="500.0" fitWidth="900.0" layoutX="150.0" layoutY="148.0" />
+      <Slider fx:id="rating" blockIncrement="1.0" layoutX="825.0" layoutY="38.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="255.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 14px;" />
+      <Button layoutX="1097.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleRate" text="Rate">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
+      <Label layoutX="825.0" layoutY="92.0" text="Current Rating:">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label fx:id="currentRating" layoutX="948.0" layoutY="93.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+   </children>
+</Pane>

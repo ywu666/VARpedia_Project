@@ -154,6 +154,14 @@ public class Creation implements Serializable {
 		saveCreations(creations);
 	}
 	
+	public static void creationRated(Creation c) {
+		List<Creation> creations = getCreations();
+		creations.remove(c);
+		c.setRating(c.getRating());
+		creations.add(c);
+		saveCreations(creations);
+	}
+	
 	public static boolean checkExists(String name) {
 		List<Creation> creations = getCreations();
 		
