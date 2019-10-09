@@ -31,8 +31,8 @@ public class NewCreation {
 		return term;
 	}
 	
-	public void setNumImages(Double numImages) {
-		this.numImages = numImages.intValue();
+	public void setNumImages(int numImages) {
+		this.numImages = numImages;
 	}
 	
 	public Integer getNumImages() {

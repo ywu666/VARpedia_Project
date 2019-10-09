@@ -1,5 +1,6 @@
 package application;
 
+import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -7,16 +8,42 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
 public class CreateController {
 	
 	@FXML TextField creationName;
-	@FXML Slider slider;
 	@FXML ProgressBar progressBar;
+	
+	@FXML ImageView image1;
+	@FXML ImageView image2;
+	@FXML ImageView image3;
+	@FXML ImageView image4;
+	@FXML ImageView image5;
+	@FXML ImageView image6;
+	@FXML ImageView image7;
+	@FXML ImageView image8;
+	@FXML ImageView image9;
+	@FXML ImageView image10;
+	
+	
+	@FXML CheckBox box1;
+	@FXML CheckBox box2;
+	@FXML CheckBox box3;
+	@FXML CheckBox box4;
+	@FXML CheckBox box5;
+	@FXML CheckBox box6;
+	@FXML CheckBox box7;
+	@FXML CheckBox box8;
+	@FXML CheckBox box9;
+	@FXML CheckBox box10;
+	
+	private int numImages;
 	
 	private Boolean creating = false;
 	private NewCreation newCreation;
@@ -79,7 +106,8 @@ public class CreateController {
 			
 		} else { // If creation name is valid, make the creation
 			
-			newCreation.setNumImages(slider.getValue());
+			selectedImages();
+			newCreation.setNumImages(numImages);
 			newCreation.setCreationName(name);
 			
 			CreateCreationTask task = new CreateCreationTask(newCreation);
@@ -116,5 +144,43 @@ public class CreateController {
 	
 	public void initialiseCreateController(NewCreation creation) {
 		this.newCreation = creation;
+		setImageView(image1,0);
+		setImageView(image2,1);
+		setImageView(image3,2);
+		setImageView(image4,3);
+		setImageView(image5,4);
+		setImageView(image6,5);
+		setImageView(image7,6);
+		setImageView(image8,7);
+		setImageView(image9,8);
+		setImageView(image10,9);
+	}
+	
+	public void setImageView(ImageView imageView,int num) {
+		File fileUrl = new File(".newTerm/images/" + num +".jpg");
+	    Image image = new Image(fileUrl.toURI().toString());
+	    imageView.setImage(image);
+	}
+
+	public void selected(CheckBox box,int num) {
+		if(box.isSelected()) {
+			numImages++;
+			String command ="cp .newTerm/images/"+num+".jpg .newTerm/selectedImages/"+num+".jpg" ;
+			BashCommand bash = new BashCommand(command);
+			bash.run();
+		}
+	}
+
+	public void selectedImages() {
+		selected(box1,0);
+		selected(box2,1);
+		selected(box3,2);
+		selected(box4,3);
+		selected(box5,4);
+		selected(box6,5);
+		selected(box7,6);
+		selected(box8,7);
+		selected(box9,8);
+		selected(box10,9);
 	}
 }

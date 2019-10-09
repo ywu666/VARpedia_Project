@@ -79,6 +79,12 @@ public class SearchController {
 			ExecutorService executorService = Executors.newSingleThreadExecutor();
 			executorService.execute(task);
 			executorService.shutdown();
+			
+			// download the images of the search term
+			DownloadImagesTask task2 = new DownloadImagesTask(searchTerm);
+			ExecutorService executorService2 = Executors.newSingleThreadExecutor();
+			executorService2.execute(task2);
+			executorService2.shutdown();
 		}
 	}
 	
