@@ -16,10 +16,10 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.Region;
 
 public class CreateController {
-	
+
 	@FXML TextField creationName;
 	@FXML ProgressBar progressBar;
-	
+
 	@FXML ImageView image1;
 	@FXML ImageView image2;
 	@FXML ImageView image3;
@@ -30,8 +30,8 @@ public class CreateController {
 	@FXML ImageView image8;
 	@FXML ImageView image9;
 	@FXML ImageView image10;
-	
-	
+
+
 	@FXML CheckBox box1;
 	@FXML CheckBox box2;
 	@FXML CheckBox box3;
@@ -42,12 +42,12 @@ public class CreateController {
 	@FXML CheckBox box8;
 	@FXML CheckBox box9;
 	@FXML CheckBox box10;
-	
+
 	private int numImages;
-	
+
 	private Boolean creating = false;
 	private NewCreation newCreation;
-	
+
 	@FXML
 	private void handleMenu() {
 		// Checks the user wants to abandon the creation by going back to 'Menu'.
@@ -58,15 +58,15 @@ public class CreateController {
 			// If they confirmed, the creation will be abandoned otherwise will do nothing
 			if (alert.getResult() == ButtonType.OK) {
 				BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-		    	rmNewTermDir.run();
-				
+				rmNewTermDir.run();
+
 				try {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 					Parent root = loader.load();
 					MenuController controller = loader.getController();
 					controller.setUpTable();
 					Main.setStage(root);
-					
+
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
@@ -78,75 +78,84 @@ public class CreateController {
 				MenuController controller = loader.getController();
 				controller.setUpMenu(newCreation.getCreationName());
 				Main.setStage(root);
-				
+
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
+
 	@FXML
 	private void handleCreate() {
 		String name = creationName.getText().trim();
-		
+
 		if (Creation.checkExists(name)) { // Handle when creation name exists already, check if they want to overwrite
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You already have a creation with this name.\n" +
 					"Would you like to overwrite?", ButtonType.YES, ButtonType.CANCEL);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			
+
 			alert.showAndWait().ifPresent(response -> {
 				if (response == ButtonType.YES) { // If they want to overwrite create the creation
-					
+
 					Creation.removeCreation(name);
-					
+
 					newCreation.setCreationName(name);
 					handleCreate();
 				}
 			});
-			
+
 		} else if ("".equals(name)) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a name for your creation.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
-			
+
 		} else { // If creation name is valid, make the creation
-			
+
 			selectedImages();
-			newCreation.setNumImages(numImages);
-			newCreation.setCreationName(name);
-			
-			CreateCreationTask task = new CreateCreationTask(newCreation);
-			Thread thread = new Thread(task);
-			thread.start();
-			
-			creating = true;
-			progressBar.progressProperty().bind(task.progressProperty());
-			task.setOnSucceeded((event) -> {
-				progressBar.progressProperty().unbind();
-				progressBar.setProgress(1);
-				
-				BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
-		    	rmNewTermDir.run();
-		    	
-		    	// Alert user creation is ready, then return to menu
-		    	Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your creation, " + name + " is now ready.", ButtonType.OK);
-				alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-				alert.showAndWait();
-				  
-		    	try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
-					Parent root = loader.load();
-					MenuController controller = loader.getController();
-					controller.setUpTable();
-					Main.setStage(root);
-					
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			});
+			if(numImages == 0) {
+				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select at least one images.", ButtonType.OK);
+				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+				alertEmpty.showAndWait();
+
+			} else {
+
+
+				newCreation.setNumImages(numImages);
+				newCreation.setCreationName(name);
+
+				CreateCreationTask task = new CreateCreationTask(newCreation);
+				Thread thread = new Thread(task);
+				thread.start();
+
+				creating = true;
+				progressBar.progressProperty().bind(task.progressProperty());
+				task.setOnSucceeded((event) -> {
+					progressBar.progressProperty().unbind();
+					progressBar.setProgress(1);
+
+					BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
+					rmNewTermDir.run();
+
+					// Alert user creation is ready, then return to menu
+					Alert alert = new Alert(Alert.AlertType.INFORMATION, "Your creation, " + name + " is now ready.", ButtonType.OK);
+					alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+					alert.showAndWait();
+
+					try {
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+						Parent root = loader.load();
+						MenuController controller = loader.getController();
+						controller.setUpTable();
+						Main.setStage(root);
+
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				});
+			}
 		}
 	}
-	
+
 	public void initialiseCreateController(NewCreation creation) {
 		this.newCreation = creation;
 		setImageView(image1,0);
@@ -160,11 +169,11 @@ public class CreateController {
 		setImageView(image9,8);
 		setImageView(image10,9);
 	}
-	
+
 	public void setImageView(ImageView imageView,int num) {
 		File fileUrl = new File(".newTerm/images/" + num +".jpg");
-	    Image image = new Image(fileUrl.toURI().toString());
-	    imageView.setImage(image);
+		Image image = new Image(fileUrl.toURI().toString());
+		imageView.setImage(image);
 	}
 
 	public void selected(CheckBox box,int num) {
