@@ -104,6 +104,11 @@ public class CreateController {
 				}
 			});
 			
+		} else if ("".equals(name)) {
+			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a name for your creation.", ButtonType.OK);
+			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
+			alertEmpty.showAndWait();
+			
 		} else { // If creation name is valid, make the creation
 			
 			selectedImages();
