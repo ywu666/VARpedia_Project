@@ -8,7 +8,6 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.MediaPlayController">
    <children>
       <Button fx:id="menue" layoutX="33.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleMenu" prefHeight="26.0" prefWidth="81.0" text="Menu">
@@ -28,7 +27,7 @@
       </Button>
       <ProgressBar fx:id="videoProgress" layoutX="123.0" layoutY="752.0" prefHeight="28.0" prefWidth="853.0" progress="0.0" />
       <Button fx:id="forward" layoutX="1084.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="28.0" prefWidth="81.0" text="&gt;&gt;" />
-      <MediaView fx:id="mediaView" fitHeight="500.0" fitWidth="900.0" layoutX="150.0" layoutY="148.0" />
+      <MediaView fx:id="mediaView" fitHeight="504.0" fitWidth="756.0" layoutX="235.0" layoutY="155.0" />
       <Slider fx:id="rating" blockIncrement="1.0" layoutX="825.0" layoutY="38.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="255.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 14px;" />
       <Button layoutX="1097.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleRate" text="Rate">
          <font>
