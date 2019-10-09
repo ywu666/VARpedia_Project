@@ -1,5 +1,7 @@
 package application;
 
+import java.io.File;
+
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -14,8 +16,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
     	STAGE = primaryStage;
     	
-    	BashCommand mkCreationDir = new BashCommand("mkdir -p creations");
-    	mkCreationDir.run();
+    	new File("creations").mkdir();
+    	
+    	new File("creations/creations.txt").createNewFile();
     	
     	BashCommand rmNewTermDir = new BashCommand("if [ -d \".newTerm\" ]; then rm -r .newTerm; fi;");
     	rmNewTermDir.run();
@@ -23,7 +26,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 		Parent root = loader.load();
 		MenuController controller = loader.getController();
-		controller.setUpMenu();
+		controller.setUpTable();
 		setStage(root);
 		
         STAGE.show();

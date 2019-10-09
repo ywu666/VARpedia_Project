@@ -35,7 +35,7 @@ public class SearchController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
-			controller.setUpMenu();
+			controller.setUpTable();
 			Main.setStage(root);
 			
 		} catch (IOException e) {
@@ -93,7 +93,7 @@ public class SearchController {
 			alertInvalid.showAndWait();
 			
 		} else {
-			Creation creation = new Creation(searchTerm, results.getText());
+			NewCreation creation = new NewCreation(searchTerm, results.getText());
 		
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));

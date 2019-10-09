@@ -37,7 +37,7 @@ public class MediaPlayController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
-			controller.setUpMenu();
+			controller.setUpTable();
 			Main.setStage(root);
 			
 		} catch (IOException e) {
@@ -74,8 +74,11 @@ public class MediaPlayController {
 	 * Begins playing the creation. Also handles updating the progress bar for the video.
 	 * @param name of creation being played
 	 */
-	public void playCreation(String name) {
-		File fileUrl = new File("creations/"+ name +".mp4");
+	public void playCreation(Creation c) {
+		
+		Creation.creationPlayed(c);
+		
+		File fileUrl = new File(c.getFile());
 		video = new Media(fileUrl.toURI().toString());
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);

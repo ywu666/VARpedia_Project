@@ -1,53 +1,162 @@
 package application;
 
+import java.io.EOFException;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Holds the important information about the creation currently being made.
- */
-public class Creation {
+public class Creation implements Serializable {
 	
-	private String term;
+	private static final long serialVersionUID = -6102326908274463170L;
+	
 	private String name;
-	private String text;
-	private Integer numImages;
-	private List<Audio> audioFiles = new ArrayList<Audio>();
+	private String file;
+	private Integer rating;
+	private LocalDate lastViewed;
 	
-	Creation(String term, String text) {
-		this.term = term;
-		this.text = text;
+	Creation(String name, String file) {
+		this.setName(name);
+		this.setFile(file);
 	}
-	
-	public void addAudioFile(Integer fileNum, String voice, String mood, String text) {
-		audioFiles.add(new Audio(voice, mood, text));
+
+	public String getName() {
+		return name;
 	}
-	
-	public String getText() {
-		return text;
-	}
-	
-	public String getTerm() {
-		return term;
-	}
-	
-	public void setNumImages(Double numImages) {
-		this.numImages = numImages.intValue();
-	}
-	
-	public Integer getNumImages() {
-		return numImages;
-	}
-	
-	public List<Audio> getAudioList() {
-		return audioFiles;
-	}
-	
-	public void setCreationName(String name) {
+
+	public void setName(String name) {
 		this.name = name;
 	}
+
+	public String getFile() {
+		return file;
+	}
+
+	public void setFile(String file) {
+		this.file = file;
+	}
+
+	public Integer getRating() {
+		return rating;
+	}
+
+	public void setRating(Integer rating) {
+		this.rating = rating;
+	}
+
+	public LocalDate getLastViewed() {
+		return lastViewed;
+	}
+
+	public void setLastViewed(LocalDate lastViewed) {
+		this.lastViewed = lastViewed;
+	}
 	
-	public String getCreationName() {
-		return name;
+	public boolean equals(Object obj) {
+		if (obj == null) return false;
+		if (obj == this) return true;
+		
+		if (!(obj instanceof Creation)) return false;
+		
+		Creation c = (Creation) obj;
+		return this.getName().equals(c.getName());
+	}
+	
+	private static void saveCreations(List<Creation> creations) {
+		
+		try {
+			File file = new File("creations/creations.txt");
+			file.delete();
+			
+			FileOutputStream f = new FileOutputStream(file);
+			ObjectOutputStream o = new ObjectOutputStream(f);
+			
+			// Write objects to file
+			for (Creation c : creations) {
+				o.writeObject(c);
+			}
+			
+			o.close();
+			f.close();
+
+		} catch (IOException e) {
+			System.out.println("Error initializing stream.");
+			e.printStackTrace();
+		}
+	}
+	
+	public static List<Creation> getCreations() {
+		List<Creation> creations = new ArrayList<>();
+		
+		try {
+			FileInputStream fi = new FileInputStream(new File("creations/creations.txt"));
+			ObjectInputStream oi = new ObjectInputStream(fi);
+			
+			// Read creations
+			boolean cont = true;
+			while (cont) {
+				Creation c = (Creation) oi.readObject();
+				if (c != null) {
+					creations.add(c);
+				} else {
+					cont = false;
+				}
+			}
+			
+			oi.close();
+			fi.close();
+			
+		} catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		} catch (EOFException e) {
+			// Expected Exception. End of file was reached.
+		} catch (IOException e) {
+			System.out.println("Error initializing stream.");
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		return creations;
+	}
+	
+	public static void addCreation(Creation c) {
+		List<Creation> creations = getCreations();
+		creations.add(c);
+		saveCreations(creations);
+	}
+	
+	public static void removeCreation(Creation c) {
+		BashCommand delCreation = new BashCommand("rm " + c.getFile());
+		delCreation.run();
+		
+		List<Creation> creations = getCreations();
+		creations.remove(c);
+		saveCreations(creations);
+	}
+	
+	public static void removeCreation(String name) {
+		removeCreation(new Creation(name, null));
+	}
+	
+	public static void creationPlayed(Creation c) {
+		List<Creation> creations = getCreations();
+		creations.remove(c);
+		c.setLastViewed(LocalDate.now());
+		creations.add(c);
+		saveCreations(creations);
+	}
+	
+	public static boolean checkExists(String name) {
+		List<Creation> creations = getCreations();
+		
+		return creations.contains(new Creation(name, null));
 	}
 }

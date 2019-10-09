@@ -19,10 +19,11 @@ import javafx.concurrent.Task;
 public class CreateCreationTask extends Task<Void> {
 
 	private String term;
-	private String creationName;
 	private Integer numImages;
+	private String creationName;
+	private String fileName;
 	
-	CreateCreationTask(Creation creation) {
+	CreateCreationTask(NewCreation creation) {
 		this.term = creation.getTerm();
 		this.numImages = creation.getNumImages();
 		this.creationName = creation.getCreationName();
@@ -36,6 +37,8 @@ public class CreateCreationTask extends Task<Void> {
 		downloadImages(term, numImages);
 		getSlideshow();
 		makeCreation();
+		
+		Creation.addCreation(new Creation(creationName, fileName));
 		
 		return null;
 	}
@@ -110,8 +113,18 @@ public class CreateCreationTask extends Task<Void> {
 	 * Makes the creation by merging the slideshow with the audio and adding text of what the term searched was
 	 */
 	private void makeCreation() {
-		String textCommand = "ffmpeg -i .newTerm/slideshow.mp4 -max_muxing_queue_size 1024 -vf drawtext=\"fontfile=myfont.ttf: text='" + term + "': fontcolor=white: fontsize=70: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy creations/" + creationName + ".mp4";
+		getFileName();
+		String textCommand = "ffmpeg -i .newTerm/slideshow.mp4 -max_muxing_queue_size 1024 -vf drawtext=\"fontfile=myfont.ttf: text='" + term + "': fontcolor=white: fontsize=70: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -codec:a copy " + fileName;
 		BashCommand addtext = new BashCommand(textCommand);
 		addtext.run();
+	}
+	
+	private void getFileName() {
+		Integer i = 1;
+		while (new File("creations/" + i + ".mp4").exists()) {
+			i++;
+		}
+		
+		fileName = "creations/" + i.toString() + ".mp4";
 	}
 }

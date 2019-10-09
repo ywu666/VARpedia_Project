@@ -8,18 +8,33 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SearchController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.SearchController">
    <children>
-      <Button fx:id="menu" layoutX="27.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu" />
-      <TextField fx:id="field" layoutX="95.0" layoutY="53.0" onKeyPressed="#handleEnterKey" prefHeight="27.0" prefWidth="396.0" />
-      <Button fx:id="search" layoutX="508.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSearch" text="Search" />
-      <Text layoutX="95.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a word or phrase to search">
+      <Button fx:id="menu" layoutX="27.0" layoutY="26.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <TextField fx:id="field" layoutX="369.0" layoutY="53.0" onKeyPressed="#handleEnterKey" prefHeight="27.0" prefWidth="396.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <Button fx:id="search" layoutX="788.0" layoutY="53.0" mnemonicParsing="false" onAction="#handleSearch" text="Search">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <Text layoutX="447.0" layoutY="45.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a word or phrase to search">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="submitText" layoutX="478.0" layoutY="348.0" mnemonicParsing="false" onAction="#handleSubmitText" text="Submit Text" />
-      <TextArea fx:id="results" layoutX="27.0" layoutY="93.0" prefHeight="244.0" prefWidth="544.0" wrapText="true" />
-      <ProgressIndicator fx:id="searchIndicator" layoutX="469.0" layoutY="54.0" opacity="0.0" prefHeight="26.0" prefWidth="18.0" />
+      <Button fx:id="submitText" layoutX="1030.0" layoutY="756.0" mnemonicParsing="false" onAction="#handleSubmitText" text="Submit Text">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
+      <TextArea fx:id="results" layoutX="28.0" layoutY="93.0" prefHeight="635.0" prefWidth="1141.0" wrapText="true">
+         <font>
+            <Font size="14.0" />
+         </font></TextArea>
+      <ProgressIndicator fx:id="searchIndicator" layoutX="741.0" layoutY="54.0" opacity="0.0" prefHeight="26.0" prefWidth="18.0" />
    </children>
 </Pane>

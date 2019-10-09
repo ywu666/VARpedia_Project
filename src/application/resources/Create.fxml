@@ -5,16 +5,29 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreateController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreateController">
    <children>
-      <TextField fx:id="creationName" layoutX="50.0" layoutY="127.0" prefHeight="27.0" prefWidth="501.0" />
-      <Text layoutX="50.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a name for your creation (no spaces or special characters)" />
-      <Text layoutX="50.0" layoutY="200.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the number of images (max 10 images)" />
-      <Button layoutX="270.0" layoutY="269.0" mnemonicParsing="false" onAction="#handleCreate" text="Create" />
+      <TextField fx:id="creationName" layoutX="334.0" layoutY="191.0" prefHeight="27.0" prefWidth="501.0">
+         <font>
+            <Font size="14.0" />
+         </font></TextField>
+      <Text layoutX="358.0" layoutY="158.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a name for your creation (no spaces or special characters)">
+         <font>
+            <Font size="14.0" />
+         </font></Text>
+      <Text layoutX="437.0" layoutY="406.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter the number of images (max 10 images)">
+         <font>
+            <Font size="14.0" />
+         </font></Text>
+      <Button layoutX="556.0" layoutY="643.0" mnemonicParsing="false" onAction="#handleCreate" text="Create">
+         <font>
+            <Font size="14.0" />
+         </font></Button>
       <Button layoutX="49.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu" />
-      <ProgressBar fx:id="progressBar" layoutX="201.0" layoutY="317.0" prefWidth="200.0" progress="0.0" />
-      <Slider fx:id="slider" blockIncrement="1.0" layoutX="50.0" layoutY="221.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="15.0" prefWidth="501.0" showTickLabels="true" snapToTicks="true" />
+      <ProgressBar fx:id="progressBar" layoutX="491.0" layoutY="701.0" prefWidth="200.0" progress="0.0" />
+      <Slider fx:id="slider" blockIncrement="1.0" layoutX="50.0" layoutY="438.0" majorTickUnit="1.0" max="10.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="1084.0" showTickLabels="true" snapToTicks="true" style="-fx-font-size: 14px;" />
    </children>
 </Pane>

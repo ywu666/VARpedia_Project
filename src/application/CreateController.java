@@ -1,6 +1,5 @@
 package application;
 
-import java.io.File;
 import java.io.IOException;
 
 import javafx.fxml.FXML;
@@ -20,7 +19,7 @@ public class CreateController {
 	@FXML ProgressBar progressBar;
 	
 	private Boolean creating = false;
-	private Creation creation;
+	private NewCreation newCreation;
 	
 	@FXML
 	private void handleMenu() {
@@ -38,7 +37,7 @@ public class CreateController {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 					Parent root = loader.load();
 					MenuController controller = loader.getController();
-					controller.setUpMenu();
+					controller.setUpTable();
 					Main.setStage(root);
 					
 				} catch (IOException e) {
@@ -50,7 +49,7 @@ public class CreateController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpMenu(creation.getCreationName());
+				controller.setUpMenu(newCreation.getCreationName());
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -63,33 +62,27 @@ public class CreateController {
 	private void handleCreate() {
 		String name = creationName.getText().trim();
 		
-		if (!name.matches("^[a-zA-Z0-9_-]+$")) { // Checks creation name only uses specific characters
-			  Alert alert = new Alert(Alert.AlertType.WARNING, "Please enter a name for your creation using only " +
-			        "alphabetical letters, digits, hyphens and underscores.", ButtonType.OK);
-			  alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			  alert.showAndWait();
-			
-		} else if (newTermExists(name)) { // Handle when creation name exists already, check if they want to overwrite
+		if (Creation.checkExists(name)) { // Handle when creation name exists already, check if they want to overwrite
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "You already have a creation with this name.\n" +
 					"Would you like to overwrite?", ButtonType.YES, ButtonType.CANCEL);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			
 			alert.showAndWait().ifPresent(response -> {
 				if (response == ButtonType.YES) { // If they want to overwrite create the creation
-					String command = "rm -f creations/" + name + ".mp4";
-					BashCommand removeCreation = new BashCommand(command);
-					removeCreation.run();
 					
-					creation.setCreationName(name);
+					Creation.removeCreation(name);
+					
+					newCreation.setCreationName(name);
 					handleCreate();
 				}
 			});
 			
 		} else { // If creation name is valid, make the creation
-			creation.setNumImages(slider.getValue());
-			creation.setCreationName(name);
 			
-			CreateCreationTask task = new CreateCreationTask(creation);
+			newCreation.setNumImages(slider.getValue());
+			newCreation.setCreationName(name);
+			
+			CreateCreationTask task = new CreateCreationTask(newCreation);
 			Thread thread = new Thread(task);
 			thread.start();
 			
@@ -111,7 +104,7 @@ public class CreateController {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 					Parent root = loader.load();
 					MenuController controller = loader.getController();
-					controller.setUpMenu();
+					controller.setUpTable();
 					Main.setStage(root);
 					
 				} catch (IOException e) {
@@ -121,12 +114,7 @@ public class CreateController {
 		}
 	}
 	
-	private Boolean newTermExists(String name) {
-		File file = new File("creations/" + name + ".mp4");
-		return file.exists();
-	}
-	
-	public void initialiseCreateController(Creation creation) {
-		this.creation = creation;
+	public void initialiseCreateController(NewCreation creation) {
+		this.newCreation = creation;
 	}
 }

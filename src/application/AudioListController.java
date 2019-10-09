@@ -20,7 +20,7 @@ public class AudioListController {
 	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
 	
-	private Creation creation;
+	private NewCreation creation;
 	
 	@FXML
 	private void handleMenu() {
@@ -36,7 +36,7 @@ public class AudioListController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpMenu();
+				controller.setUpTable();
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -63,7 +63,7 @@ public class AudioListController {
 	 * Sets up the table view based on the list of audio files stated in the creation.
 	 * @param creation containing the list of audio files.
 	 */
-	public void initialiseList(Creation creation) {
+	public void initialiseList(NewCreation creation) {
 		this.creation = creation;
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
 		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));

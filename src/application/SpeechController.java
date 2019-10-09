@@ -33,7 +33,7 @@ public class SpeechController {
 	@FXML private Label savedLabel;
 	
 	private Integer audioFileNum = 0;
-	private Creation creation;
+	private NewCreation creation;
 	
 	@FXML
 	private void handleMenu() {
@@ -50,7 +50,7 @@ public class SpeechController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpMenu();
+				controller.setUpTable();
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -214,7 +214,7 @@ public class SpeechController {
 	 * Sets up the table listing the audio files saved and their corresponding settings
 	 * @param creation
 	 */
-	public void initialiseController(Creation creation) {
+	public void initialiseController(NewCreation creation) {
 		creationText.setText(creation.getText());
 		
 		ArrayList<String> moodList = new ArrayList<String>();
