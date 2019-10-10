@@ -9,7 +9,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
@@ -20,9 +19,6 @@ import javafx.scene.layout.Region;
 
 public class SearchController {
 	
-	@FXML private Button menu;
-	@FXML private Button submitText;
-	@FXML private Button search;
 	@FXML private TextField field;
 	@FXML private TextArea results;
 	@FXML private ProgressIndicator searchIndicator;
@@ -35,7 +31,7 @@ public class SearchController {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
-			controller.setUpTable();
+			controller.setUpMenu();
 			Main.setStage(root);
 			
 		} catch (IOException e) {
@@ -89,7 +85,7 @@ public class SearchController {
 	}
 	
 	@FXML
-	private void handleSubmitText() {
+	private void handleContinue() {
 		String text = results.getText();
 		
 		// Checks user has searched a term and that there is text in the editable text field

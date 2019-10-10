@@ -6,10 +6,10 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.Tooltip?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
-
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AudioController">
    <children>
@@ -73,20 +73,31 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Button layoutX="700.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
+      <Button fx:id="moveUpButton" layoutX="700.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="1111.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
+      <Button fx:id="deleteButton" layoutX="988.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button layoutX="843.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveDown" prefWidth="120.0" text="Move Down">
+      <Button fx:id="moveDownButton" layoutX="843.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveDown" prefWidth="120.0" text="Move Down">
          <font>
             <Font size="14.0" />
          </font>
+      </Button>
+      <Button alignment="CENTER" layoutX="1147.0" layoutY="785.0" minHeight="30.0" mnemonicParsing="false" prefWidth="30.0" style="-fx-background-radius: 30; -fx-background-color: #faa33a;" text="?" textFill="WHITE">
+         <font>
+            <Font size="14.0" />
+         </font>
+         <tooltip>
+            <Tooltip fx:id="tip" text="Save an audio file.">
+               <font>
+                  <Font size="14.0" />
+               </font></Tooltip>
+         </tooltip>
       </Button>
    </children>
 </Pane>

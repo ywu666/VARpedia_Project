@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,25 +20,19 @@ import javafx.scene.layout.Region;
 
 public class MenuController {
 	
-	@FXML private Button play;
-	@FXML private Button delete;
-	@FXML private Button quit;
-	@FXML private Button create;
 	@FXML private TableView<TableCreation> creationTable;
 	@FXML private TableColumn<TableCreation, String> creationColumn;
 	@FXML private TableColumn<TableCreation, String> termColumn;
 	@FXML private TableColumn<TableCreation, String> ratingColumn;
 	@FXML private TableColumn<TableCreation, String> lastViewedColumn;
+	@FXML private Button playButton;
+	@FXML private Button deleteButton;
 	
 	@FXML
 	private void handlePlay() {
 		TableCreation selection = creationTable.getSelectionModel().getSelectedItem();
 		
-		if (creationTable.getSelectionModel().isEmpty()) { // Checks has selected an item
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to play.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
-		} else if (!selection.getStatus()) { 
+		if (!selection.getStatus()) { 
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
@@ -60,25 +55,19 @@ public class MenuController {
 	private void handleDelete() {
 		TableCreation selection = creationTable.getSelectionModel().getSelectedItem();
 		
-		if (creationTable.getSelectionModel().isEmpty()) { // Checks has selected an item
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have not selected an item in the list to delete.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
-			
-		} else if (!selection.getStatus()) { // Checks the item is ready
+		if (!selection.getStatus()) { // Checks the item is ready
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "You have selected an item in the list that is not ready yet. Please wait.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
 			
 		} else {
-			
 			Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to delete '" + selection.getName() + "'.", ButtonType.OK, ButtonType.CANCEL);
 			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alert.showAndWait();
 			
 			if (alert.getResult() == ButtonType.OK) {
 				Creation.removeCreation(selection.getCreation());
-				setUpTable();
+				setUpMenu();
 			}
 		}
 	}
@@ -100,7 +89,7 @@ public class MenuController {
 		System.exit(0);
 	}
 	
-	public void setUpTable() {		
+	public void setUpMenu() {		
 		List<TableCreation> list = new ArrayList<>();
 		
 		for (Creation c : Creation.getCreations()) {
@@ -112,7 +101,9 @@ public class MenuController {
 		lastViewedColumn.setCellValueFactory(new PropertyValueFactory<>("lastViewed"));
 		creationTable.getItems().clear();
 		creationTable.getItems().addAll(FXCollections.observableArrayList(list));
-		
+
+		playButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
+		deleteButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
 	}
 	
 	/**
@@ -121,8 +112,11 @@ public class MenuController {
 	 * @param creationBeingMade is the name of the creation that is not ready
 	 */
 	public void setUpMenu(NewCreation creation) {
-		setUpTable();
+		setUpMenu();
 		TableCreation temp = new TableCreation(new Creation(creation.getCreationName(), creation.getTerm()), false);
 		creationTable.getItems().add(temp);
+
+		playButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
+		deleteButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
 	}
 }

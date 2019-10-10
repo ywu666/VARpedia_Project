@@ -64,7 +64,7 @@ public class CreateController {
 					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 					Parent root = loader.load();
 					MenuController controller = loader.getController();
-					controller.setUpTable();
+					controller.setUpMenu();
 					Main.setStage(root);
 
 				} catch (IOException e) {
@@ -142,7 +142,7 @@ public class CreateController {
 						FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 						Parent root = loader.load();
 						MenuController controller = loader.getController();
-						controller.setUpTable();
+						controller.setUpMenu();
 						Main.setStage(root);
 
 					} catch (IOException e) {

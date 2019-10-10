@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
@@ -18,28 +19,26 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 
 public class AudioController {
-	@FXML private Button menu;
-	@FXML private Button select;
-	@FXML private Button preview;
-	@FXML private Button save;
-	@FXML private Button continueButton;
+	@FXML private Button moveUpButton;
+	@FXML private Button moveDownButton;
+	@FXML private Button deleteButton;
+	@FXML private Tooltip tip;
 	@FXML private TextArea creationText;
 	@FXML private TextArea selectionText;
 	@FXML private ComboBox<String> selectMood;
 	@FXML private ComboBox<String> selectVoice;
 	@FXML private Label savedLabel;
-	
 	@FXML TableView<Audio> table;
 	@FXML TableColumn<Audio, String> fileNameColumn;
 	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
 	
 	private static enum Voices {
-		
 		Kal("kal_diphone"), Auckland("akl_nz_jdt_diphone");
 		
 		private String voice;
@@ -70,7 +69,7 @@ public class AudioController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpTable();
+				controller.setUpMenu();
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -163,6 +162,7 @@ public class AudioController {
 	
 	@FXML
 	private void handleSave() {
+		tip.setText("Select an audio file.");
 		
 		String mood = selectMood.getValue();
 		String voice = Voices.valueOf(selectVoice.getValue()).getVoice();
@@ -249,6 +249,10 @@ public class AudioController {
 		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));
 		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
 		table.getItems().addAll(FXCollections.observableList(creation.getAudioList()));
+		
+		moveUpButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
+		moveDownButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
+		deleteButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 	}
 	
 	/**

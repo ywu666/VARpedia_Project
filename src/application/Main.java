@@ -26,7 +26,7 @@ public class Main extends Application {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 		Parent root = loader.load();
 		MenuController controller = loader.getController();
-		controller.setUpTable();
+		controller.setUpMenu();
 		setStage(root);
 		
         STAGE.show();
