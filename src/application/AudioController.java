@@ -189,8 +189,9 @@ public class AudioController {
 		} else {
 			Object[] array = table.getItems().toArray();
 			MergeAudioTask task = new MergeAudioTask(array);
-			Thread thread = new Thread(task);
-			thread.run();
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			executorService.execute(task);
+			executorService.shutdown();
 			
 			try {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Create.fxml"));
