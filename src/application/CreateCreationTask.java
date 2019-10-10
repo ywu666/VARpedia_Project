@@ -21,8 +21,7 @@ public class CreateCreationTask extends Task<Void> {
 	protected Void call() throws Exception {
 		getSlideshow();
 		makeCreation();
-		
-		Creation.addCreation(new Creation(creationName, fileName));
+		Creation.addCreation(new Creation(creationName, term, fileName));
 		
 		return null;
 	}

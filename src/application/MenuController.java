@@ -25,6 +25,7 @@ public class MenuController {
 	@FXML private Button create;
 	@FXML private TableView<TableCreation> creationTable;
 	@FXML private TableColumn<TableCreation, String> creationColumn;
+	@FXML private TableColumn<TableCreation, String> termColumn;
 	@FXML private TableColumn<TableCreation, String> ratingColumn;
 	@FXML private TableColumn<TableCreation, String> lastViewedColumn;
 	
@@ -106,6 +107,7 @@ public class MenuController {
 			list.add(new TableCreation(c));
 		}
 		creationColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+		termColumn.setCellValueFactory(new PropertyValueFactory<>("term"));
 		ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 		lastViewedColumn.setCellValueFactory(new PropertyValueFactory<>("lastViewed"));
 		creationTable.getItems().clear();
@@ -118,9 +120,9 @@ public class MenuController {
 	 * but is in the process of being created.
 	 * @param creationBeingMade is the name of the creation that is not ready
 	 */
-	public void setUpMenu(String creationBeingMade) {
+	public void setUpMenu(NewCreation creation) {
 		setUpTable();
-		TableCreation temp = new TableCreation(new Creation(creationBeingMade, null), false);
+		TableCreation temp = new TableCreation(new Creation(creation.getCreationName(), creation.getTerm()), false);
 		creationTable.getItems().add(temp);
 	}
 }

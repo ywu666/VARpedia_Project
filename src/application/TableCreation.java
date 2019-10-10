@@ -8,6 +8,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class TableCreation {
 	
 	private SimpleStringProperty name;
+	private SimpleStringProperty term;
 	private SimpleStringProperty rating;
 	private SimpleStringProperty lastViewed;
 	
@@ -24,6 +25,8 @@ public class TableCreation {
 		if (creation.getRating() != null) {
 			rating = creation.getRating().toString();
 		}
+		
+		this.setTerm(new SimpleStringProperty(creation.getTerm()));
 		
 		this.setRating(new SimpleStringProperty(rating));
 		
@@ -50,6 +53,14 @@ public class TableCreation {
 
 	public void setName(SimpleStringProperty name) {
 		this.name = name;
+	}
+
+	public String getTerm() {
+		return term.get();
+	}
+
+	public void setTerm(SimpleStringProperty term) {
+		this.term = term;
 	}
 
 	public String getRating() {

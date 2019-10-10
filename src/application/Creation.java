@@ -18,13 +18,24 @@ public class Creation implements Serializable {
 	private static final long serialVersionUID = -6102326908274463170L;
 	
 	private String name;
+	private String term;
 	private String file;
 	private Integer rating;
 	private LocalDate lastViewed;
 	
-	Creation(String name, String file) {
+	Creation(String name, String term, String file) {
 		this.setName(name);
+		this.setTerm(term);
 		this.setFile(file);
+	}
+	
+	Creation(String name, String term) {
+		this.setName(name);
+		this.setTerm(term);
+	}
+	
+	Creation(String name) {
+		this.setName(name);
 	}
 
 	public String getName() {
@@ -33,6 +44,14 @@ public class Creation implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getTerm() {
+		return term;
+	}
+
+	public void setTerm(String term) {
+		this.term = term;
 	}
 
 	public String getFile() {
@@ -143,7 +162,7 @@ public class Creation implements Serializable {
 	}
 	
 	public static void removeCreation(String name) {
-		removeCreation(new Creation(name, null));
+		removeCreation(new Creation(name));
 	}
 	
 	public static void creationPlayed(Creation c) {
@@ -165,6 +184,6 @@ public class Creation implements Serializable {
 	public static boolean checkExists(String name) {
 		List<Creation> creations = getCreations();
 		
-		return creations.contains(new Creation(name, null));
+		return creations.contains(new Creation(name));
 	}
 }

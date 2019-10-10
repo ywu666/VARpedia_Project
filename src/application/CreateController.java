@@ -45,7 +45,6 @@ public class CreateController {
 	@FXML CheckBox box10;
 
 	private int numImages;
-
 	private Boolean creating = false;
 	private NewCreation newCreation;
 
@@ -77,7 +76,7 @@ public class CreateController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
-				controller.setUpMenu(newCreation.getCreationName());
+				controller.setUpMenu(newCreation);
 				Main.setStage(root);
 
 			} catch (IOException e) {
@@ -99,7 +98,6 @@ public class CreateController {
 				if (response == ButtonType.YES) { // If they want to overwrite create the creation
 
 					Creation.removeCreation(name);
-
 					newCreation.setCreationName(name);
 					handleCreate();
 				}
@@ -119,8 +117,6 @@ public class CreateController {
 				alertEmpty.showAndWait();
 
 			} else {
-
-
 				newCreation.setNumImages(numImages);
 				newCreation.setCreationName(name);
 
@@ -164,7 +160,7 @@ public class CreateController {
 		List<Creation> listCreations = Creation.getCreations();
 		int count = 0;
 		String supplyName = term;
-		while (listCreations.contains(new Creation(supplyName, null))) {
+		while (listCreations.contains(new Creation(supplyName))) {
 			count++;
 			supplyName = term + "-" + count;
 		}

@@ -18,9 +18,10 @@
       <Separator layoutY="90.0" prefWidth="1200.0" style="-fx-background-color: #639BC2;" />
       <TableView fx:id="creationTable" layoutY="93.0" prefHeight="650.0" prefWidth="1200.0" style="-fx-font-size: 14px; -fx-background-color: C0E5FE; -fx-border-color: #faa33a; -fx-border-width: 2;">
         <columns>
-          <TableColumn fx:id="creationColumn" prefWidth="746.0" text="Creation" />
-          <TableColumn fx:id="ratingColumn" prefWidth="213.0" style="-fx-alignment: BASELINE_CENTER;" text="Rating" />
-            <TableColumn fx:id="lastViewedColumn" prefWidth="240.0" style="-fx-alignment: BASELINE_CENTER;" text="Last Viewed" />
+          <TableColumn fx:id="creationColumn" prefWidth="516.0" text="Creation" />
+            <TableColumn fx:id="termColumn" prefWidth="288.0" style="-fx-alignment: BASELINE-CENTER;" text="Term" />
+          <TableColumn fx:id="ratingColumn" prefWidth="198.0" style="-fx-alignment: BASELINE_CENTER;" text="Rating" />
+            <TableColumn fx:id="lastViewedColumn" prefWidth="195.0" style="-fx-alignment: BASELINE_CENTER;" text="Last Viewed" />
         </columns>
       </TableView>
       <Button layoutX="1070.0" layoutY="39.0" mnemonicParsing="false" onAction="#handleCreate" text="Create">
