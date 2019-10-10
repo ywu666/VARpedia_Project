@@ -2,9 +2,10 @@ package application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -38,19 +39,7 @@ public class AudioController {
 	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
 	
-	private static enum Voices {
-		Kal("kal_diphone"), Auckland("akl_nz_jdt_diphone");
-		
-		private String voice;
-		
-		private Voices(String voice) {
-			this.voice = voice;
-		}
-		
-		public String getVoice() {
-			return voice;
-		}
-	};
+	private static Map<String, String> voices = new HashMap<>();	
 	
 	private NewCreation creation;
 	
@@ -133,30 +122,23 @@ public class AudioController {
 	@FXML
 	private void handlePreview() {
 		String mood = selectMood.getValue();
-		String voice = Voices.valueOf(selectVoice.getValue()).getVoice();
+		String voice = voices.get(selectVoice.getValue());
 		String text = selectionText.getText();
-		String sayText = "\"(SayText \\\"" + text + "\\\")\"";
+	
 		if (text.equals("")) { // Check the user has selected some text to preview
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
+		} else {// Preview text to speech with selected options
 			
-		} else if (voice == null) { // Check the user has selected a voice option
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			if(voice == null) {
+				voice = "uk";
+			}
 			
-		} else if (mood == null) { // Check the user has selected a mood option
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
-				
-		} else { // Preview text to speech with selected options
-			PreviewSpeechTask task = new PreviewSpeechTask(voice, mood, sayText);
+			PreviewSpeechTask task = new PreviewSpeechTask("en-" + voice, mood, text);
 	        ExecutorService executorService = Executors.newSingleThreadExecutor();
 			executorService.execute(task);
 			executorService.shutdown();
-			
 		}
 	}
 	
@@ -165,38 +147,36 @@ public class AudioController {
 		tip.setText("Select an audio file.");
 		
 		String mood = selectMood.getValue();
-		String voice = Voices.valueOf(selectVoice.getValue()).getVoice();
+		String voice = selectVoice.getValue();
 		String text = selectionText.getText().trim();
 		
 		if (text.equals("")) { // Check the user has selected some text to preview
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
-			
-		} else if (voice == null) { // Check the user has selected a voice option
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a voice setting for your selection.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
-			
-		} else if (mood == null) { // Check the user has selected a mood option
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select a mood setting for your selection.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
-				
+
 		} else { // Save audio with selected options
+			if(voice == null) {
+				voice = "United Kingdom";
+			}
+			
+			if (mood == null) {
+				mood = "Neutral";	
+			}
+			
 			table.getItems().add(new Audio(voice, mood, text));
 		}
 	}
 	
 	private String getMoodSettings(String mood) {
 		if ("Happy".equals(mood)) {
-			return "\"(set! duffint_params '((start 130) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 0.8)\" ";
-		} else if ("Neutral".equals(mood)) {
-			return "\"(set! duffint_params '((start 120) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 1)\" ";
+			return " -s 250 -a 150 ";
+			
 		} else if ("Sad".equals(mood)) {
-			return "\"(set! duffint_params '((start 110) (end 105)))\" \"(Parameter.set 'Int_Method 'DuffInt)\" \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" \"(Parameter.set 'Duration_Stretch 2.2)\" ";
+			return " -s 100 -a 80 ";
+		}else {
+			return " ";
 		}
-		return null;
 	}
 	
 	@FXML
@@ -232,6 +212,10 @@ public class AudioController {
 	public void initialiseController(NewCreation c) {
 		this.creation = c;
 		
+		voices.put("United Kingdom", "uk");
+		voices.put("United States","us");
+		voices.put("West Indies", "wi");
+		
 		creationText.setText(creation.getText());
 		
 		ArrayList<String> moodList = new ArrayList<String>();
@@ -241,8 +225,9 @@ public class AudioController {
 		selectMood.setItems(FXCollections.observableArrayList(moodList));
 		
 		ArrayList<String> voiceList = new ArrayList<String>();
-		voiceList.add(Voices.Kal.name());
-		voiceList.add(Voices.Auckland.name());
+		voiceList.add("United Kingdom");
+		voiceList.add("United States");
+		voiceList.add("West Indies");
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 		
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
@@ -273,7 +258,7 @@ public class AudioController {
 		@Override
 		protected Void call() throws Exception {
 			
-			String command = "festival -b \"(voice_" + voice + ")\" " + getMoodSettings(mood) + sayText;
+			String command = "espeak -v " + voice + getMoodSettings(mood) + "\"" + sayText + "\"";
 			BashCommand preview = new BashCommand(command);
 			preview.run();
 			
@@ -324,23 +309,14 @@ public class AudioController {
 			BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
 			saveTxt.run();
 			
-			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" " + getMoodSettingsEval(mood));
+			BashCommand text2wave = new BashCommand("espeak -v en-" + voices.get(voice) + getMoodSettings(mood) + "-f .newTerm/selection.txt --stdout >.newTerm/audio/" + audioFileNum + ".wav");
 			text2wave.run();
 			
 			BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
 			rmTxtFile.run();
 		}
 		
-		private String getMoodSettingsEval(String mood) {
-			if ("Happy".equals(mood)) {
-				return "-eval \"(set! duffint_params '((start 130) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 0.8)\" ";
-			} else if ("Neutral".equals(mood)) {
-				return "-eval \"(set! duffint_params '((start 120) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 1)\" ";
-			} else if ("Sad".equals(mood)) {
-				return "-eval \"(set! duffint_params '((start 110) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 2.2)\" ";
-			}
-			return null;
-		}
+		
 	}
 	
 }
