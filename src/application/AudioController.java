@@ -1,6 +1,5 @@
 package application;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
@@ -38,6 +37,21 @@ public class AudioController {
 	@FXML TableColumn<Audio, String> fileNameColumn;
 	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
+	
+	private static enum Voices {
+		
+		Kal("kal_diphone"), Auckland("akl_nz_jdt_diphone");
+		
+		private String voice;
+		
+		private Voices(String voice) {
+			this.voice = voice;
+		}
+		
+		public String getVoice() {
+			return voice;
+		}
+	};
 	
 	private NewCreation creation;
 	
@@ -120,7 +134,7 @@ public class AudioController {
 	@FXML
 	private void handlePreview() {
 		String mood = selectMood.getValue();
-		String voice = selectVoice.getValue();
+		String voice = Voices.valueOf(selectVoice.getValue()).getVoice();
 		String text = selectionText.getText();
 		String sayText = "\"(SayText \\\"" + text + "\\\")\"";
 		if (text.equals("")) { // Check the user has selected some text to preview
@@ -151,7 +165,7 @@ public class AudioController {
 	private void handleSave() {
 		
 		String mood = selectMood.getValue();
-		String voice = selectVoice.getValue();
+		String voice = Voices.valueOf(selectVoice.getValue()).getVoice();
 		String text = selectionText.getText().trim();
 		
 		if (text.equals("")) { // Check the user has selected some text to preview
@@ -227,8 +241,8 @@ public class AudioController {
 		selectMood.setItems(FXCollections.observableArrayList(moodList));
 		
 		ArrayList<String> voiceList = new ArrayList<String>();
-		voiceList.add("akl_nz_jdt_diphone");
-		voiceList.add("kal_diphone");
+		voiceList.add(Voices.Kal.name());
+		voiceList.add(Voices.Auckland.name());
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 		
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
