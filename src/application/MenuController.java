@@ -13,6 +13,7 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -27,6 +28,21 @@ public class MenuController {
 	@FXML private TableColumn<TableCreation, String> lastViewedColumn;
 	@FXML private Button playButton;
 	@FXML private Button deleteButton;
+	@FXML private ComboBox<String> sortBy;
+	
+	@FXML
+	private void handleSort() {
+		creationTable.getSortOrder().clear();
+		
+		String sort = sortBy.getValue();
+		if ("Creation Name".equals(sort)) {
+			creationTable.getSortOrder().add(creationColumn);
+		} else if ("Lowest Rating".equals(sort)) {
+			creationTable.getSortOrder().add(ratingColumn);
+		} else if ("Need to Review".equals(sort)) {
+			creationTable.getSortOrder().add(lastViewedColumn);
+		}
+	}
 	
 	@FXML
 	private void handlePlay() {
@@ -89,7 +105,9 @@ public class MenuController {
 		System.exit(0);
 	}
 	
-	public void setUpMenu() {		
+	public void setUpMenu() {
+		sortBy.getItems().addAll("Creation Name", "Lowest Rating", "Need to Review");
+		
 		List<TableCreation> list = new ArrayList<>();
 		
 		for (Creation c : Creation.getCreations()) {
@@ -115,8 +133,5 @@ public class MenuController {
 		setUpMenu();
 		TableCreation temp = new TableCreation(new Creation(creation.getCreationName(), creation.getTerm()), false);
 		creationTable.getItems().add(temp);
-
-		playButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
-		deleteButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
 	}
 }

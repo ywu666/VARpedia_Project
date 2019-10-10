@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -56,5 +57,6 @@
                </font></Tooltip>
          </tooltip>
       </Button>
+      <ComboBox fx:id="sortBy" layoutX="877.0" layoutY="40.0" onAction="#handleSort" prefWidth="150.0" promptText="Sort By" style="-fx-font-size: `14px;" />
    </children>
 </Pane>
