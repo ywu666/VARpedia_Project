@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -156,8 +157,19 @@ public class CreateController {
 		}
 	}
 
-	public void initialiseCreateController(NewCreation creation) {
+	public void initialiseController(NewCreation creation) {
 		this.newCreation = creation;
+		
+		String term = creation.getTerm();
+		List<Creation> listCreations = Creation.getCreations();
+		int count = 0;
+		String supplyName = term;
+		while (listCreations.contains(new Creation(supplyName, null))) {
+			count++;
+			supplyName = term + "-" + count;
+		}
+		creationName.setText(supplyName);
+		
 		setImageView(image1,0);
 		setImageView(image2,1);
 		setImageView(image3,2);

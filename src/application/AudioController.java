@@ -202,7 +202,7 @@ public class AudioController {
 				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Create.fxml"));
 				Parent root = loader.load();
 				CreateController controller = loader.getController();
-				controller.initialiseCreateController(creation);
+				controller.initialiseController(creation);
 				Main.setStage(root);
 				
 			} catch (IOException e) {
