@@ -8,6 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
@@ -20,7 +21,7 @@ public class CreateController {
 
 	@FXML TextField creationName;
 	@FXML ProgressBar progressBar;
-
+	@FXML Button selectAll;
 	@FXML ImageView image1;
 	@FXML ImageView image2;
 	@FXML ImageView image3;
@@ -153,9 +154,24 @@ public class CreateController {
 		}
 	}
 
+	@FXML
+	public void handleSelectAll() {		   
+		box1.setSelected(true);
+		box2.setSelected(true);
+		box3.setSelected(true);
+		box3.setSelected(true);
+		box4.setSelected(true);
+		box5.setSelected(true);
+		box6.setSelected(true);
+		box7.setSelected(true);
+		box8.setSelected(true);
+		box9.setSelected(true);
+		box10.setSelected(true);
+	}
+
 	public void initialiseController(NewCreation creation) {
 		this.newCreation = creation;
-		
+
 		String term = creation.getTerm();
 		List<Creation> listCreations = Creation.getCreations();
 		int count = 0;
@@ -164,8 +180,9 @@ public class CreateController {
 			count++;
 			supplyName = term + "-" + count;
 		}
+
 		creationName.setText(supplyName);
-		
+
 		setImageView(image1,0);
 		setImageView(image2,1);
 		setImageView(image3,2);
