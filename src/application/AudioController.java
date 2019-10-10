@@ -16,11 +16,13 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 
-public class SpeechController {
-
+public class AudioController {
 	@FXML private Button menu;
 	@FXML private Button select;
 	@FXML private Button preview;
@@ -32,7 +34,11 @@ public class SpeechController {
 	@FXML private ComboBox<String> selectVoice;
 	@FXML private Label savedLabel;
 	
-	private Integer audioFileNum = 0;
+	@FXML TableView<Audio> table;
+	@FXML TableColumn<Audio, String> fileNameColumn;
+	@FXML TableColumn<Audio, String> voiceColumn;
+	@FXML TableColumn<Audio, String> moodColumn;
+	
 	private NewCreation creation;
 	
 	@FXML
@@ -57,6 +63,34 @@ public class SpeechController {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	@FXML
+	private void handleMoveUp() {
+		int index = table.getSelectionModel().getSelectedIndex();
+		boolean isTop = index == 0;
+		
+		if (!isTop) {
+			table.getItems().add(index - 1, table.getItems().remove(index));
+			table.getSelectionModel().clearAndSelect(index - 1);
+		}
+	}
+	
+	@FXML
+	private void handleMoveDown() {
+		int index = table.getSelectionModel().getSelectedIndex();
+		boolean isBottom = index == table.getItems().size() - 	1;
+		
+		if (!isBottom) {
+			table.getItems().add(index + 1, table.getItems().remove(index));
+			table.getSelectionModel().clearAndSelect(index + 1);
+		}
+	}
+	
+	@FXML
+	private void handleDelete() {
+		Audio selection = table.getSelectionModel().getSelectedItem();
+		table.getItems().remove(selection);
 	}
 	
 	@FXML
@@ -136,27 +170,7 @@ public class SpeechController {
 			alertEmpty.showAndWait();
 				
 		} else { // Save audio with selected options
-			audioFileNum += 1;
-			BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
-			mkDir.run();
-			saveAudio(voice, mood, text);
-		}
-	}
-	
-	private void saveAudio(String voice, String mood, String text) {
-		BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
-		saveTxt.run();
-		
-		BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" " + getMoodSettingsEval(mood));
-		text2wave.run();
-		
-		BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
-		rmTxtFile.run();
-		
-		File file = new File(".newTerm/audio/" + audioFileNum + ".wav");
-		if (file.exists()) {
-			creation.addAudioFile(audioFileNum, voice, mood, text);
-			savedLabel.setText("Audio successfully saved: " + voice + ", " + mood);
+			table.getItems().add(new Audio(voice, mood, text));
 		}
 	}
 	
@@ -171,37 +185,24 @@ public class SpeechController {
 		return null;
 	}
 	
-	private String getMoodSettingsEval(String mood) {
-		if ("Happy".equals(mood)) {
-			return "-eval \"(set! duffint_params '((start 130) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 0.8)\" ";
-		} else if ("Neutral".equals(mood)) {
-			return "-eval \"(set! duffint_params '((start 120) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 1)\" ";
-		} else if ("Sad".equals(mood)) {
-			return "-eval \"(set! duffint_params '((start 110) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 2.2)\" ";
-		}
-		return null;
-	}
-	
 	@FXML
 	private void handleContinue() {
-		BashCommand checkAudio = new BashCommand("test -d .newTerm/audio; echo $?", true);
-		checkAudio.run();
 		
-		if ("1".equals(checkAudio.getStdOutString())) { // checks there is an audio file saved before moving on
+		if (table.getItems().isEmpty()) {
 			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Save an audio file(s) before continuing.", ButtonType.OK);
 			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 			alertEmpty.showAndWait();
-			
-		} else { // Merge audio and move on to next screen showing the audio files saved
-			MergeAudioTask task = new MergeAudioTask();
+		} else {
+			Object[] array = table.getItems().toArray();
+			MergeAudioTask task = new MergeAudioTask(array);
 			Thread thread = new Thread(task);
 			thread.run();
 			
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/AudioChosen.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Create.fxml"));
 				Parent root = loader.load();
-				AudioListController controller = loader.getController();
-				controller.initialiseList(creation);
+				CreateController controller = loader.getController();
+				controller.initialiseCreateController(creation);
 				Main.setStage(root);
 				
 			} catch (IOException e) {
@@ -212,9 +213,11 @@ public class SpeechController {
 	
 	/**
 	 * Sets up the table listing the audio files saved and their corresponding settings
-	 * @param creation
+	 * @param c
 	 */
-	public void initialiseController(NewCreation creation) {
+	public void initialiseController(NewCreation c) {
+		this.creation = c;
+		
 		creationText.setText(creation.getText());
 		
 		ArrayList<String> moodList = new ArrayList<String>();
@@ -228,7 +231,10 @@ public class SpeechController {
 		voiceList.add("kal_diphone");
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 		
-		this.creation = creation;
+		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
+		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));
+		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
+		table.getItems().addAll(FXCollections.observableList(creation.getAudioList()));
 	}
 	
 	/**
@@ -261,9 +267,25 @@ public class SpeechController {
 	 * Handles merging the audio files that have been saved.
 	 */
 	private class MergeAudioTask extends Task<Void> {
+		private Object[] audioList;
+		private Integer audioFileNum = 0;
+		
+		MergeAudioTask(Object[] audioList) {
+			this.audioList = audioList;
+		}
 
 		@Override
 		protected Void call() throws Exception {
+
+			BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
+			mkDir.run();
+			
+			for (Object audio : audioList) {
+				if (audio instanceof Audio) {
+					audioFileNum += 1;
+					saveAudio((Audio)audio);
+				}
+			}
 			
 			String audio = "";
 			for (int i = 1; i <= audioFileNum; i++) {
@@ -275,5 +297,32 @@ public class SpeechController {
 			
 			return null;
 		}
+		
+		private void saveAudio(Audio a) {
+			String voice = a.getVoice();
+			String mood = a.getMood();
+			String text = a.getText();
+			
+			BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
+			saveTxt.run();
+			
+			BashCommand text2wave = new BashCommand("text2wave -o .newTerm/audio/" + audioFileNum + ".wav .newTerm/selection.txt -eval \"(voice_" + voice + ")\" " + getMoodSettingsEval(mood));
+			text2wave.run();
+			
+			BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
+			rmTxtFile.run();
+		}
+		
+		private String getMoodSettingsEval(String mood) {
+			if ("Happy".equals(mood)) {
+				return "-eval \"(set! duffint_params '((start 130) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 0.8)\" ";
+			} else if ("Neutral".equals(mood)) {
+				return "-eval \"(set! duffint_params '((start 120) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 1)\" ";
+			} else if ("Sad".equals(mood)) {
+				return "-eval \"(set! duffint_params '((start 110) (end 105)))\" -eval \"(Parameter.set 'Int_Method 'DuffInt)\" -eval \"(Parameter.set 'Int_Target_Method Int_Targets_Default)\" -eval \"(Parameter.set 'Duration_Stretch 2.2)\" ";
+			}
+			return null;
+		}
 	}
+	
 }

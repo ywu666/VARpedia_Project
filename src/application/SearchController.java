@@ -102,9 +102,9 @@ public class SearchController {
 			NewCreation creation = new NewCreation(searchTerm, results.getText());
 		
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Speech.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Audio.fxml"));
 				Parent root = loader.load();
-				SpeechController controller = loader.getController();
+				AudioController controller = loader.getController();
 				controller.initialiseController(creation);
 				Main.setStage(root);
 				
