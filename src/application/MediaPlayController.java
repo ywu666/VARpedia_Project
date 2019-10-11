@@ -19,7 +19,7 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.util.Duration;
 
 public class MediaPlayController {
-	
+
 	@FXML private MediaView mediaView;
 	@FXML private Button forward;
 	@FXML private Button backward;
@@ -28,47 +28,54 @@ public class MediaPlayController {
 	@FXML private ProgressBar videoProgress;
 	@FXML private Slider rating;
 	@FXML private Label currentRating;
-	
+
 	private MediaPlayer videoPlayer;
 	private Media video;
 	private Creation creation;
+	private Double length;
 	
 	@FXML 
 	public void handleMenu() {
-		
 		videoPlayer.stop();
-		
+
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
 			controller.setUpMenu();
 			Main.setStage(root);
-			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	
+
 	@FXML 
 	public void handlePlay() {
-		if (videoPlayer.getStatus() == Status.PLAYING) {
+		length = videoPlayer.getTotalDuration().toSeconds();
+		boolean playing = videoPlayer.getStatus() == Status.PLAYING;
+		boolean ended = videoPlayer.getCurrentTime().toSeconds() == length;
+
+		if(ended) {
+			videoPlayer.seek(videoPlayer.getStartTime());
+			play.setText("Pause");
+			
+		} else if (playing) {
 			videoPlayer.pause();
 			play.setText("Play");
-			
+
 		} else {
 			videoPlayer.play();
 			play.setText("Pause");
 		}
 	}
-	
+
 	@FXML 
 	public void handleForward() {
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(3)));
-
 	}
-	
+
 	@FXML
 	public void handleRate() {
 		creation.setRating((int)rating.getValue());
@@ -79,39 +86,49 @@ public class MediaPlayController {
 	@FXML 
 	public void handleBackward() {
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(-3)));
-
+		if ("Replay".equals(play.getText())) {
+			play.setText("Pause");
+		}
 	}
-	
+
 	/**
 	 * Begins playing the creation. Also handles updating the progress bar for the video.
 	 * @param name of creation being played
 	 */
 	public void playCreation(Creation c) {
 		creation = c;
-		
 		Creation.creationPlayed(creation);
-		
+
 		File fileUrl = new File(c.getFile());
 		video = new Media(fileUrl.toURI().toString());
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);
 		mediaView.setMediaPlayer(videoPlayer);
-		
-		
+
 		if (creation.getRating() == null) {
 			currentRating.setText("-");
 		} else {
 			currentRating.setText(creation.getRating().toString());
 		}
-		
+
 		videoPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
 			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
 					Duration newValue) {
 				videoProgress.setProgress((Double)newValue.toSeconds() / (Double)video.getDuration().toSeconds());
+
 			}
 		});
-		
+
+		videoPlayer.setOnEndOfMedia(new Runnable() {
+			@Override
+			public void run() {
+				play.setText("Replay");
+				videoProgress.setProgress(1.0);
+			}
+
+		});
+
 	}
-	
+
 }
