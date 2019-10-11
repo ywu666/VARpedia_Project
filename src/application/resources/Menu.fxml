@@ -57,6 +57,6 @@
                </font></Tooltip>
          </tooltip>
       </Button>
-      <ComboBox fx:id="sortBy" layoutX="825.0" layoutY="40.0" onAction="#handleSort" prefHeight="26.0" prefWidth="202.0" promptText="Sort By" style="-fx-font-size: `14px;" />
+      <ComboBox fx:id="sortBy" layoutX="825.0" layoutY="40.0" onAction="#handleSort" prefHeight="26.0" prefWidth="202.0" promptText="Sort By" style="-fx-font-size: 14px;" />
    </children>
 </Pane>

@@ -44,5 +44,6 @@
             <Font size="14.0" />
          </font>
       </Label>
+      <Button fx:id="backgroundMusic" layoutX="506.0" layoutY="674.0" mnemonicParsing="false" onAction="#handleMusic" prefHeight="26.0" prefWidth="214.0" text="Add Background Music" />
    </children>
 </Pane>

@@ -28,16 +28,19 @@ public class MediaPlayController {
 	@FXML private ProgressBar videoProgress;
 	@FXML private Slider rating;
 	@FXML private Label currentRating;
-
+	@FXML private Button backgroundMusic;
+	
 	private MediaPlayer videoPlayer;
 	private Media video;
 	private Creation creation;
 	private Double length;
+	private MediaPlayer musicPlayer;
 	
 	@FXML 
 	public void handleMenu() {
 		videoPlayer.stop();
-
+		musicPlayer.stop();
+		
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
@@ -49,7 +52,6 @@ public class MediaPlayController {
 			e.printStackTrace();
 		}
 	}
-
 
 	@FXML 
 	public void handlePlay() {
@@ -90,6 +92,27 @@ public class MediaPlayController {
 			play.setText("Pause");
 		}
 	}
+	
+	@FXML
+	public void handleMusic() {		
+
+		if (musicPlayer.getStatus() == Status.PLAYING) {
+			musicPlayer.pause();
+			backgroundMusic.setText("Add Background Music");
+
+		} else {
+			musicPlayer.play();
+			backgroundMusic.setText("Stop Background Music");
+		}
+		
+		musicPlayer.setOnEndOfMedia(new Runnable() {
+
+			@Override
+			public void run() {
+				musicPlayer.seek(musicPlayer.getStartTime());
+			}
+		});
+	}
 
 	/**
 	 * Begins playing the creation. Also handles updating the progress bar for the video.
@@ -110,13 +133,16 @@ public class MediaPlayController {
 		} else {
 			currentRating.setText(creation.getRating().toString());
 		}
+		
+		Media sound = new Media(new File(System.getProperty("user.dir") +"/media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
+		musicPlayer = new MediaPlayer(sound);
+		musicPlayer.setVolume(1.0);
 
 		videoPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
 			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
 					Duration newValue) {
 				videoProgress.setProgress((Double)newValue.toSeconds() / (Double)video.getDuration().toSeconds());
-
 			}
 		});
 
@@ -125,10 +151,9 @@ public class MediaPlayController {
 			public void run() {
 				play.setText("Replay");
 				videoProgress.setProgress(1.0);
+				musicPlayer.stop();
+				backgroundMusic.setText("Background Music");
 			}
-
 		});
-
 	}
-
 }
