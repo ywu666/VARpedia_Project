@@ -21,7 +21,7 @@ public class Creation implements Serializable {
 	private String term;
 	private String file;
 	private Integer rating;
-	private LocalDate lastViewed;
+	private LocalDate lastViewed = null;
 	
 	Creation(String name, String term, String file) {
 		this.setName(name);

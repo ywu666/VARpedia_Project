@@ -22,7 +22,7 @@
         <columns>
           <TableColumn fx:id="creationColumn" prefWidth="516.0" text="Creation" />
             <TableColumn fx:id="termColumn" prefWidth="288.0" style="-fx-alignment: BASELINE-CENTER;" text="Term" />
-          <TableColumn fx:id="ratingColumn" prefWidth="198.0" style="-fx-alignment: BASELINE_CENTER;" text="Rating" />
+          <TableColumn fx:id="ratingColumn" prefWidth="198.0" style="-fx-alignment: BASELINE_CENTER;" text="Confidence Rating" />
             <TableColumn fx:id="lastViewedColumn" prefWidth="195.0" style="-fx-alignment: BASELINE_CENTER;" text="Last Viewed" />
         </columns>
       </TableView>
@@ -57,6 +57,6 @@
                </font></Tooltip>
          </tooltip>
       </Button>
-      <ComboBox fx:id="sortBy" layoutX="877.0" layoutY="40.0" onAction="#handleSort" prefWidth="150.0" promptText="Sort By" style="-fx-font-size: `14px;" />
+      <ComboBox fx:id="sortBy" layoutX="825.0" layoutY="40.0" onAction="#handleSort" prefHeight="26.0" prefWidth="202.0" promptText="Sort By" style="-fx-font-size: `14px;" />
    </children>
 </Pane>

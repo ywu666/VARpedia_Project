@@ -2,6 +2,7 @@ package application;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import javafx.application.Platform;
@@ -29,18 +30,37 @@ public class MenuController {
 	@FXML private Button playButton;
 	@FXML private Button deleteButton;
 	@FXML private ComboBox<String> sortBy;
+
+	private static final String NAME = "Creation Name";
+	private static final String RATING = "Lowest Confidence Rating";
+	private static final String TERM = "Term";
+	private static final String REVIEW = "Need to Review";
 	
 	@FXML
 	private void handleSort() {
+		String sort = sortBy.getValue();
 		creationTable.getSortOrder().clear();
 		
-		String sort = sortBy.getValue();
-		if ("Creation Name".equals(sort)) {
-			creationTable.getSortOrder().add(creationColumn);
-		} else if ("Lowest Rating".equals(sort)) {
-			creationTable.getSortOrder().add(ratingColumn);
-		} else if ("Need to Review".equals(sort)) {
-			creationTable.getSortOrder().add(lastViewedColumn);
+		if (NAME.equals(sort)) {
+			creationTable.getItems().sort(Comparator.comparing(TableCreation::getName));
+			
+		} else if (TERM.equals(sort)) {
+			creationTable.getItems().sort(Comparator.comparing(TableCreation::getTerm)
+					.thenComparing(TableCreation::getRating)
+					.thenComparing(TableCreation::getLastViewed)
+					.thenComparing(TableCreation::getName));
+			
+		} else if (RATING.equals(sort)) {
+			creationTable.getItems().sort(Comparator.comparing(TableCreation::getRating)
+					.thenComparing(TableCreation::getLastViewed)
+					.thenComparing(TableCreation::getTerm)
+					.thenComparing(TableCreation::getName));
+			
+		} else if (REVIEW.equals(sort)) {
+			creationTable.getItems().sort(Comparator.comparing(TableCreation::getLastViewed)
+					.thenComparing(TableCreation::getRating)
+					.thenComparing(TableCreation::getTerm)
+					.thenComparing(TableCreation::getName));
 		}
 	}
 	
@@ -106,19 +126,24 @@ public class MenuController {
 	}
 	
 	public void setUpMenu() {
-		sortBy.getItems().addAll("Creation Name", "Lowest Rating", "Need to Review");
+		sortBy.getItems().addAll(NAME, TERM, RATING, REVIEW);
 		
 		List<TableCreation> list = new ArrayList<>();
-		
 		for (Creation c : Creation.getCreations()) {
 			list.add(new TableCreation(c));
 		}
+		
 		creationColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
 		termColumn.setCellValueFactory(new PropertyValueFactory<>("term"));
 		ratingColumn.setCellValueFactory(new PropertyValueFactory<>("rating"));
 		lastViewedColumn.setCellValueFactory(new PropertyValueFactory<>("lastViewed"));
 		creationTable.getItems().clear();
 		creationTable.getItems().addAll(FXCollections.observableArrayList(list));
+		
+		creationTable.getItems().sort(Comparator.comparing(TableCreation::getRating)
+				.thenComparing(TableCreation::getLastViewed)
+				.thenComparing(TableCreation::getTerm)
+				.thenComparing(TableCreation::getName));
 
 		playButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
 		deleteButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
