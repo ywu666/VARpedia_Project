@@ -5,3 +5,7 @@ The project should be tested on the lab computers in UG4.
 To get the program up and running with the source code, the user must make sure they have created a JavaFX Project. The jar files in the 'libs' folder must be imported as external jars to the project.
 ## Built With
 * [SceneBuilder](https://gluonhq.com/products/scene-builder/) - To create the GUI
+## References
+Music "Love Story In Rain" by KhalafNasirs  
+Available at ccMixter.org http://ccmixter.org/files/khalafnasirs/59534  
+Under CC BY license http://creativecommons.org/licenses/by/3.0/
