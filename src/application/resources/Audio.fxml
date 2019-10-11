@@ -73,17 +73,17 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="moveUpButton" layoutX="700.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
+      <Button fx:id="moveUpButton" layoutX="690.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="deleteButton" layoutX="988.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
+      <Button fx:id="deleteButton" layoutX="1045.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
          <font>
             <Font size="14.0" />
          </font>
       </Button>
-      <Button fx:id="moveDownButton" layoutX="843.0" layoutY="786.0" mnemonicParsing="false" onAction="#handleMoveDown" prefWidth="120.0" text="Move Down">
+      <Button fx:id="moveDownButton" layoutX="826.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleMoveDown" prefWidth="120.0" text="Move Down">
          <font>
             <Font size="14.0" />
          </font>
@@ -98,6 +98,11 @@
                   <Font size="14.0" />
                </font></Tooltip>
          </tooltip>
+      </Button>
+      <Button fx:id="playButton" layoutX="963.0" layoutY="787.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="28.0" prefWidth="66.0" text="Play">
+         <font>
+            <Font size="14.0" />
+         </font>
       </Button>
    </children>
 </Pane>

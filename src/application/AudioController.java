@@ -27,6 +27,7 @@ import javafx.scene.layout.Region;
 public class AudioController {
 	@FXML private Button moveUpButton;
 	@FXML private Button moveDownButton;
+	@FXML private Button playButton;
 	@FXML private Button deleteButton;
 	@FXML private Tooltip tip;
 	@FXML private TextArea creationText;
@@ -118,6 +119,12 @@ public class AudioController {
 			}
 		}
 	}
+	
+	@FXML
+	private void handlePlay() {
+		Audio selection = table.getSelectionModel().getSelectedItem();
+		preview(voices.get(selection.getVoice()), selection.getMood(), selection.getText());
+	}
 
 	@FXML
 	private void handlePreview() {
@@ -135,13 +142,7 @@ public class AudioController {
 				voice = "uk";
 			}
 
-			if (previewTask != null) {
-				previewTask.cancel();
-			}
-			previewTask = new PreviewSpeechTask("en-" + voice, mood, text);
-			ExecutorService executorService = Executors.newSingleThreadExecutor();
-			executorService.execute(previewTask);
-			executorService.shutdown();
+			preview(voice, mood, text);
 		}
 	}
 
@@ -169,6 +170,17 @@ public class AudioController {
 
 			table.getItems().add(new Audio(voice, mood, text));
 		}
+	}
+	
+	private void preview(String voice, String mood, String text) {
+		if (previewTask != null) {
+			previewTask.cancel();
+		}
+		
+		previewTask = new PreviewSpeechTask("en-" + voice, mood, text);
+		ExecutorService executorService = Executors.newSingleThreadExecutor();
+		executorService.execute(previewTask);
+		executorService.shutdown();
 	}
 
 	private String getMoodSettings(String mood) {
@@ -244,6 +256,7 @@ public class AudioController {
 
 		moveUpButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		moveDownButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
+		playButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		deleteButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 	}
 
