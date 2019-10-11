@@ -14,7 +14,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <TextField fx:id="field" layoutX="369.0" layoutY="53.0" onKeyPressed="#handleEnterKey" prefHeight="27.0" prefWidth="396.0">
+      <TextField fx:id="field" layoutX="369.0" layoutY="53.0" onKeyPressed="#handleEnterKey" prefHeight="27.0" prefWidth="396.0" style="-fx-border-color: #faa33a;">
          <font>
             <Font size="14.0" />
          </font></TextField>
@@ -31,7 +31,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <TextArea fx:id="results" layoutX="28.0" layoutY="93.0" prefHeight="635.0" prefWidth="1141.0" wrapText="true">
+      <TextArea fx:id="results" layoutX="28.0" layoutY="93.0" prefHeight="635.0" prefWidth="1141.0" style="-fx-border-color: #faa33a;" wrapText="true">
          <font>
             <Font size="14.0" />
          </font></TextArea>

@@ -25,7 +25,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <ProgressBar fx:id="videoProgress" layoutX="123.0" layoutY="752.0" prefHeight="28.0" prefWidth="853.0" progress="0.0" />
+      <ProgressBar fx:id="videoProgress" layoutX="123.0" layoutY="752.0" prefHeight="28.0" prefWidth="853.0" progress="0.0" style="-fx-accent: #faa33a;" />
       <Button fx:id="forward" layoutX="1084.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="28.0" prefWidth="81.0" text="&gt;&gt;" />
       <MediaView fx:id="mediaView" fitHeight="504.0" fitWidth="756.0" layoutX="235.0" layoutY="155.0" />
       <Slider fx:id="rating" blockIncrement="1.0" layoutX="825.0" layoutY="38.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="255.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 14px;" />

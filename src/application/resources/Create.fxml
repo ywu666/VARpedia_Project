@@ -11,7 +11,7 @@
 
 <Pane fx:id="pane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.CreateController">
    <children>
-      <TextField fx:id="creationName" layoutX="50.0" layoutY="127.0" prefHeight="27.0" prefWidth="501.0" />
+      <TextField fx:id="creationName" layoutX="50.0" layoutY="127.0" prefHeight="27.0" prefWidth="501.0" style="-fx-border-color: #faa33a;" />
       <Text layoutX="50.0" layoutY="111.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Enter a name for your creation (no spaces or special characters)">
          <font>
             <Font size="14.0" />
@@ -24,7 +24,7 @@
          <font>
             <Font size="14.0" />
          </font></Button>
-      <ProgressBar fx:id="progressBar" layoutX="314.0" layoutY="705.0" prefHeight="20.0" prefWidth="532.0" progress="0.0" />
+      <ProgressBar fx:id="progressBar" layoutX="314.0" layoutY="705.0" prefHeight="20.0" prefWidth="532.0" progress="0.0" style="-fx-accent: #faa33a;" />
       <CheckBox fx:id="box1" layoutX="12.0" layoutY="250.0" mnemonicParsing="false">
          <graphic>
             <ImageView fx:id="image1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />

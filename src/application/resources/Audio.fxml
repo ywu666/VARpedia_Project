@@ -18,12 +18,12 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="73.0" prefHeight="392.0" prefWidth="593.0" wrapText="true">
+      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="73.0" prefHeight="392.0" prefWidth="593.0" style="-fx-border-color: #faa33a;" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </TextArea>
-      <TableView fx:id="table" layoutX="675.0" prefHeight="783.0" prefWidth="525.0" style="-fx-font-size: 14px;">
+      <TableView fx:id="table" layoutX="675.0" prefHeight="783.0" prefWidth="525.0" style="-fx-font-size: 14px; -fx-border-color: #faa33a;">
          <columns>
             <TableColumn fx:id="fileNameColumn" prefWidth="255.0" text="Text" />
             <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="165.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
@@ -36,7 +36,7 @@
             <Font size="14.0" />
          </font>
       </Button>
-      <TextArea fx:id="selectionText" editable="false" layoutX="38.0" layoutY="559.0" prefHeight="212.0" prefWidth="390.0" wrapText="true">
+      <TextArea fx:id="selectionText" editable="false" layoutX="38.0" layoutY="559.0" prefHeight="212.0" prefWidth="390.0" style="-fx-border-color: #faa33a;" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
