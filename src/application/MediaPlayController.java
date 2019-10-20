@@ -134,7 +134,7 @@ public class MediaPlayController {
 			currentRating.setText(creation.getRating().toString());
 		}
 		
-		Media sound = new Media(new File(System.getProperty("user.dir") +"/media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
+		Media sound = new Media(new File("media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
 		musicPlayer = new MediaPlayer(sound);
 		musicPlayer.setVolume(1.0);
 
