@@ -95,6 +95,10 @@ public class AudioController {
 		Audio selection = table.getSelectionModel().getSelectedItem();
 		table.getItems().remove(selection);
 		creation.removeAudio(selection);
+		
+		if (table.getItems().size() == 0) {
+			tip.setText("Save an audio file.");
+		}
 	}
 
 	@FXML
