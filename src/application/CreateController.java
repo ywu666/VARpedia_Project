@@ -24,6 +24,7 @@ public class CreateController {
 	@FXML ProgressBar progressBar;
 	@FXML Button selectAll;
 	@FXML FlowPane holder;
+	@FXML Button back;
 
 	private int numSelectedImg;
 	private Boolean creating = false;
@@ -87,6 +88,8 @@ public class CreateController {
 
 	@FXML
 	private void handleCreate() {
+		back.setDisable(true);
+		
 		String name = creationName.getText().trim();
 
 		if (Creation.checkExists(name)) { // Handle when creation name exists already, check if they want to overwrite

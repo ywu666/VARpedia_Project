@@ -25,7 +25,7 @@
          </font></Button>
       <ProgressBar fx:id="progressBar" layoutX="314.0" layoutY="705.0" prefHeight="20.0" prefWidth="532.0" progress="0.0" style="-fx-accent: #faa33a;" />
       <Button fx:id="selectAll" layoutX="1050.0" layoutY="127.0" mnemonicParsing="false" onAction="#handleSelectAll" prefHeight="28.0" prefWidth="100.0" text="Select All" />
-      <Button layoutX="124.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+      <Button fx:id="back" layoutX="124.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
          <font>
             <Font size="14.0" />
          </font>
