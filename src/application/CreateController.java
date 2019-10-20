@@ -2,6 +2,7 @@ package application;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import javafx.fxml.FXML;
@@ -10,11 +11,11 @@ import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
 public class CreateController {
@@ -22,33 +23,13 @@ public class CreateController {
 	@FXML TextField creationName;
 	@FXML ProgressBar progressBar;
 	@FXML Button selectAll;
-	@FXML ImageView image1;
-	@FXML ImageView image2;
-	@FXML ImageView image3;
-	@FXML ImageView image4;
-	@FXML ImageView image5;
-	@FXML ImageView image6;
-	@FXML ImageView image7;
-	@FXML ImageView image8;
-	@FXML ImageView image9;
-	@FXML ImageView image10;
+	@FXML FlowPane holder;
 
-
-	@FXML CheckBox box1;
-	@FXML CheckBox box2;
-	@FXML CheckBox box3;
-	@FXML CheckBox box4;
-	@FXML CheckBox box5;
-	@FXML CheckBox box6;
-	@FXML CheckBox box7;
-	@FXML CheckBox box8;
-	@FXML CheckBox box9;
-	@FXML CheckBox box10;
-
-	private int numImages;
+	private int numSelectedImg;
 	private Boolean creating = false;
 	private NewCreation newCreation;
-
+	  private List<Pane> listPane = new ArrayList<>();
+	    private List<ImageController> listImages= new ArrayList<>();
 	@FXML
 	private void handleMenu() {
 		// Checks the user wants to abandon the creation by going back to 'Menu'.
@@ -130,13 +111,13 @@ public class CreateController {
 		} else { // If creation name is valid, make the creation
 
 			selectedImages();
-			if(numImages == 0) {
+			if(numSelectedImg == 0) {
 				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select at least one images.", ButtonType.OK);
 				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 				alertEmpty.showAndWait();
 
 			} else {
-				newCreation.setNumImages(numImages);
+				newCreation.setNumImages(numSelectedImg);
 				newCreation.setCreationName(name);
 
 				CreateCreationTask task = new CreateCreationTask(newCreation);
@@ -174,17 +155,10 @@ public class CreateController {
 
 	@FXML
 	public void handleSelectAll() {		   
-		box1.setSelected(true);
-		box2.setSelected(true);
-		box3.setSelected(true);
-		box3.setSelected(true);
-		box4.setSelected(true);
-		box5.setSelected(true);
-		box6.setSelected(true);
-		box7.setSelected(true);
-		box8.setSelected(true);
-		box9.setSelected(true);
-		box10.setSelected(true);
+		for(ImageController image: listImages) {
+            image.selectedImage();
+			
+		}
 	}
 
 	public void initialiseController(NewCreation creation) {
@@ -201,43 +175,37 @@ public class CreateController {
 
 		creationName.setText(supplyName);
 
-		setImageView(image1,0);
-		setImageView(image2,1);
-		setImageView(image3,2);
-		setImageView(image4,3);
-		setImageView(image5,4);
-		setImageView(image6,5);
-		setImageView(image7,6);
-		setImageView(image8,7);
-		setImageView(image9,8);
-		setImageView(image10,9);
-	}
-
-	public void setImageView(ImageView imageView,int num) {
-		File fileUrl = new File(".newTerm/images/" + num +".jpg");
-		Image image = new Image(fileUrl.toURI().toString());
-		imageView.setImage(image);
-	}
-
-	public void selected(CheckBox box,int num) {
-		if(box.isSelected()) {
-			numImages++;
-			String command ="cp .newTerm/images/"+num+".jpg .newTerm/selectedImages/"+num+".jpg" ;
-			BashCommand bash = new BashCommand(command);
-			bash.run();
+		// Initialize all ten images
+		for(int i=0;i<10;i++) {			
+			try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Image.fxml"));
+			Pane newPane = loader.load();
+			ImageController c = loader.getController();
+			File fileUrl = new File(".newTerm/images/" + i +".jpg");
+			Image image = new Image(fileUrl.toURI().toString(),200,200,false,false,true);
+			c.setImage(image,i);
+			listPane.add(newPane);
+			listImages.add(c);
+			
+			}catch(Exception e) {
+				e.printStackTrace();
+			}
+			
 		}
+		
+		holder.getChildren().clear();
+		holder.getChildren().addAll(listPane);
 	}
+
 
 	public void selectedImages() {
-		selected(box1,0);
-		selected(box2,1);
-		selected(box3,2);
-		selected(box4,3);
-		selected(box5,4);
-		selected(box6,5);
-		selected(box7,6);
-		selected(box8,7);
-		selected(box9,8);
-		selected(box10,9);
+        for(ImageController image: listImages) {
+      	  if(image.checkSelectedImage()) {
+    			numSelectedImg++;
+    			String command ="cp .newTerm/images/"+image.imgNum()+".jpg .newTerm/selectedImages/"+image.imgNum()+".jpg" ;
+    			BashCommand bash = new BashCommand(command);
+    			bash.run(); 
+      	  }
+        }
 	}
 }
