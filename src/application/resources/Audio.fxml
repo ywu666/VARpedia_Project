@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Separator?>
@@ -11,84 +12,108 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AudioController">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.AudioController">
    <children>
-      <Button layoutX="41.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu">
+      <Button layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="73.0" prefHeight="392.0" prefWidth="593.0" style="-fx-border-color: #faa33a;" wrapText="true">
+      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="73.0" prefHeight="392.0" prefWidth="561.0" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </TextArea>
-      <TableView fx:id="table" layoutX="675.0" prefHeight="783.0" prefWidth="525.0" style="-fx-font-size: 14px; -fx-border-color: #faa33a;">
+      <TableView fx:id="table" layoutX="627.0" prefHeight="741.0" prefWidth="573.0">
          <columns>
-            <TableColumn fx:id="fileNameColumn" prefWidth="255.0" text="Text" />
-            <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="165.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
-            <TableColumn fx:id="moodColumn" prefWidth="104.0" style="-fx-alignment: BASELINE-CENTER;" text="Mood" />
+            <TableColumn fx:id="fileNameColumn" prefWidth="270.0" text="Text" />
+            <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="150.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
+            <TableColumn fx:id="moodColumn" prefWidth="151.0" style="-fx-alignment: BASELINE-CENTER;" text="Mood" />
          </columns>
       </TableView>
-      <Separator layoutX="672.0" orientation="VERTICAL" prefHeight="820.0" />
+      <Separator layoutX="624.0" orientation="VERTICAL" prefHeight="820.0" />
       <Button layoutX="38.0" layoutY="501.0" mnemonicParsing="false" onAction="#handleSelect" text="Select">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <TextArea fx:id="selectionText" editable="false" layoutX="38.0" layoutY="559.0" prefHeight="212.0" prefWidth="390.0" style="-fx-border-color: #faa33a;" wrapText="true">
+      <TextArea fx:id="selectionText" editable="false" layoutX="38.0" layoutY="559.0" prefHeight="212.0" prefWidth="318.0" wrapText="true">
          <font>
             <Font size="14.0" />
          </font>
       </TextArea>
-      <Button layoutX="547.0" layoutY="689.0" mnemonicParsing="false" onAction="#handlePreview" prefHeight="28.0" prefWidth="83.0" text="Preview">
+      <Button layoutX="481.0" layoutY="689.0" mnemonicParsing="false" onAction="#handlePreview" prefHeight="42.0" prefWidth="108.0" text="Preview">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button layoutX="446.0" layoutY="688.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="28.0" prefWidth="83.0" text="Save">
+      <Button layoutX="379.0" layoutY="688.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="28.0" prefWidth="83.0" text="Save">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button layoutX="547.0" layoutY="743.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue">
+      <Button layoutX="481.0" layoutY="743.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <ComboBox fx:id="selectMood" layoutX="445.0" layoutY="641.0" prefHeight="28.0" prefWidth="186.0" promptText="Mood" style="-fx-font-size: 14px;" />
-      <ComboBox fx:id="selectVoice" layoutX="445.0" layoutY="594.0" prefHeight="28.0" prefWidth="186.0" promptText="Voice" style="-fx-font-size: 14px;" />
-      <Text layoutX="116.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit speech settings of highlighted text">
+      <ComboBox fx:id="selectMood" layoutX="378.0" layoutY="641.0" prefHeight="28.0" prefWidth="212.0" promptText="Mood" style="-fx-font-size: 14px;" />
+      <ComboBox fx:id="selectVoice" layoutX="378.0" layoutY="594.0" prefHeight="28.0" prefWidth="212.0" promptText="Voice" style="-fx-font-size: 14px;" />
+      <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit speech settings of highlighted text">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="123.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select text to edit speech settings (max 30 words selected)">
+      <Text layoutX="136.0" layoutY="514.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select text to edit speech settings (max 30 words selected)">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Text layoutX="123.0" layoutY="533.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please save settings before editing another chunk of text">
+      <Text layoutX="136.0" layoutY="533.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Please save settings before editing another chunk of text">
          <font>
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="moveUpButton" layoutX="690.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
+      <Button fx:id="moveUpButton" layoutX="640.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="deleteButton" layoutX="1045.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
+      <Button fx:id="deleteButton" layoutX="1030.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button fx:id="moveDownButton" layoutX="826.0" layoutY="787.0" mnemonicParsing="false" onAction="#handleMoveDown" prefWidth="120.0" text="Move Down">
+      <Button fx:id="moveDownButton" layoutX="776.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleMoveDown" prefHeight="42.0" prefWidth="136.0" text="Move Down">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
-      <Button alignment="CENTER" layoutX="1147.0" layoutY="785.0" minHeight="30.0" mnemonicParsing="false" prefWidth="30.0" style="-fx-background-radius: 30; -fx-background-color: #faa33a;" text="?" textFill="WHITE">
+      <Button fx:id="help" alignment="CENTER" layoutX="1147.0" layoutY="759.0" minHeight="30.0" mnemonicParsing="false" prefWidth="30.0" style="-fx-background-radius: 30; -fx-background-color: #faa33a;" text="?" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -99,10 +124,13 @@
                </font></Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="playButton" layoutX="963.0" layoutY="787.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="28.0" prefWidth="66.0" text="Play">
+      <Button fx:id="playButton" layoutX="928.0" layoutY="761.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="42.0" prefWidth="87.0" text="Play">
          <font>
             <Font size="14.0" />
          </font>
+         <cursor>
+            <Cursor fx:constant="HAND" />
+         </cursor>
       </Button>
    </children>
 </Pane>
