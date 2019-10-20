@@ -19,8 +19,12 @@ public class NewCreation {
 		this.text = text;
 	}
 	
-	public void addAudioFile(Integer fileNum, String voice, String mood, String text) {
-		audioFiles.add(new Audio(voice, mood, text));
+	public void addAudio(Audio a) {
+		audioFiles.add(a);
+	}
+	
+	public void removeAudio(Audio a) {
+		audioFiles.remove(a);
 	}
 	
 	public String getText() {
@@ -37,6 +41,11 @@ public class NewCreation {
 	
 	public Integer getNumImages() {
 		return numImages;
+	}
+	
+	public void setAudioList(List<Audio> audioList) {
+		audioFiles.clear();
+		audioFiles.addAll(audioList);
 	}
 	
 	public List<Audio> getAudioList() {

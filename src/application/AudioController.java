@@ -94,6 +94,7 @@ public class AudioController {
 	private void handleDelete() {
 		Audio selection = table.getSelectionModel().getSelectedItem();
 		table.getItems().remove(selection);
+		creation.removeAudio(selection);
 	}
 
 	@FXML
@@ -167,8 +168,10 @@ public class AudioController {
 			if (mood == null) {
 				mood = "Neutral";	
 			}
-
-			table.getItems().add(new Audio(voice, mood, text));
+			
+			Audio a = new Audio(voice, mood, text);
+			table.getItems().add(a);
+			creation.addAudio(a);
 		}
 	}
 	
@@ -196,6 +199,8 @@ public class AudioController {
 
 	@FXML
 	private void handleContinue() {
+		creation.setAudioList(table.getItems());
+		
 		if (previewTask != null) {
 			previewTask.cancel();
 		}

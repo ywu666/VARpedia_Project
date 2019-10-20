@@ -85,6 +85,24 @@ public class CreateController {
 			}
 		}
 	}
+	
+	@FXML
+	private void handleBack() {
+		
+		BashCommand rmAudio = new BashCommand("rm -r .newTerm/audio.wav .newTerm/audio");
+		rmAudio.run();
+		
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Audio.fxml"));
+			Parent root = loader.load();
+			AudioController controller = loader.getController();
+			controller.initialiseController(newCreation);
+			Main.setStage(root);
+			
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 
 	@FXML
 	private void handleCreate() {

@@ -66,5 +66,10 @@
             <ImageView fx:id="image10" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
          </graphic></CheckBox>
       <Button fx:id="selectAll" layoutX="1040.0" layoutY="180.0" mnemonicParsing="false" onAction="#handleSelectAll" prefHeight="28.0" prefWidth="100.0" text="Select All" />
+      <Button layoutX="124.0" layoutY="31.0" mnemonicParsing="false" onAction="#handleBack" text="Back">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Button>
    </children>
 </Pane>
