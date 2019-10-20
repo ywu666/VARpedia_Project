@@ -16,9 +16,9 @@ public class Main extends Application {
     public void start(Stage primaryStage) throws Exception {
     	STAGE = primaryStage;
     	
-    	new File("creations").mkdir();
+    	new File(".creations").mkdir();
     	
-    	new File("creations/creations.txt").createNewFile();
+    	new File(".creations/creations.txt").createNewFile();
     	
     	BashCommand rmNewTermDir = new BashCommand("if [ -d \".newTerm\" ]; then rm -r .newTerm; fi;");
     	rmNewTermDir.run();

@@ -56,10 +56,10 @@ public class CreateCreationTask extends Task<Void> {
 	
 	private void getFileName() {
 		Integer i = 1;
-		while (new File("creations/" + i + ".mp4").exists()) {
+		while (new File(".creations/" + i + ".mp4").exists()) {
 			i++;
 		}
 		
-		fileName = "creations/" + i.toString() + ".mp4";
+		fileName = ".creations/" + i.toString() + ".mp4";
 	}
 }

@@ -91,7 +91,7 @@ public class Creation implements Serializable {
 	private static void saveCreations(List<Creation> creations) {
 		
 		try {
-			File file = new File("creations/creations.txt");
+			File file = new File(".creations/creations.txt");
 			file.delete();
 			
 			FileOutputStream f = new FileOutputStream(file);
@@ -115,7 +115,7 @@ public class Creation implements Serializable {
 		List<Creation> creations = new ArrayList<>();
 		
 		try {
-			FileInputStream fi = new FileInputStream(new File("creations/creations.txt"));
+			FileInputStream fi = new FileInputStream(new File(".creations/creations.txt"));
 			ObjectInputStream oi = new ObjectInputStream(fi);
 			
 			// Read creations
