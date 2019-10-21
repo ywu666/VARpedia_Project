@@ -2,6 +2,7 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -69,7 +70,7 @@ public class DownloadImagesTask extends Task<Void> {
 				}
 	        	count += 1;
 	        }
-		} catch (Exception e) {
+		} catch (FlickrException | IOException e) {
 			e.printStackTrace();
 		}
 	}
