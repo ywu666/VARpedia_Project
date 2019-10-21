@@ -29,18 +29,19 @@ public class MediaPlayController {
 	@FXML private Slider rating;
 	@FXML private Label currentRating;
 	@FXML private Button backgroundMusic;
-	
+
 	private MediaPlayer videoPlayer;
 	private Media video;
 	private Creation creation;
 	private Double length;
 	private MediaPlayer musicPlayer;
-	
+	boolean music = false;
+
 	@FXML 
 	public void handleMenu() {
 		videoPlayer.stop();
 		musicPlayer.stop();
-		
+
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
 			Parent root = loader.load();
@@ -59,17 +60,29 @@ public class MediaPlayController {
 		boolean playing = videoPlayer.getStatus() == Status.PLAYING;
 		boolean ended = videoPlayer.getCurrentTime().toSeconds() == length;
 
-		if(ended) {
+		if (ended) {
 			videoPlayer.seek(videoPlayer.getStartTime());
 			play.setText("Pause");
-			
+
+			if (music) {
+				musicPlayer.play();
+			}
+
 		} else if (playing) {
 			videoPlayer.pause();
 			play.setText("Play");
 
+			if (music) {
+				musicPlayer.pause();
+			}
+
 		} else {
 			videoPlayer.play();
 			play.setText("Pause");
+
+			if (music) {
+				musicPlayer.play();
+			}
 		}
 	}
 
@@ -88,25 +101,29 @@ public class MediaPlayController {
 	@FXML 
 	public void handleBackward() {
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(-3)));
+		
 		if ("Replay".equals(play.getText())) {
 			play.setText("Pause");
 		}
 	}
-	
+
 	@FXML
 	public void handleMusic() {		
+		music = !music;
 
-		if (musicPlayer.getStatus() == Status.PLAYING) {
-			musicPlayer.pause();
-			backgroundMusic.setText("Add Background Music");
+		if (music) {
+			backgroundMusic.setText("Stop Background Music");
+
+			if (videoPlayer.getStatus() == Status.PLAYING) {
+				musicPlayer.play();
+			}
 
 		} else {
-			musicPlayer.play();
-			backgroundMusic.setText("Stop Background Music");
+			musicPlayer.pause();
+			backgroundMusic.setText("Add Background Music");
 		}
-		
-		musicPlayer.setOnEndOfMedia(new Runnable() {
 
+		musicPlayer.setOnEndOfMedia(new Runnable() {
 			@Override
 			public void run() {
 				musicPlayer.seek(musicPlayer.getStartTime());
@@ -133,7 +150,7 @@ public class MediaPlayController {
 		} else {
 			currentRating.setText(creation.getRating().toString());
 		}
-		
+
 		Media sound = new Media(new File("media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
 		musicPlayer = new MediaPlayer(sound);
 		musicPlayer.setVolume(1.0);
@@ -152,7 +169,6 @@ public class MediaPlayController {
 				play.setText("Replay");
 				videoProgress.setProgress(1.0);
 				musicPlayer.stop();
-				backgroundMusic.setText("Background Music");
 			}
 		});
 	}
