@@ -185,7 +185,7 @@ public class CreateController {
 			Pane newPane = loader.load();
 			ImageController c = loader.getController();
 			File fileUrl = new File(".newTerm/images/" + i +".jpg");
-			Image image = new Image(fileUrl.toURI().toString(),200,200,false,false,true);
+			Image image = new Image(fileUrl.toURI().toString());
 			c.setImage(image,i);
 			listPane.add(newPane);
 			listImages.add(c);
