@@ -13,10 +13,8 @@ import application.tasks.PreviewSpeechTask;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -24,7 +22,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
 
 public class AudioController extends Controller {
 
@@ -140,7 +137,7 @@ public class AudioController extends Controller {
 
 		if (text.equals("")) { // Check the user has selected some text to preview
 			AlertBox.showWaitAlert(AlertType.WARNING, "Please select text before previewing.");
-			
+
 		} else {// Preview text to speech with selected options
 
 			if(voice == null) {
@@ -198,7 +195,7 @@ public class AudioController extends Controller {
 
 		if (table.getItems().isEmpty()) {
 			AlertBox.showWaitAlert(AlertType.WARNING, "Save an audio file(s) before continuing.");
-			
+
 		} else {
 			Object[] array = table.getItems().toArray();
 			MergeAudioTask task = new MergeAudioTask(array);
