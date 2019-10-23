@@ -9,3 +9,5 @@ To get the program up and running with the source code, the user must make sure 
 Music "Love Story In Rain" by KhalafNasirs  
 Available at ccMixter.org http://ccmixter.org/files/khalafnasirs/59534  
 Under CC BY license http://creativecommons.org/licenses/by/3.0/
+
+External jars in 'libs' folder sourced from Active Classroom Programmer, supplied by Nasser Giacaman.
