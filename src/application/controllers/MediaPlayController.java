@@ -1,26 +1,22 @@
 package application.controllers;
 
 import java.io.File;
-import java.io.IOException;
 
-import application.Main;
 import application.items.Creation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.scene.media.MediaPlayer.Status;
+import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-public class MediaPlayController {
+public class MediaPlayController extends Controller {
 
 	@FXML private MediaView mediaView;
 	@FXML private Button forward;
@@ -44,16 +40,8 @@ public class MediaPlayController {
 		videoPlayer.stop();
 		musicPlayer.stop();
 
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
-			Parent root = loader.load();
-			MenuController controller = loader.getController();
-			controller.setUpMenu();
-			Main.setStage(root);
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		MenuController controller = (MenuController) loadView("../resources/Menu.fxml", this);
+		controller.setUpMenu();
 	}
 
 	@FXML 
@@ -103,7 +91,7 @@ public class MediaPlayController {
 	@FXML 
 	public void handleBackward() {
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(-3)));
-		
+
 		if ("Replay".equals(play.getText())) {
 			play.setText("Pause");
 		}

@@ -1,18 +1,14 @@
 package application.controllers;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import application.Main;
 import application.items.Creation;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
 import application.tasks.CreateCreationTask;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,7 +19,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
-public class CreateController {
+public class CreateController extends Controller {
 
 	@FXML TextField creationName;
 	@FXML ProgressBar progressBar;
@@ -34,8 +30,9 @@ public class CreateController {
 	private int numSelectedImg;
 	private Boolean creating = false;
 	private NewCreation newCreation;
-	  private List<Pane> listPane = new ArrayList<>();
-	    private List<ImageController> listImages= new ArrayList<>();
+	private List<Pane> listPane = new ArrayList<>();
+	private List<ImageController> listImages= new ArrayList<>();
+
 	@FXML
 	private void handleMenu() {
 		// Checks the user wants to abandon the creation by going back to 'Menu'.
@@ -48,53 +45,30 @@ public class CreateController {
 				BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
 				rmNewTermDir.run();
 
-				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
-					Parent root = loader.load();
-					MenuController controller = loader.getController();
-					controller.setUpMenu();
-					Main.setStage(root);
-
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				MenuController controller = (MenuController) loadView("../resources/Menu.fxml", this);
+				controller.setUpMenu();
 			}
 		} else { // Creation is in the process of being created, will go back to menu with no issue
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
-				Parent root = loader.load();
-				MenuController controller = loader.getController();
-				controller.setUpMenu(newCreation);
-				Main.setStage(root);
 
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			MenuController controller = (MenuController) loadView("../resources/Menu.fxml", this);
+			controller.setUpMenu(newCreation);
 		}
 	}
-	
+
 	@FXML
 	private void handleBack() {
-		
+
 		BashCommand rmAudio = new BashCommand("rm -r .newTerm/audio.wav .newTerm/audio");
 		rmAudio.run();
-		
-		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Audio.fxml"));
-			Parent root = loader.load();
-			AudioController controller = loader.getController();
-			controller.initialiseController(newCreation);
-			Main.setStage(root);
-			
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		AudioController controller = (AudioController) loadView("../resources/Audio.fxml", this);
+		controller.initialiseController(newCreation);
 	}
 
 	@FXML
 	private void handleCreate() {
 		back.setDisable(true);
-		
+
 		String name = creationName.getText().trim();
 
 		if (Creation.checkExists(name)) { // Handle when creation name exists already, check if they want to overwrite
@@ -146,16 +120,8 @@ public class CreateController {
 					alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
 					alert.showAndWait();
 
-					try {
-						FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
-						Parent root = loader.load();
-						MenuController controller = loader.getController();
-						controller.setUpMenu();
-						Main.setStage(root);
-
-					} catch (IOException e) {
-						e.printStackTrace();
-					}
+					MenuController controller = (MenuController) loadView("../resources/Menu.fxml", this);
+					controller.setUpMenu();
 				});
 			}
 		}
@@ -164,8 +130,8 @@ public class CreateController {
 	@FXML
 	public void handleSelectAll() {		   
 		for(ImageController image: listImages) {
-            image.selectedImage();
-			
+			image.selectedImage();
+
 		}
 	}
 
@@ -184,36 +150,28 @@ public class CreateController {
 		creationName.setText(supplyName);
 
 		// Initialize all ten images
-		for(int i=0;i<10;i++) {			
-			try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Image.fxml"));
-			Pane newPane = loader.load();
-			ImageController c = loader.getController();
+		for(int i=0; i<10; i++) {
+			ImageController controller = (ImageController) loadView("../resources/Image.fxml", this, false);
+			listImages.add(controller);
+			listPane.add(controller.getPane());
 			File fileUrl = new File(".newTerm/images/" + i +".jpg");
 			Image image = new Image(fileUrl.toURI().toString());
-			c.setImage(image,i);
-			listPane.add(newPane);
-			listImages.add(c);
-			
-			}catch(Exception e) {
-				e.printStackTrace();
-			}
-			
+			controller.setImage(image, i);
 		}
-		
+
 		holder.getChildren().clear();
 		holder.getChildren().addAll(listPane);
 	}
 
 
 	public void selectedImages() {
-        for(ImageController image: listImages) {
-      	  if(image.checkSelectedImage()) {
-    			numSelectedImg++;
-    			String command ="cp .newTerm/images/"+image.imgNum()+".jpg .newTerm/selectedImages/"+image.imgNum()+".jpg" ;
-    			BashCommand bash = new BashCommand(command);
-    			bash.run(); 
-      	  }
-        }
+		for(ImageController image: listImages) {
+			if(image.checkSelectedImage()) {
+				numSelectedImg++;
+				String command ="cp .newTerm/images/"+image.imgNum()+".jpg .newTerm/selectedImages/"+image.imgNum()+".jpg" ;
+				BashCommand bash = new BashCommand(command);
+				bash.run(); 
+			}
+		}
 	}
 }

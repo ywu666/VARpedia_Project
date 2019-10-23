@@ -6,8 +6,8 @@ import application.controllers.MenuController;
 import application.tasks.BashCommand;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -26,7 +26,7 @@ public class Main extends Application {
     	rmNewTermDir.run();
     	
         FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
-		Parent root = loader.load();
+		Pane root = loader.load();
 		MenuController controller = loader.getController();
 		controller.setUpMenu();
 		setStage(root);
@@ -34,7 +34,7 @@ public class Main extends Application {
         STAGE.show();
     }
     
-    public static void setStage(Parent root) {
+    public static void setStage(Pane root) {
     	Scene scene = new Scene(root);
     	STAGE.setScene(scene);
     }

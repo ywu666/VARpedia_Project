@@ -14,7 +14,6 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -23,9 +22,10 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 
-public class MenuController {
+public class MenuController extends Controller {
 	
 	@FXML private TableView<TableCreation> creationTable;
 	@FXML private TableColumn<TableCreation, String> creationColumn;
@@ -79,16 +79,9 @@ public class MenuController {
 			alertEmpty.showAndWait();
 			
 		} else {
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/MediaPlay.fxml"));
-				Parent root = loader.load();
-				MediaPlayController controller = loader.getController();
-				controller.playCreation(creationTable.getSelectionModel().getSelectedItem().getCreation());
-				Main.setStage(root);
-				
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			Creation c = creationTable.getSelectionModel().getSelectedItem().getCreation();
+			MediaPlayController controller = (MediaPlayController) loadView("../resources/MediaPlay.fxml", this);
+			controller.playCreation(c);
 		}
 	}
 	
@@ -116,7 +109,7 @@ public class MenuController {
 	@FXML
 	private void handleCreate() {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("../resources/Search.fxml"));
+	        Pane root = FXMLLoader.load(getClass().getResource("../resources/Search.fxml"));
 			Main.setStage(root);
 			
 		} catch (IOException exception) {

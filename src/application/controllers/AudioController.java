@@ -1,11 +1,9 @@
 package application.controllers;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import application.Main;
 import application.items.Audio;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
@@ -14,8 +12,6 @@ import application.tasks.PreviewSpeechTask;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
@@ -28,7 +24,8 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Region;
 
-public class AudioController {
+public class AudioController extends Controller {
+
 	@FXML private Button moveUpButton;
 	@FXML private Button moveDownButton;
 	@FXML private Button playButton;
@@ -46,7 +43,7 @@ public class AudioController {
 
 	PreviewSpeechTask previewTask;
 	private NewCreation creation;
-	
+
 	private static final ArrayList<String> voiceList;
 	private static final ArrayList<String> moodList;
 	static {
@@ -54,7 +51,7 @@ public class AudioController {
 		moodList.add("Happy");
 		moodList.add("Neutral");
 		moodList.add("Sad");
-		
+
 		voiceList = new ArrayList<String>();
 		voiceList.add("United Kingdom");
 		voiceList.add("United States");
@@ -72,16 +69,8 @@ public class AudioController {
 			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
 			rmNewTermDir.run();
 
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
-				Parent root = loader.load();
-				MenuController controller = loader.getController();
-				controller.setUpMenu();
-				Main.setStage(root);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			MenuController controller = (MenuController) loadView("../resources/Menu.fxml", this);
+			controller.setUpMenu();
 		}
 	}
 
@@ -112,7 +101,7 @@ public class AudioController {
 		Audio selection = table.getSelectionModel().getSelectedItem();
 		table.getItems().remove(selection);
 		creation.removeAudio(selection);
-		
+
 		if (table.getItems().size() == 0) {
 			tip.setText("Save an audio file.");
 		}
@@ -141,7 +130,7 @@ public class AudioController {
 			}
 		}
 	}
-	
+
 	@FXML
 	private void handlePlay() {
 		Audio selection = table.getSelectionModel().getSelectedItem();
@@ -189,18 +178,18 @@ public class AudioController {
 			if (mood == null) {
 				mood = "Neutral";	
 			}
-			
+
 			Audio a = new Audio(voice, mood, text);
 			table.getItems().add(a);
 			creation.addAudio(a);
 		}
 	}
-	
+
 	private void preview(String voice, String mood, String text) {
 		if (previewTask != null) {
 			previewTask.cancel();
 		}
-		
+
 		previewTask = new PreviewSpeechTask("en-" + voice, mood, text);
 		ExecutorService executorService = Executors.newSingleThreadExecutor();
 		executorService.execute(previewTask);
@@ -210,7 +199,7 @@ public class AudioController {
 	@FXML
 	private void handleContinue() {
 		creation.setAudioList(table.getItems());
-		
+
 		if (previewTask != null) {
 			previewTask.cancel();
 		}
@@ -226,16 +215,8 @@ public class AudioController {
 			executorService.execute(task);
 			executorService.shutdown();
 
-			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Create.fxml"));
-				Parent root = loader.load();
-				CreateController controller = loader.getController();
-				controller.initialiseController(creation);
-				Main.setStage(root);
-
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			CreateController controller = (CreateController) loadView("../resources/Create.fxml", this);
+			controller.initialiseController(creation);
 		}
 	}
 
