@@ -1,10 +1,14 @@
-package application;
+package application.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 
+import application.Main;
+import application.items.Creation;
+import application.items.NewCreation;
+import application.items.TableCreation;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
@@ -76,7 +80,7 @@ public class MenuController {
 			
 		} else {
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/MediaPlay.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/MediaPlay.fxml"));
 				Parent root = loader.load();
 				MediaPlayController controller = loader.getController();
 				controller.playCreation(creationTable.getSelectionModel().getSelectedItem().getCreation());
@@ -112,7 +116,7 @@ public class MenuController {
 	@FXML
 	private void handleCreate() {
 		try {
-	        Parent root = FXMLLoader.load(getClass().getResource("resources/Search.fxml"));
+	        Parent root = FXMLLoader.load(getClass().getResource("../resources/Search.fxml"));
 			Main.setStage(root);
 			
 		} catch (IOException exception) {

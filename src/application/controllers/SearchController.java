@@ -1,9 +1,13 @@
-package application;
+package application.controllers;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import application.Main;
+import application.items.NewCreation;
+import application.tasks.BashCommand;
+import application.tasks.DownloadImagesTask;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -28,7 +32,7 @@ public class SearchController {
 	@FXML
 	private void handleMenu() {
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
 			controller.setUpMenu();
@@ -98,7 +102,7 @@ public class SearchController {
 			executorService2.shutdown();
 		
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Audio.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Audio.fxml"));
 				Parent root = loader.load();
 				AudioController controller = loader.getController();
 				controller.initialiseController(creation);

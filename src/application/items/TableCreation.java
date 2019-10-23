@@ -1,4 +1,4 @@
-package application;
+package application.items;
 
 import java.time.LocalDate;
 import java.time.Period;
@@ -15,7 +15,7 @@ public class TableCreation {
 	private Creation creation;
 	private Boolean ready = true;
 	
-	TableCreation(Creation creation) {
+	public TableCreation(Creation creation) {
 		ready = true;
 		this.creation = creation;
 		
@@ -25,7 +25,7 @@ public class TableCreation {
 		this.setLastViewed(new LastViewed(creation));
 	}
 	
-	TableCreation(Creation creation, Boolean ready) {
+	public TableCreation(Creation creation, Boolean ready) {
 		this(creation);
 		this.ready = ready;
 	}

@@ -2,6 +2,8 @@ package application;
 
 import java.io.File;
 
+import application.controllers.MenuController;
+import application.tasks.BashCommand;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -32,7 +34,7 @@ public class Main extends Application {
         STAGE.show();
     }
     
-    static void setStage(Parent root) {
+    public static void setStage(Parent root) {
     	Scene scene = new Scene(root);
     	STAGE.setScene(scene);
     }

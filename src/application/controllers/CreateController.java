@@ -1,10 +1,15 @@
-package application;
+package application.controllers;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.Main;
+import application.items.Creation;
+import application.items.NewCreation;
+import application.tasks.BashCommand;
+import application.tasks.CreateCreationTask;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,7 +49,7 @@ public class CreateController {
 				rmNewTermDir.run();
 
 				try {
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 					Parent root = loader.load();
 					MenuController controller = loader.getController();
 					controller.setUpMenu();
@@ -56,7 +61,7 @@ public class CreateController {
 			}
 		} else { // Creation is in the process of being created, will go back to menu with no issue
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
 				controller.setUpMenu(newCreation);
@@ -75,7 +80,7 @@ public class CreateController {
 		rmAudio.run();
 		
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Audio.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Audio.fxml"));
 			Parent root = loader.load();
 			AudioController controller = loader.getController();
 			controller.initialiseController(newCreation);
@@ -142,7 +147,7 @@ public class CreateController {
 					alert.showAndWait();
 
 					try {
-						FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+						FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 						Parent root = loader.load();
 						MenuController controller = loader.getController();
 						controller.setUpMenu();
@@ -181,7 +186,7 @@ public class CreateController {
 		// Initialize all ten images
 		for(int i=0;i<10;i++) {			
 			try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Image.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Image.fxml"));
 			Pane newPane = loader.load();
 			ImageController c = loader.getController();
 			File fileUrl = new File(".newTerm/images/" + i +".jpg");

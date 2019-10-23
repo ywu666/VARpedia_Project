@@ -1,8 +1,10 @@
-package application;
+package application.controllers;
 
 import java.io.File;
 import java.io.IOException;
 
+import application.Main;
+import application.items.Creation;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -43,7 +45,7 @@ public class MediaPlayController {
 		musicPlayer.stop();
 
 		try {
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 			Parent root = loader.load();
 			MenuController controller = loader.getController();
 			controller.setUpMenu();

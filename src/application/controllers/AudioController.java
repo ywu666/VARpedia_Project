@@ -1,4 +1,4 @@
-package application;
+package application.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -6,6 +6,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import application.Main;
+import application.items.Audio;
+import application.items.NewCreation;
+import application.tasks.BashCommand;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.concurrent.Task;
@@ -56,7 +61,7 @@ public class AudioController {
 			rmNewTermDir.run();
 
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Menu.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Menu.fxml"));
 				Parent root = loader.load();
 				MenuController controller = loader.getController();
 				controller.setUpMenu();
@@ -221,7 +226,7 @@ public class AudioController {
 			executorService.shutdown();
 
 			try {
-				FXMLLoader loader = new FXMLLoader(getClass().getResource("resources/Create.fxml"));
+				FXMLLoader loader = new FXMLLoader(getClass().getResource("../resources/Create.fxml"));
 				Parent root = loader.load();
 				CreateController controller = loader.getController();
 				controller.initialiseController(creation);

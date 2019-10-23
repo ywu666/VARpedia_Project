@@ -1,4 +1,4 @@
-package application;
+package application.tasks;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -19,17 +19,17 @@ public class BashCommand {
 	 * @param command is the command to be executed
 	 * @param getStdOut is a boolean defining whether std output is needed
 	 */
-	BashCommand(String command, Boolean getStdOut) {
+	public BashCommand(String command, Boolean getStdOut) {
 		this.command = command;
 		this.getStdOut = getStdOut;
 		stdOut = new ArrayList<String>();
 	}
 
-	BashCommand(String command) {
+	public BashCommand(String command) {
 		this(command, false);
 	}
 
-	void run() {
+	public void run() {
 
 		try {
 			ProcessBuilder processBuilder = new ProcessBuilder("bash", "-c", command);
@@ -63,15 +63,15 @@ public class BashCommand {
 		}
 	}
 
-	void cancelled() {
+	public void cancelled() {
 		process.destroy();
 	}
 
-	List<String> getStdOutList() {
+	public List<String> getStdOutList() {
 		return stdOut;
 	}
 
-	String getStdOutString() {
+	public String getStdOutString() {
 		String output = "";
 		for (String s : stdOut) {
 			output += s;

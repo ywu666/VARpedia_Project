@@ -1,4 +1,4 @@
-package application;
+package application.items;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +14,7 @@ public class NewCreation {
 	private Integer numImages;
 	private List<Audio> audioFiles = new ArrayList<Audio>();
 	
-	NewCreation(String term, String text) {
+	public NewCreation(String term, String text) {
 		this.term = term;
 		this.text = text;
 	}

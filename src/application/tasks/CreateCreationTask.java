@@ -1,7 +1,9 @@
-package application;
+package application.tasks;
 
 import java.io.File;
 
+import application.items.Creation;
+import application.items.NewCreation;
 import javafx.concurrent.Task;
 
 public class CreateCreationTask extends Task<Void> {
@@ -11,7 +13,7 @@ public class CreateCreationTask extends Task<Void> {
 	private String creationName;
 	private String fileName;
 	
-	CreateCreationTask(NewCreation creation) {
+	public CreateCreationTask(NewCreation creation) {
 		this.term = creation.getTerm();
 		this.numImages = creation.getNumImages();
 		this.creationName = creation.getCreationName();

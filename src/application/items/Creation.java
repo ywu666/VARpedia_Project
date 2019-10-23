@@ -1,4 +1,4 @@
-package application;
+package application.items;
 
 import java.io.EOFException;
 import java.io.File;
@@ -13,6 +13,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import application.tasks.BashCommand;
+
 public class Creation implements Serializable {
 	
 	private static final long serialVersionUID = -6102326908274463170L;
@@ -23,18 +25,18 @@ public class Creation implements Serializable {
 	private Integer rating;
 	private LocalDate lastViewed = null;
 	
-	Creation(String name, String term, String file) {
+	public Creation(String name, String term, String file) {
 		this.setName(name);
 		this.setTerm(term);
 		this.setFile(file);
 	}
 	
-	Creation(String name, String term) {
+	public Creation(String name, String term) {
 		this.setName(name);
 		this.setTerm(term);
 	}
 	
-	Creation(String name) {
+	public Creation(String name) {
 		this.setName(name);
 	}
 
