@@ -63,11 +63,8 @@ public class AudioController extends Controller {
 	@FXML
 	private void handleMenu() {
 		// Check user wishes to abandon creation before exiting to menu
-		Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Are you sure you want to abandon your creation.", ButtonType.OK, ButtonType.CANCEL);
-		alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-		alert.showAndWait();
-
-		if (alert.getResult() == ButtonType.OK) {
+		boolean confirm = AlertBox.confirmationAlert("Are you sure you want to abandon your creation.");
+		if (confirm) {
 			BashCommand rmNewTermDir = new BashCommand("rm -r .newTerm");
 			rmNewTermDir.run();
 
