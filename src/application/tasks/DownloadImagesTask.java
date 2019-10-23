@@ -33,13 +33,13 @@ public class DownloadImagesTask extends Task<Void> {
 		return null;
 	}
 	
-	
-	
 	/**
 	 * Downloads the specified number of images from Flickr with the term specified when they searched.
 	 * Saves the images in a hidden folder with the rest of the information for the creation.
 	 * @param term
 	 * @param numberOfImages
+	 * 
+	 * This method was adapted from code provided by Nasser Giacaman on Active Classroom Programmer.
 	 */
 	private void downloadImages(String term, Integer numberOfImages) {
 		try {
