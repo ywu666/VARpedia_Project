@@ -3,19 +3,18 @@ package application.controllers;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import application.items.AlertBox;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
 import application.tasks.DownloadImagesTask;
 import application.tasks.SearchWikiTask;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.Region;
 
 public class SearchController extends Controller {
 
@@ -37,9 +36,7 @@ public class SearchController extends Controller {
 
 		// Checks the user has entered a search term
 		if (searchTerm == null || "".equals(searchTerm) || searchTerm.length() == 0) {
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please enter a valid term", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Please enter a valid term");
 
 		} else {
 			SearchWikiTask task = new SearchWikiTask(searchTerm);
@@ -55,9 +52,7 @@ public class SearchController extends Controller {
 				BashCommand bashCommand = task.getBashCommand();
 				String searchResult = bashCommand.getStdOutString();
 				if (searchResult.equals(searchTerm + " not found :^(")) { // Alert user if term cannot be found
-					Alert alertInvalid = new Alert(Alert.AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.", ButtonType.OK);
-					alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-					alertInvalid.showAndWait();
+					AlertBox.showWaitAlert(AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.");
 
 				} else {
 					results.setText(searchResult.trim());
@@ -76,9 +71,7 @@ public class SearchController extends Controller {
 
 		// Checks user has searched a term and that there is text in the editable text field
 		if (text.equals("") || searchTerm == null) {
-			Alert alertInvalid = new Alert(Alert.AlertType.WARNING, "Please search a term before continuing.", ButtonType.OK);
-			alertInvalid.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertInvalid.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Please search a term before continuing.");
 
 		} else {
 			NewCreation creation = new NewCreation(searchTerm, results.getText());

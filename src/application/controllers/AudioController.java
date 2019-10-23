@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import application.items.AlertBox;
 import application.items.Audio;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
@@ -13,6 +14,7 @@ import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ComboBox;
@@ -114,16 +116,12 @@ public class AudioController extends Controller {
 
 		String selection = creationText.getSelectedText();
 		if (selection.equals("")) { // Check user has selected something
-			Alert alert = new Alert(Alert.AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.", ButtonType.OK);
-			alert.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alert.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.");
 
 		} else {
 			String[] words = selection.split(" ");
 			if (words.length > 30) { // Check there are at most 30 words selected
-				Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Selection must be at most 30 words.", ButtonType.OK);
-				alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-				alertEmpty.showAndWait();
+				AlertBox.showWaitAlert(AlertType.WARNING, "Selection must be at most 30 words.");
 
 			} else {
 				selectionText.setText(selection);
@@ -144,9 +142,8 @@ public class AudioController extends Controller {
 		String text = selectionText.getText();
 
 		if (text.equals("")) { // Check the user has selected some text to preview
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Please select text before previewing.");
+			
 		} else {// Preview text to speech with selected options
 
 			if(voice == null) {
@@ -166,9 +163,7 @@ public class AudioController extends Controller {
 		String text = selectionText.getText().trim();
 
 		if (text.equals("")) { // Check the user has selected some text to preview
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Please select text before previewing.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Please select text before previewing.");
 
 		} else { // Save audio with selected options
 			if(voice == null) {
@@ -205,9 +200,8 @@ public class AudioController extends Controller {
 		}
 
 		if (table.getItems().isEmpty()) {
-			Alert alertEmpty = new Alert(Alert.AlertType.WARNING, "Save an audio file(s) before continuing.", ButtonType.OK);
-			alertEmpty.getDialogPane().setMinHeight(Region.USE_PREF_SIZE);
-			alertEmpty.showAndWait();
+			AlertBox.showWaitAlert(AlertType.WARNING, "Save an audio file(s) before continuing.");
+			
 		} else {
 			Object[] array = table.getItems().toArray();
 			MergeAudioTask task = new MergeAudioTask(array);
