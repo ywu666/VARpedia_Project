@@ -8,7 +8,7 @@ import application.Main;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
 import application.tasks.DownloadImagesTask;
-import javafx.concurrent.Task;
+import application.tasks.SearchWikiTask;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -124,31 +124,4 @@ public class SearchController {
 			handleSearch();
 		}
 	}
-	
-	/**
-	 * Task to search term user specified
-	 */
-	class SearchWikiTask extends Task<Void> {
-			
-		String searchTerm;
-		BashCommand bashCommand;
-		
-		SearchWikiTask(String serchTerm) {
-			this.searchTerm = serchTerm;
-		}
-
-		@Override
-		protected Void call() throws Exception {
-			
-			String command = "wikit \"" + searchTerm + "\"";
-			bashCommand = new BashCommand(command, true);
-			bashCommand.run();
-				
-			return null;
-		}
-		
-		public BashCommand getBashCommand() {
-			return bashCommand;
-		}
-	 }
 }

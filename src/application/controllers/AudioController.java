@@ -2,8 +2,6 @@ package application.controllers;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -11,9 +9,10 @@ import application.Main;
 import application.items.Audio;
 import application.items.NewCreation;
 import application.tasks.BashCommand;
+import application.tasks.MergeAudioTask;
+import application.tasks.PreviewSpeechTask;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -46,8 +45,21 @@ public class AudioController {
 	@FXML TableColumn<Audio, String> moodColumn;
 
 	PreviewSpeechTask previewTask;
-	private static Map<String, String> voices = new HashMap<>();
 	private NewCreation creation;
+	
+	private static final ArrayList<String> voiceList;
+	private static final ArrayList<String> moodList;
+	static {
+		moodList = new ArrayList<String>();
+		moodList.add("Happy");
+		moodList.add("Neutral");
+		moodList.add("Sad");
+		
+		voiceList = new ArrayList<String>();
+		voiceList.add("United Kingdom");
+		voiceList.add("United States");
+		voiceList.add("West Indies");
+	}
 
 	@FXML
 	private void handleMenu() {
@@ -133,13 +145,13 @@ public class AudioController {
 	@FXML
 	private void handlePlay() {
 		Audio selection = table.getSelectionModel().getSelectedItem();
-		preview(voices.get(selection.getVoice()), selection.getMood(), selection.getText());
+		preview(Audio.voices.get(selection.getVoice()), selection.getMood(), selection.getText());
 	}
 
 	@FXML
 	private void handlePreview() {
 		String mood = selectMood.getValue();
-		String voice = voices.get(selectVoice.getValue());
+		String voice = Audio.voices.get(selectVoice.getValue());
 		String text = selectionText.getText();
 
 		if (text.equals("")) { // Check the user has selected some text to preview
@@ -195,17 +207,6 @@ public class AudioController {
 		executorService.shutdown();
 	}
 
-	private String getMoodSettings(String mood) {
-		if ("Happy".equals(mood)) {
-			return " -s 250 -a 150 ";
-
-		} else if ("Sad".equals(mood)) {
-			return " -s 100 -a 80 ";
-		}else {
-			return " ";
-		}
-	}
-
 	@FXML
 	private void handleContinue() {
 		creation.setAudioList(table.getItems());
@@ -245,22 +246,8 @@ public class AudioController {
 	public void initialiseController(NewCreation c) {
 		this.creation = c;
 
-		voices.put("United Kingdom", "uk");
-		voices.put("United States","us");
-		voices.put("West Indies", "wi");
-
 		creationText.setText(creation.getText());
-
-		ArrayList<String> moodList = new ArrayList<String>();
-		moodList.add("Happy");
-		moodList.add("Neutral");
-		moodList.add("Sad");
 		selectMood.setItems(FXCollections.observableArrayList(moodList));
-
-		ArrayList<String> voiceList = new ArrayList<String>();
-		voiceList.add("United Kingdom");
-		voiceList.add("United States");
-		voiceList.add("West Indies");
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 
 		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
@@ -273,84 +260,4 @@ public class AudioController {
 		playButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		deleteButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 	}
-
-	/**
-	 * Handles the previewing speech. Allows user to preview speech while the screen does not freeze.
-	 */
-	private class PreviewSpeechTask extends Task<Void> {
-		private final String command;
-		private BashCommand preview;
-
-		PreviewSpeechTask(String voice, String mood, String sayText) {
-			command = "espeak -v " + voice + getMoodSettings(mood) + "\"" + sayText + "\"";
-		}
-
-		@Override
-		protected Void call() throws Exception {
-
-			preview = new BashCommand(command);
-			preview.run();
-
-			return null;
-		}
-
-		@Override
-		protected void cancelled() {
-			preview.cancelled();
-		}
-	}
-
-	/**
-	 * Handles merging the audio files that have been saved.
-	 */
-	private class MergeAudioTask extends Task<Void> {
-		private Object[] audioList;
-		private Integer audioFileNum = 0;
-
-		MergeAudioTask(Object[] audioList) {
-			this.audioList = audioList;
-		}
-
-		@Override
-		protected Void call() throws Exception {
-
-			BashCommand mkDir = new BashCommand("mkdir -p .newTerm/audio");
-			mkDir.run();
-
-			for (Object audio : audioList) {
-				if (audio instanceof Audio) {
-					audioFileNum += 1;
-					saveAudio((Audio)audio);
-				}
-			}
-
-			String audio = "";
-			for (int i = 1; i <= audioFileNum; i++) {
-				audio += ".newTerm/audio/" + i + ".wav ";
-			}
-			String command = "sox " + audio + ".newTerm/audio.wav";
-			BashCommand mergeAudio = new BashCommand(command);
-			mergeAudio.run();
-
-			return null;
-		}
-
-		private void saveAudio(Audio a) {
-			String voice = a.getVoice();
-			String mood = a.getMood();
-			String text = a.getText();
-
-			BashCommand saveTxt = new BashCommand("echo \"" + text + "\" > .newTerm/selection.txt");
-			saveTxt.run();
-
-			BashCommand text2wave = new BashCommand("espeak -v en-" + voices.get(voice) + getMoodSettings(mood) + "-f .newTerm/selection.txt --stdout >.newTerm/audio/" + audioFileNum + ".wav");
-			text2wave.run();
-
-			BashCommand rmTxtFile = new BashCommand("rm .newTerm/selection.txt");
-			rmTxtFile.run();
-		}
-
-
-	}
-
 }
