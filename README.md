@@ -10,4 +10,6 @@ Music "Love Story In Rain" by KhalafNasirs
 Available at ccMixter.org http://ccmixter.org/files/khalafnasirs/59534  
 Under CC BY license http://creativecommons.org/licenses/by/3.0/
 
+All icons made by Freepik from www.flaticon.com
+
 External jars in 'libs' folder sourced from Active Classroom Programmer, supplied by Nasser Giacaman.
