@@ -25,6 +25,7 @@ public class CreateController extends Controller {
 	@FXML Button selectAll;
 	@FXML FlowPane holder;
 	@FXML Button back;
+	@FXML Button create;
 
 	private int numSelectedImg;
 	private Boolean creating = false;
@@ -67,6 +68,8 @@ public class CreateController extends Controller {
 	@FXML
 	private void handleCreate() {
 		back.setDisable(true);
+		create.setDisable(true);
+		selectAll.setDisable(true);
 
 		String name = creationName.getText().trim();
 

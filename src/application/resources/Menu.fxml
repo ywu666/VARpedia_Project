@@ -80,6 +80,6 @@
                </font></Tooltip>
          </tooltip>
       </Button>
-      <ComboBox fx:id="sortBy" layoutX="825.0" layoutY="34.0" onAction="#handleSort" prefHeight="26.0" prefWidth="202.0" promptText="Sort By" />
+      <ComboBox fx:id="sortBy" layoutX="797.0" layoutY="34.0" onAction="#handleSort" prefHeight="26.0" prefWidth="230.0" promptText="Sort By" />
    </children>
 </Pane>
