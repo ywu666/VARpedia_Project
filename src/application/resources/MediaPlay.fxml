@@ -5,13 +5,15 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MediaPlayController">
    <children>
-      <Button fx:id="menue" layoutX="33.0" layoutY="30.0" mnemonicParsing="false" onAction="#handleMenu" prefHeight="26.0" prefWidth="81.0" text="Menu">
+      <Button fx:id="menue" layoutX="40.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleMenu" prefHeight="26.0" prefWidth="70.0" text="Menu">
          <font>
             <Font size="14.0" />
          </font>
@@ -19,13 +21,20 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button fx:id="backward" layoutX="992.0" layoutY="751.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="28.0" prefWidth="74.0" text="&lt;&lt;">
+      <Button fx:id="backward" layoutX="1035.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleBackward" prefHeight="28.0" prefWidth="23.0">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/backward.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
       <Button fx:id="play" layoutX="37.0" layoutY="750.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="42.0" prefWidth="100.0" text="Pause">
          <font>
@@ -35,14 +44,21 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ProgressBar fx:id="videoProgress" layoutX="163.0" layoutY="760.0" prefHeight="28.0" prefWidth="805.0" progress="0.0" style="-fx-accent: #faa33a;" />
-      <Button fx:id="forward" layoutX="1084.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="28.0" prefWidth="81.0" text="&gt;&gt;">
+      <ProgressBar fx:id="videoProgress" layoutX="163.0" layoutY="760.0" prefHeight="28.0" prefWidth="845.0" progress="0.0" style="-fx-accent: #faa33a;" />
+      <Button fx:id="forward" layoutX="1108.0" layoutY="750.0" mnemonicParsing="false" onAction="#handleForward" prefHeight="28.0" prefWidth="32.0">
          <cursor>
             <Cursor fx:constant="HAND" />
-         </cursor></Button>
+         </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/forward.png" />
+               </image>
+            </ImageView>
+         </graphic></Button>
       <MediaView fx:id="mediaView" fitHeight="504.0" fitWidth="756.0" layoutX="235.0" layoutY="155.0" />
-      <Slider fx:id="rating" blockIncrement="1.0" layoutX="825.0" layoutY="38.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="255.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 14px;" />
-      <Button layoutX="1097.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleRate" text="Rate">
+      <Slider fx:id="rating" blockIncrement="1.0" layoutX="785.0" layoutY="38.0" majorTickUnit="1.0" max="5.0" min="1.0" minorTickCount="0" prefHeight="35.0" prefWidth="255.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" style="-fx-font-size: 14px;" />
+      <Button layoutX="1066.0" layoutY="36.0" mnemonicParsing="false" onAction="#handleRate" prefWidth="63.0" text="Rate">
          <font>
             <Font size="14.0" />
          </font>
@@ -50,7 +66,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Label layoutX="825.0" layoutY="92.0" text="Current Confidence Rating:">
+      <Label layoutX="785.0" layoutY="92.0" text="Current Confidence Rating:">
          <font>
             <Font size="14.0" />
          </font>

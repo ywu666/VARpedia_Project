@@ -8,13 +8,15 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
 <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="820.0" prefWidth="1200.0" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.AudioController">
    <children>
-      <Button layoutX="41.0" layoutY="21.0" mnemonicParsing="false" onAction="#handleMenu" text="Menu">
+      <Button layoutX="40.0" layoutY="25.0" mnemonicParsing="false" onAction="#handleMenu" prefWidth="70.0" text="Menu">
          <font>
             <Font size="14.0" />
          </font>
@@ -22,7 +24,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="73.0" prefHeight="392.0" prefWidth="561.0" wrapText="true">
+      <TextArea fx:id="creationText" editable="false" layoutX="38.0" layoutY="83.0" prefHeight="382.0" prefWidth="561.0" wrapText="true">
          <font>
             <Font size="18.0" />
          </font>
@@ -35,7 +37,7 @@
          </columns>
       </TableView>
       <Separator layoutX="624.0" orientation="VERTICAL" prefHeight="820.0" />
-      <Button layoutX="38.0" layoutY="501.0" mnemonicParsing="false" onAction="#handleSelect" text="Select">
+      <Button layoutX="38.0" layoutY="495.0" mnemonicParsing="false" onAction="#handleSelect" prefWidth="75.0" text="Select">
          <font>
             <Font size="14.0" />
          </font>
@@ -48,7 +50,7 @@
             <Font size="14.0" />
          </font>
       </TextArea>
-      <Button layoutX="481.0" layoutY="689.0" mnemonicParsing="false" onAction="#handlePreview" prefHeight="42.0" prefWidth="108.0" text="Preview">
+      <Button layoutX="481.0" layoutY="674.0" mnemonicParsing="false" onAction="#handlePreview" prefHeight="42.0" prefWidth="110.0" text="Preview">
          <font>
             <Font size="14.0" />
          </font>
@@ -56,7 +58,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="379.0" layoutY="688.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="28.0" prefWidth="83.0" text="Save">
+      <Button layoutX="380.0" layoutY="674.0" mnemonicParsing="false" onAction="#handleSave" prefHeight="40.0" prefWidth="83.0" text="Save">
          <font>
             <Font size="14.0" />
          </font>
@@ -64,7 +66,7 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <Button layoutX="481.0" layoutY="743.0" mnemonicParsing="false" onAction="#handleContinue" text="Continue">
+      <Button layoutX="482.0" layoutY="760.0" mnemonicParsing="false" onAction="#handleContinue" prefWidth="110.0" text="Continue">
          <font>
             <Font size="14.0" />
          </font>
@@ -72,8 +74,8 @@
             <Cursor fx:constant="HAND" />
          </cursor>
       </Button>
-      <ComboBox fx:id="selectMood" layoutX="378.0" layoutY="641.0" prefHeight="28.0" prefWidth="212.0" promptText="Mood" style="-fx-font-size: 14px;" />
-      <ComboBox fx:id="selectVoice" layoutX="378.0" layoutY="594.0" prefHeight="28.0" prefWidth="212.0" promptText="Voice" style="-fx-font-size: 14px;" />
+      <ComboBox fx:id="selectMood" layoutX="380.0" layoutY="625.0" prefHeight="28.0" prefWidth="212.0" promptText="Mood" style="-fx-font-size: 14px;" />
+      <ComboBox fx:id="selectVoice" layoutX="380.0" layoutY="578.0" prefHeight="28.0" prefWidth="212.0" promptText="Voice" style="-fx-font-size: 14px;" />
       <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Edit speech settings of highlighted text">
          <font>
             <Font size="14.0" />
@@ -89,31 +91,52 @@
             <Font size="14.0" />
          </font>
       </Text>
-      <Button fx:id="moveUpButton" layoutX="640.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleMoveUp" prefWidth="120.0" text="Move Up">
+      <Button fx:id="moveUpButton" layoutX="650.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleMoveUp" prefHeight="42.0" prefWidth="30.0">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/up.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button fx:id="deleteButton" layoutX="1030.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleDelete" text="Delete">
+      <Button fx:id="deleteButton" layoutX="866.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleDelete" prefHeight="30.0" prefWidth="38.0">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/delete.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button fx:id="moveDownButton" layoutX="776.0" layoutY="761.0" mnemonicParsing="false" onAction="#handleMoveDown" prefHeight="42.0" prefWidth="136.0" text="Move Down">
+      <Button fx:id="moveDownButton" layoutX="721.0" layoutY="759.0" mnemonicParsing="false" onAction="#handleMoveDown" prefHeight="42.0" prefWidth="15.0">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/down.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
-      <Button fx:id="help" alignment="CENTER" layoutX="1147.0" layoutY="759.0" minHeight="30.0" mnemonicParsing="false" prefWidth="30.0" style="-fx-background-radius: 30; -fx-background-color: #faa33a;" text="?" textFill="WHITE">
+      <Button fx:id="help" alignment="CENTER" layoutX="1143.0" layoutY="768.0" minHeight="30.0" mnemonicParsing="false" prefWidth="30.0" style="-fx-background-radius: 30; -fx-background-color: #faa33a;" text="?" textFill="WHITE">
          <font>
             <Font size="14.0" />
          </font>
@@ -124,13 +147,20 @@
                </font></Tooltip>
          </tooltip>
       </Button>
-      <Button fx:id="playButton" layoutX="928.0" layoutY="761.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="42.0" prefWidth="87.0" text="Play">
+      <Button fx:id="playButton" contentDisplay="CENTER" layoutX="794.0" layoutY="759.0" mnemonicParsing="false" onAction="#handlePlay" prefHeight="36.0" prefWidth="30.0">
          <font>
             <Font size="14.0" />
          </font>
          <cursor>
             <Cursor fx:constant="HAND" />
          </cursor>
+         <graphic>
+            <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@icons/play.png" />
+               </image>
+            </ImageView>
+         </graphic>
       </Button>
    </children>
 </Pane>
