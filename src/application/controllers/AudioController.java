@@ -36,7 +36,7 @@ public class AudioController extends Controller {
 	@FXML private ComboBox<String> selectVoice;
 	@FXML private Label savedLabel;
 	@FXML TableView<Audio> table;
-	@FXML TableColumn<Audio, String> fileNameColumn;
+	@FXML TableColumn<Audio, String> textColumn;
 	@FXML TableColumn<Audio, String> voiceColumn;
 	@FXML TableColumn<Audio, String> moodColumn;
 
@@ -219,7 +219,7 @@ public class AudioController extends Controller {
 		selectMood.setItems(FXCollections.observableArrayList(moodList));
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
 
-		fileNameColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
+		textColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
 		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));
 		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
 		table.getItems().addAll(FXCollections.observableList(creation.getAudioList()));

@@ -31,7 +31,7 @@
       </TextArea>
       <TableView fx:id="table" layoutX="627.0" prefHeight="741.0" prefWidth="573.0">
          <columns>
-            <TableColumn fx:id="fileNameColumn" prefWidth="270.0" text="Text" />
+            <TableColumn fx:id="textColumn" prefWidth="270.0" text="Text" />
             <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="150.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
             <TableColumn fx:id="moodColumn" prefWidth="151.0" style="-fx-alignment: BASELINE-CENTER;" text="Mood" />
          </columns>
