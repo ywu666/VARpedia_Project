@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
+import javax.net.ssl.SSLEngineResult.Status;
+
 import application.items.AlertBox;
 import application.items.Audio;
 import application.items.NewCreation;
@@ -16,12 +18,15 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.text.Text;
 
 public class AudioController extends Controller {
 
@@ -210,7 +215,7 @@ public class AudioController extends Controller {
 
 	/**
 	 * Sets up the table listing the audio files saved and their corresponding settings
-	 * @param c
+	 * @param c is a NewCreation object
 	 */
 	public void initialiseController(NewCreation c) {
 		this.creation = c;
@@ -228,5 +233,15 @@ public class AudioController extends Controller {
 		moveDownButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		playButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		deleteButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
+		
+		textColumn.setCellFactory(tc -> { // Wrap text in column
+			TableCell<Audio, String> cell = new TableCell<>();
+			Text text = new Text();
+			cell.setGraphic(text);
+			cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
+			text.wrappingWidthProperty().bind(textColumn.widthProperty());
+			text.textProperty().bind(cell.itemProperty());
+			return cell;
+		});
 	}
 }
