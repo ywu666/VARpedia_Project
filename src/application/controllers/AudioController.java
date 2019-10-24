@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 import application.items.AlertBox;
 import application.items.Audio;
 import application.items.NewCreation;
@@ -239,8 +237,9 @@ public class AudioController extends Controller {
 			Text text = new Text();
 			cell.setGraphic(text);
 			cell.setPrefHeight(Control.USE_COMPUTED_SIZE);
-			text.wrappingWidthProperty().bind(textColumn.widthProperty());
-			text.textProperty().bind(cell.itemProperty());
+			text.wrappingWidthProperty().bind(textColumn.widthProperty().subtract(10));
+			text.setStyle("-fx-fill: -fx-text-background-color");
+			text.textProperty().bind(cell.itemProperty());	
 			return cell;
 		});
 	}

@@ -32,8 +32,8 @@
       <TableView fx:id="table" layoutX="627.0" prefHeight="741.0" prefWidth="573.0">
          <columns>
             <TableColumn fx:id="textColumn" prefWidth="311.0" text="Text" />
-            <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="109.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
-            <TableColumn fx:id="moodColumn" prefWidth="151.0" style="-fx-alignment: BASELINE-CENTER;" text="Mood" />
+            <TableColumn fx:id="voiceColumn" minWidth="0.0" prefWidth="153.0" style="-fx-alignment: BASELINE-CENTER;" text="Voice" />
+            <TableColumn fx:id="moodColumn" prefWidth="107.0" style="-fx-alignment: BASELINE-CENTER;" text="Mood" />
          </columns>
       </TableView>
       <Separator layoutX="624.0" orientation="VERTICAL" prefHeight="820.0" />
