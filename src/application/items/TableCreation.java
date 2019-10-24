@@ -50,8 +50,8 @@ public class TableCreation {
 		this.term = term;
 	}
 
-	public Rating getRating() {
-		return rating;
+	public String getRating() {
+		return rating.toString();
 	}
 
 	public void setRating(Rating rating) {

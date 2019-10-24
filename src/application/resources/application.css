@@ -56,7 +56,11 @@
 }
 
 .table-row-cell:selected {
-    -fx-background-color: #ffa31a;
+    -fx-background-color: #0E3247 !important;
+}
+
+#table .table-row-cell:selected {
+	-fx-background-color: #ffa31a !important;
 }
 
 .combo-box {

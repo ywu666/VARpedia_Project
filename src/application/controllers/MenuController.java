@@ -19,7 +19,9 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -140,6 +142,7 @@ public class MenuController extends Controller {
 		deleteButton.disableProperty().bind(Bindings.isEmpty(creationTable.getSelectionModel().getSelectedItems()));
 
 		creationTable.setPlaceholder(new Label("You have no creations. Please click 'Create' to begin."));
+		setColorOnRating();
 	}
 
 	/**
@@ -151,5 +154,30 @@ public class MenuController extends Controller {
 		setUpMenu();
 		TableCreation temp = new TableCreation(new Creation(creation.getCreationName(), creation.getTerm()), false);
 		creationTable.getItems().add(temp);
+	}
+	
+	private void setColorOnRating() {
+		ratingColumn.setCellFactory(column -> {
+
+			return new TableCell<TableCreation, String>() {
+				@Override
+				protected void updateItem(String item, boolean empty) {
+					super.updateItem(item, empty);
+					setText(empty ? "" : getItem().toString());
+					setGraphic(null);
+
+					TableRow<?> currentRow = getTableRow();
+					if (!isEmpty()) {
+						if (item.equals("-") || item.equals("1") ) {
+							currentRow.setStyle("-fx-background-color:lightcoral");
+						} else if (item.equals("2") || item.equals("3")) {
+							currentRow.setStyle("-fx-background-color:yellow");
+						} else {
+							currentRow.setStyle("-fx-background-color:lightgreen");
+						}
+					}
+				}
+			};
+		});
 	}
 }
