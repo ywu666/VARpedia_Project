@@ -234,25 +234,33 @@ public class AudioController extends Controller {
 		creationText.selectedTextProperty().addListener((observble, oldValue, newValue) -> {
 			save.setDisable(disable());
 			preview.setDisable(disable());
-			Integer count = creationText.getSelectedText().trim().split(" ").length;
-			wordCount.setText(count.toString());
+			wordCount.setText(getWordCount().toString());
 
 		});
 	}
 
-	private Boolean disable() {
+	private boolean disable() {
 		String selection = creationText.getSelectedText().trim();
 		if (selection.equals("")) { // Check user has selected something
 			return true;
 
 		} else {
-			String[] words = selection.split(" ");
-			if (words.length > 30) { // Check there are at most 30 words selected
+			if (getWordCount() > 30) { // Check there are at most 30 words selected
 				return true;
 
 			} else {
 				return false;
 			}
+		}
+	}
+	
+	private Integer getWordCount() {
+		String selection = creationText.getSelectedText().trim();
+		
+		if (selection.equals("")) {
+			return 0;
+		} else {
+			return selection.split(" ").length;
 		}
 	}
 }
