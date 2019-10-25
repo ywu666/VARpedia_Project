@@ -59,6 +59,11 @@
     -fx-background-color: #0E3247 !important;
 }
 
+.table-row-cell:selected .text {
+    -fx-fill:#ffffff;
+}
+
+
 #table .table-row-cell:selected {
 	-fx-background-color: #ffa31a !important;
 }
