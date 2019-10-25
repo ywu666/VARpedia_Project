@@ -3,6 +3,11 @@ package application.tasks;
 import application.items.Audio;
 import javafx.concurrent.Task;
 
+/**
+ * Task that previews the audio with the settings decided by the user.
+ * 
+ * @author Courtney Hunter and Yujia Wu
+ */
 public class PreviewSpeechTask extends Task<Void> {
 	private final String command;
 	private BashCommand preview;

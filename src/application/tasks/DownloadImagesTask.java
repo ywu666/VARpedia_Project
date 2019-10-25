@@ -17,6 +17,11 @@ import com.flickr4java.flickr.photos.Size;
 
 import javafx.concurrent.Task;
 
+/**
+ * Task that downloads the images from Flickr.
+ * 
+ * @author Courtney Hunter and Yujia Wu
+ */
 public class DownloadImagesTask extends Task<Void> {
 
 	private String term;
@@ -27,15 +32,19 @@ public class DownloadImagesTask extends Task<Void> {
 	
 	@Override
 	protected Void call() throws Exception {
+		// Create directories that images will go into
 		BashCommand imagesDir = new BashCommand("mkdir -p .newTerm/images .newTerm/selectedImages");
 		imagesDir.run();
+		
 		downloadImages(term, 10);
+		
 		return null;
 	}
 	
 	/**
 	 * Downloads the specified number of images from Flickr with the term specified when they searched.
 	 * Saves the images in a hidden folder with the rest of the information for the creation.
+	 * 
 	 * @param term
 	 * @param numberOfImages
 	 * 
@@ -50,14 +59,15 @@ public class DownloadImagesTask extends Task<Void> {
 			Integer resultsPerPage = numberOfImages;
 			int page = 0;
 			
+			// Gets photos from Flickr based on the search term
 	        PhotosInterface photos = flickr.getPhotosInterface();
 	        SearchParameters params = new SearchParameters();
 	        params.setSort(SearchParameters.RELEVANCE);
 	        params.setMedia("photos"); 
 	        params.setText(term);
-	        
 	        PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
 	        
+	        // Saves the images received from Flickr
 	        int count = 0;
 	        for (Photo photo: results) {
 	        	try {

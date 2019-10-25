@@ -64,7 +64,7 @@
       </Button>
       <ComboBox fx:id="selectMood" layoutX="265.0" layoutY="710.0" prefHeight="28.0" prefWidth="212.0" promptText="Mood" style="-fx-font-size: 14px;" />
       <ComboBox fx:id="selectVoice" layoutX="38.0" layoutY="710.0" prefHeight="28.0" prefWidth="212.0" promptText="Voice" style="-fx-font-size: 14px;" />
-      <Text layoutX="136.0" layoutY="43.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text and save audio!">
+      <Text layoutX="136.0" layoutY="53.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Highlight text and save audio!">
          <font>
             <Font size="14.0" />
          </font>
@@ -140,7 +140,7 @@
             </ImageView>
          </graphic>
       </Button>
-      <Text layoutX="136.0" layoutY="62.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select max 30 words">
+      <Text layoutX="275.0" layoutY="784.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select max 30 words">
          <font>
             <Font size="14.0" />
          </font>

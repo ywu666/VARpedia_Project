@@ -2,6 +2,11 @@ package application.tasks;
 
 import javafx.concurrent.Task;
 
+/**
+ * Task that searches Wikipedia for the term and gets the result.
+ * 
+ * @author Courtney Hunter and Yujia Wu
+ */
 public class SearchWikiTask extends Task<Void> {
 
 	String searchTerm;
@@ -21,7 +26,12 @@ public class SearchWikiTask extends Task<Void> {
 		return null;
 	}
 
-	public BashCommand getBashCommand() {
-		return bashCommand;
+	/**
+	 * Gets the result of the search.
+	 * 
+	 * @return String result of searching term
+	 */
+	public String getResult() {
+		return bashCommand.getStdOutString();
 	}
 }

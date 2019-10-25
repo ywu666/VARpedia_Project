@@ -16,6 +16,12 @@ import javafx.scene.media.MediaPlayer.Status;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
+/**
+ * Controller for the video player view. This view allows the user to watch their creations and rate
+ * their confidence for them.
+ * 
+ * @author Courtney Hunter and Yujia Wu
+ */
 public class MediaPlayController extends Controller {
 
 	@FXML private MediaView mediaView;
@@ -37,6 +43,7 @@ public class MediaPlayController extends Controller {
 
 	@FXML 
 	public void handleMenu() {
+		// Stop the music and video when returning to the menu
 		videoPlayer.stop();
 		musicPlayer.stop();
 
@@ -50,6 +57,7 @@ public class MediaPlayController extends Controller {
 		boolean playing = videoPlayer.getStatus() == Status.PLAYING;
 		boolean ended = videoPlayer.getCurrentTime().toSeconds() == length;
 
+		// If video has ended start video again and play music if specified
 		if (ended) {
 			videoPlayer.seek(videoPlayer.getStartTime());
 			play.setText("Pause");
@@ -58,6 +66,7 @@ public class MediaPlayController extends Controller {
 				musicPlayer.play();
 			}
 
+		// If video is playing then video and music should be paused
 		} else if (playing) {
 			videoPlayer.pause();
 			play.setText("Play");
@@ -66,6 +75,7 @@ public class MediaPlayController extends Controller {
 				musicPlayer.pause();
 			}
 
+		// Otherwise video must be paused so should start playing again, with music if specified
 		} else {
 			videoPlayer.play();
 			play.setText("Pause");
@@ -78,41 +88,52 @@ public class MediaPlayController extends Controller {
 
 	@FXML 
 	public void handleForward() {
+		// Skip forward 3 seconds in the video
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(3)));
 	}
 
 	@FXML
 	public void handleRate() {
 		creation.setRating((int)rating.getValue());
+		
+		// Update creation
 		Creation.creationRated(creation);
+		
+		// Update text in media view
 		currentRating.setText(creation.getRating().toString());
 	}
 
 	@FXML 
 	public void handleBackward() {
+		// Skip backwards 3 seconds in the video
 		videoPlayer.seek(videoPlayer.getCurrentTime().add(Duration.seconds(-3)));
 
+		// If the video has ended,, skipping back will mean it is not so button text should change
 		if ("Replay".equals(play.getText())) {
 			play.setText("Pause");
 		}
 	}
 
 	@FXML
-	public void handleMusic() {		
+	public void handleMusic() {
+		// Update music settings
 		music = !music;
 
+		// If user decides they want music, begin playing and change text
 		if (music) {
 			backgroundMusic.setText("Stop Background Music");
-
+			
 			if (videoPlayer.getStatus() == Status.PLAYING) {
 				musicPlayer.play();
 			}
 
+		// If user decides to stop the music, pause it and change the text
 		} else {
 			musicPlayer.pause();
 			backgroundMusic.setText("Add Background Music");
 		}
 
+		// When the music has reached the end, begin again in a loop
 		musicPlayer.setOnEndOfMedia(new Runnable() {
 			@Override
 			public void run() {
@@ -123,28 +144,35 @@ public class MediaPlayController extends Controller {
 
 	/**
 	 * Begins playing the creation. Also handles updating the progress bar for the video.
+	 * 
 	 * @param name of creation being played
 	 */
 	public void playCreation(Creation c) {
 		creation = c;
+		
+		// Update time viewed information for creation
 		Creation.creationPlayed(creation);
 
-		File fileUrl = new File(c.getFile());
-		video = new Media(fileUrl.toURI().toString());
+		// Set up the video player to play the creation specified
+		File file = new File(c.getFile());
+		video = new Media(file.toURI().toString());
 		videoPlayer = new MediaPlayer(video);
 		videoPlayer.setAutoPlay(true);
 		mediaView.setMediaPlayer(videoPlayer);
 
+		// Set up creation rating information in the view
 		if (creation.getRating() == null) {
 			currentRating.setText("-");
 		} else {
 			currentRating.setText(creation.getRating().toString());
 		}
 
-		Media sound = new Media(new File("media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
-		musicPlayer = new MediaPlayer(sound);
+		// Set up music player
+		Media media = new Media(new File("media/khalafnasirs_-_Love_Story_In_Rain_2.mp3").toURI().toString());
+		musicPlayer = new MediaPlayer(media);
 		musicPlayer.setVolume(1.0);
 
+		// Update progress bar according to position in the video
 		videoPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 			@Override
 			public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
@@ -153,6 +181,7 @@ public class MediaPlayController extends Controller {
 			}
 		});
 
+		// When creation video has ended, update play/pause button text, set progress bar to completed and stop music
 		videoPlayer.setOnEndOfMedia(new Runnable() {
 			@Override
 			public void run() {

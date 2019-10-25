@@ -5,17 +5,22 @@ import java.util.concurrent.Executors;
 
 import application.items.AlertBox;
 import application.items.NewCreation;
-import application.tasks.BashCommand;
 import application.tasks.DownloadImagesTask;
 import application.tasks.SearchWikiTask;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Controller for search view. This view allows the user to search terms, with the results
+ * appearing in an editable text area below.
+ * 
+ * @author Courtney Hunter and Yujia Wu
+ */
 public class SearchController extends Controller {
 
 	@FXML private TextField field;
@@ -32,36 +37,40 @@ public class SearchController extends Controller {
 
 	@FXML
 	private void handleSearch() {
+		// Gets search term entered by user to lower case so that case does not stop the user from getting a result
 		searchTerm = field.getText().trim().toLowerCase();
 
-		// Checks the user has entered a search term
+		// Warns the user if they have not entered a search term
 		if (searchTerm == null || "".equals(searchTerm) || searchTerm.length() == 0) {
 			AlertBox.showWaitAlert(AlertType.WARNING, "Please enter a valid term");
 
 		} else {
-			SearchWikiTask task = new SearchWikiTask(searchTerm);
+			SearchWikiTask searchTask = new SearchWikiTask(searchTerm);
 
-			// Shows a term is being searched through a progress indicator
+			// Shows a term is being searched in the a progress indicator
 			searchIndicator.setOpacity(1);
-			searchIndicator.progressProperty().bind(task.progressProperty());
+			searchIndicator.progressProperty().bind(searchTask.progressProperty());
 
-			task.setOnSucceeded((succeededEvent) -> {
+			// Search the term
+			ExecutorService executorService = Executors.newSingleThreadExecutor();
+			executorService.execute(searchTask);
+			executorService.shutdown();
+
+			// When finished searching the term, hide the search indicator
+			searchTask.setOnSucceeded((succeededEvent) -> {
 				searchIndicator.progressProperty().unbind();
 				searchIndicator.setOpacity(0);
 
-				BashCommand bashCommand = task.getBashCommand();
-				String searchResult = bashCommand.getStdOutString();
-				if (searchResult.equals(searchTerm + " not found :^(")) { // Alert user if term cannot be found
+				// Get the result of the search, warning the user if the search was unsuccessful
+				String searchResult = searchTask.getResult();
+				if (searchResult.equals(searchTerm + " not found :^(")) {
 					AlertBox.showWaitAlert(AlertType.WARNING, searchTerm + " cannot be found. Please enter a valid term.");
 
 				} else {
+					// If the search was successful, put the result in the text area below
 					results.setText(searchResult.trim());
 				}
 			});
-
-			ExecutorService executorService = Executors.newSingleThreadExecutor();
-			executorService.execute(task);
-			executorService.shutdown();
 		}
 	}
 
@@ -69,17 +78,17 @@ public class SearchController extends Controller {
 	private void handleContinue() {
 		String text = results.getText();
 
-		// Checks user has searched a term and that there is text in the editable text field
+		// Checks user has searched a term and that there is text in the editable text field, warning them if not
 		if (text.equals("") || searchTerm == null) {
 			AlertBox.showWaitAlert(AlertType.WARNING, "Please search a term before continuing.");
 
 		} else {
 			NewCreation creation = new NewCreation(searchTerm, results.getText());
 
-			// download the images of the search term
-			DownloadImagesTask task2 = new DownloadImagesTask(searchTerm);
+			// Downloads the images based on the search term
+			DownloadImagesTask downloadTask = new DownloadImagesTask(searchTerm);
 			ExecutorService executorService2 = Executors.newSingleThreadExecutor();
-			executorService2.execute(task2);
+			executorService2.execute(downloadTask);
 			executorService2.shutdown();
 
 			AudioController controller = (AudioController) loadView("../resources/Audio.fxml", this);
@@ -88,8 +97,9 @@ public class SearchController extends Controller {
 	}
 
 	/**
-	 * Searches term in the search field when presses enter key
-	 * @param event
+	 * Searches term in the search field when enter key is pressed.
+	 * 
+	 * @param event The KeyEvent
 	 */
 	@FXML
 	private void handleEnterKey(KeyEvent event) {
