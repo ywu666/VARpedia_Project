@@ -28,16 +28,17 @@ import javafx.scene.text.Text;
 
 public class AudioController extends Controller {
 
+	@FXML private Button preview;
+	@FXML private Button save;
 	@FXML private Button moveUpButton;
 	@FXML private Button moveDownButton;
 	@FXML private Button playButton;
 	@FXML private Button deleteButton;
 	@FXML private Tooltip tip;
 	@FXML private TextArea creationText;
-	@FXML private TextArea selectionText;
 	@FXML private ComboBox<String> selectMood;
 	@FXML private ComboBox<String> selectVoice;
-	@FXML private Label savedLabel;
+	@FXML private Label wordCount;
 	@FXML TableView<Audio> table;
 	@FXML TableColumn<Audio, String> textColumn;
 	@FXML TableColumn<Audio, String> voiceColumn;
@@ -107,26 +108,6 @@ public class AudioController extends Controller {
 	}
 
 	@FXML
-	private void handleSelect() {
-		creationText.setEditable(false);
-		selectionText.setEditable(false);
-
-		String selection = creationText.getSelectedText();
-		if (selection.equals("")) { // Check user has selected something
-			AlertBox.showWaitAlert(AlertType.WARNING, "Please highlight the text you wish to select before pressing submit.");
-
-		} else {
-			String[] words = selection.split(" ");
-			if (words.length > 30) { // Check there are at most 30 words selected
-				AlertBox.showWaitAlert(AlertType.WARNING, "Selection must be at most 30 words.");
-
-			} else {
-				selectionText.setText(selection);
-			}
-		}
-	}
-
-	@FXML
 	private void handlePlay() {
 		Audio selection = table.getSelectionModel().getSelectedItem();
 		preview(Audio.voices.get(selection.getVoice()), selection.getMood(), selection.getText());
@@ -136,7 +117,7 @@ public class AudioController extends Controller {
 	private void handlePreview() {
 		String mood = selectMood.getValue();
 		String voice = Audio.voices.get(selectVoice.getValue());
-		String text = selectionText.getText();
+		String text = creationText.getSelectedText();
 
 		if (text.equals("")) { // Check the user has selected some text to preview
 			AlertBox.showWaitAlert(AlertType.WARNING, "Please select text before previewing.");
@@ -151,13 +132,14 @@ public class AudioController extends Controller {
 		}
 	}
 
+
 	@FXML
 	private void handleSave() {
 		tip.setText("Select an audio file.");
 
 		String mood = selectMood.getValue();
 		String voice = selectVoice.getValue();
-		String text = selectionText.getText().trim();
+		String text = creationText.getSelectedText().trim();
 
 		if (text.equals("")) { // Check the user has selected some text to preview
 			AlertBox.showWaitAlert(AlertType.WARNING, "Please select text before previewing.");
@@ -176,6 +158,7 @@ public class AudioController extends Controller {
 			creation.addAudio(a);
 		}
 	}
+
 
 	private void preview(String voice, String mood, String text) {
 		if (previewTask != null) {
@@ -217,11 +200,14 @@ public class AudioController extends Controller {
 	 */
 	public void initialiseController(NewCreation c) {
 		this.creation = c;
-
+		disableButtonListener();		
+		setUpAudioTable();
 		creationText.setText(creation.getText());
 		selectMood.setItems(FXCollections.observableArrayList(moodList));
 		selectVoice.setItems(FXCollections.observableArrayList(voiceList));
+	}
 
+	private void setUpAudioTable() {
 		textColumn.setCellValueFactory(new PropertyValueFactory<>("text"));
 		voiceColumn.setCellValueFactory(new PropertyValueFactory<>("voice"));
 		moodColumn.setCellValueFactory(new PropertyValueFactory<>("mood"));
@@ -231,7 +217,7 @@ public class AudioController extends Controller {
 		moveDownButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		playButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
 		deleteButton.disableProperty().bind(Bindings.isEmpty(table.getSelectionModel().getSelectedItems()));
-		
+
 		textColumn.setCellFactory(tc -> { // Wrap text in column
 			TableCell<Audio, String> cell = new TableCell<>();
 			Text text = new Text();
@@ -242,5 +228,31 @@ public class AudioController extends Controller {
 			text.textProperty().bind(cell.itemProperty());	
 			return cell;
 		});
+	}
+
+	private void disableButtonListener() {
+		creationText.selectedTextProperty().addListener((observble, oldValue, newValue) -> {
+			save.setDisable(disable());
+			preview.setDisable(disable());
+			Integer count = creationText.getSelectedText().trim().split(" ").length;
+			wordCount.setText(count.toString());
+
+		});
+	}
+
+	private Boolean disable() {
+		String selection = creationText.getSelectedText().trim();
+		if (selection.equals("")) { // Check user has selected something
+			return true;
+
+		} else {
+			String[] words = selection.split(" ");
+			if (words.length > 30) { // Check there are at most 30 words selected
+				return true;
+
+			} else {
+				return false;
+			}
+		}
 	}
 }
